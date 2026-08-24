@@ -40,11 +40,11 @@
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
-      cursor: url('./images/A03.png') 0 0, auto;
+      cursor: url('./images/A03.png') 10 10, auto;
     }
 
     a, button, .list-item, .accordion-header, .full-cal-day, .cal-nav-btn {
-      cursor: url('./images/A03.png') 0 0, pointer;
+      cursor: url('./images/A03.png') 10 10, pointer;
     }
 
     /* 도트 패턴 오버레이 */
@@ -164,35 +164,15 @@
     .progress-bar-container { width: 100%; height: 3px; background: rgba(28, 32, 56, 0.25); border-radius: 2px; position: relative; }
     .progress-bar-fill { height: 100%; width: 0%; background: var(--navy); border-radius: 2px; position: relative; }
     .progress-thumb { width: 9px; height: 9px; background: var(--navy); border-radius: 50%; position: absolute; right: -4px; top: -3px; }
-    
     .player-controls { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 4px; }
-    .ctrl-btn { 
-      background: none; 
-      border: none; 
-      color: var(--navy); 
-      opacity: 0.85; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      padding: 4px;
-      transition: opacity 0.2s, transform 0.1s; 
-    }
+    .ctrl-btn { font-size: 13px; color: var(--navy); opacity: 0.85; transition: opacity 0.2s, transform 0.1s; }
     .ctrl-btn:hover { opacity: 1; transform: scale(1.15); }
     .ctrl-btn.play-main { font-size: 16px; font-weight: bold; }
 
-    .external-signal-bottom { margin-top: auto; padding-top: 50px; padding-bottom: 20px; display: flex; justify-content: center; align-items: center; }
-    #secretAdminBtn {
-      width: 24px;
-      height: 24px;
-      cursor: pointer;
-      opacity: 0.6;
-      transition: opacity 0.2s, transform 0.2s;
-      object-fit: contain;
-    }
-    #secretAdminBtn:hover {
-      opacity: 1;
-      transform: scale(1.2);
-    }
+    .external-signal-bottom { margin-top: auto; padding-top: 50px; padding-bottom: 20px; }
+    .ext-buttons { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .ext-btn { background: var(--white); border: 1.5px solid var(--navy); padding: 10px 20px; font: 11px var(--mono); font-weight: 500; box-shadow: var(--shadow); transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+    .ext-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 0 rgba(28, 32, 56, 0.15); }
 
     /* COMMON HEADERS */
     .section-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
@@ -398,67 +378,71 @@
     .schedule-list-ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
     .schedule-list-ul li { background: var(--white); border: 1.5px solid var(--navy); padding: 10px 14px; font-size: 13px; display: flex; align-items: center; gap: 8px; box-shadow: 2px 2px 0 rgba(28, 32, 56, 0.1); }
 
+    /* ADMIN PANEL STYLES */
+    .admin-panel {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--white);
+      border: 2px solid var(--navy);
+      box-shadow: 0 10px 25px rgba(28, 32, 56, 0.3);
+      padding: 18px;
+      width: min(400px, 92vw);
+      max-height: 85vh;
+      overflow-y: auto;
+      z-index: 100;
+      display: none;
+    }
+    .admin-panel.show { display: block; }
+    .admin-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid var(--navy); padding-bottom: 8px; margin-bottom: 12px; font-weight: bold; font-family: var(--mono); }
+    .admin-form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+    .admin-form-group label { font-size: 11px; font-family: var(--mono); font-weight: bold; }
+    .admin-input, .admin-select, .admin-textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1.5px solid var(--navy);
+      font-size: 12px;
+      font-family: var(--sans);
+      background: #fafafa;
+    }
+    .admin-btn {
+      background: var(--navy);
+      color: var(--white);
+      border: none;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 4px;
+    }
+    .admin-toggle-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 99;
+      background: var(--navy);
+      color: var(--pink);
+      border: 1.5px solid var(--pink);
+      padding: 10px 16px;
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: bold;
+      box-shadow: var(--shadow);
+    }
+    .category-edit-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
     /* FOOTER */
     .slim-footer { background: var(--navy); color: var(--pink); padding: 16px 0; margin-top: 60px; position: relative; z-index: 5; }
     .footer-content { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; opacity: 0.9; }
     .top-btn { background: none; border: none; color: var(--pink); font-family: var(--mono); font-size: 10px; }
 
     #yt-player-container { position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; }
-
-    /* 커스텀 아카이브 로그인 모달 */
-    .archive-modal-overlay {
-      position: fixed; inset: 0; background: rgba(28, 32, 56, 0.5); backdrop-filter: blur(4px);
-      display: flex; justify-content: center; align-items: center; z-index: 100000;
-    }
-    .archive-modal-box {
-      background: var(--pink); border: 2px solid var(--navy); box-shadow: 6px 6px 0 var(--navy);
-      width: 320px; padding: 24px; display: flex; flex-direction: column; gap: 16px;
-    }
-    .archive-modal-title { font-family: var(--mono); font-size: 13px; font-weight: 800; letter-spacing: 0.08em; }
-    .archive-modal-input {
-      width: 100%; padding: 10px; background: var(--white); border: 1.5px solid var(--navy);
-      font-family: var(--mono); font-size: 13px; color: var(--navy); outline: none;
-    }
-    .archive-modal-btns { display: flex; gap: 10px; }
-    .archive-modal-btn {
-      flex: 1; padding: 8px; background: var(--navy); color: var(--pink); border: 1.5px solid var(--navy);
-      font-family: var(--mono); font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.15s;
-    }
-    .archive-modal-btn.cancel { background: var(--white); color: var(--navy); }
-    .archive-modal-btn:hover { opacity: 0.9; transform: translateY(-1px); }
-
-    /* 마우스 클릭 시 하트 도장 효과 애니메이션 */
-    .click-heart-effect {
-      position: absolute;
-      width: 26px;
-      height: 26px;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      animation: fadeUpAndShrink 0.8s forwards;
-      z-index: 99999;
-      object-fit: contain;
-    }
-    @keyframes fadeUpAndShrink {
-      0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      100% { opacity: 0; transform: translate(-50%, -80px) scale(0.5); }
-    }
-
-    /* 마우스 움직일 때 반짝이는 별 꼬리 효과 (커서 우측 하단 끝부분 맞춤) */
-    .mouse-star-trail {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: var(--navy);
-      box-shadow: 0 0 6px var(--white), 0 0 10px var(--pink);
-      border-radius: 50%;
-      pointer-events: none;
-      animation: starFade 0.6s linear forwards;
-      z-index: 99998;
-    }
-    @keyframes starFade {
-      0% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(0.2) translateY(12px); }
-    }
 
     @media (max-width: 820px) {
       .split-layout { grid-template-columns: 1fr; }
@@ -478,6 +462,78 @@
 
   <div id="yt-player-container">
     <div id="yt-player"></div>
+  </div>
+
+  <button class="admin-toggle-btn" onclick="toggleAdminPanel()">⚡ ADMIN PANEL</button>
+
+  <div class="admin-panel" id="admin-panel">
+    <div class="admin-head">
+      <span>⚡ ARCHIVE MANAGEMENT</span>
+      <button onclick="toggleAdminPanel()" style="font-size:14px; cursor:pointer;">✕</button>
+    </div>
+
+    <!-- [1] 분류(그룹) 관리 및 이름 편집 -->
+    <div style="border-bottom: 1px dashed var(--navy); padding-bottom: 12px; margin-bottom: 12px;">
+      <p style="font-size:11px; font-weight:bold; font-family:var(--mono); margin-bottom:6px;">[1] 분류 (카테고리 그룹) 추가</p>
+      <div class="admin-form-group">
+        <select id="adm-cat-target" class="admin-select" onchange="renderCategoryEditList()">
+          <option value="world">WORLD</option>
+          <option value="characters">CHARACTERS</option>
+          <option value="music">MUSIC</option>
+        </select>
+        <input type="text" id="adm-cat-title" class="admin-input" placeholder="새 분류 이름 (예: SUB WORLD)">
+        <button class="admin-btn" style="background:#4a527a;" onclick="addCategoryGroup()">분류 생성</button>
+      </div>
+
+      <p style="font-size:11px; font-weight:bold; font-family:var(--mono); margin: 12px 0 6px 0;">기존 분류 이름 편집 / 삭제</p>
+      <div id="category-edit-container" style="display:flex; flex-direction:column; gap:6px;"></div>
+    </div>
+
+    <!-- [2] 새 컨텐츠 작성 -->
+    <p style="font-size:11px; font-weight:bold; font-family:var(--mono); margin-bottom:6px;">[2] 새 컨텐츠 작성</p>
+    <div class="admin-form-group">
+      <label>섹션 선택</label>
+      <select id="adm-section" class="admin-select" onchange="updateAdminCategoryOptions()">
+        <option value="world">WORLD</option>
+        <option value="characters">CHARACTERS</option>
+        <option value="music">MUSIC</option>
+        <option value="feed">FEED</option>
+        <option value="notice">NOTICE</option>
+      </select>
+    </div>
+
+    <div class="admin-form-group" id="adm-group-wrapper">
+      <label>분류 선택</label>
+      <select id="adm-group-select" class="admin-select"></select>
+    </div>
+
+    <div class="admin-form-group">
+      <label>제목</label>
+      <input type="text" id="adm-title" class="admin-input" placeholder="제목 입력">
+    </div>
+
+    <div class="admin-form-group">
+      <label>부제목 / 서브텍스트</label>
+      <input type="text" id="adm-sub" class="admin-input" placeholder="부제목 입력">
+    </div>
+
+    <div class="admin-form-group" id="adm-img-wrapper">
+      <label>이미지 경로 (Feed 필수 / 선택)</label>
+      <input type="text" id="adm-img" class="admin-input" placeholder="./images/A01.png">
+    </div>
+
+    <div class="admin-form-group" id="adm-pin-wrapper" style="display:none;">
+      <label style="display:flex; align-items:center; gap:6px;">
+        <input type="checkbox" id="adm-pin"> Notice 상단 고정 (Pin)
+      </label>
+    </div>
+
+    <div class="admin-form-group">
+      <label>본문 내용</label>
+      <textarea id="adm-content" class="admin-textarea" rows="4" placeholder="본문 작성"></textarea>
+    </div>
+
+    <button class="admin-btn" onclick="submitNewContent()">등록하기</button>
   </div>
 
   <div class="sticky-header-group">
@@ -563,19 +619,21 @@
           </div>
 
           <div class="player-controls">
-            <button class="ctrl-btn" onclick="restartTrack()" aria-label="이전 곡">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
+            <button class="ctrl-btn" onclick="restartTrack()">⏮</button>
             <button class="ctrl-btn play-main" id="play-btn" onclick="toggleBgm()">▶</button>
-            <button class="ctrl-btn" onclick="restartTrack()" aria-label="다음 곡">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
+            <button class="ctrl-btn" onclick="restartTrack()">⏭</button>
           </div>
         </div>
 
-        <!-- 관리자 트리거 A04 하트 장식 -->
         <div class="external-signal-bottom">
-          <img src="./images/A04.png" alt="" id="secretAdminBtn" />
+          <div class="ext-buttons">
+            <a href="https://open.kakao.com/" target="_blank" class="ext-btn">
+              <span>OPEN KAKAO</span> ↗
+            </a>
+            <a href="https://notion.so/" target="_blank" class="ext-btn">
+              <span>NOTION DATABASE</span> ↗
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -771,7 +829,7 @@
       ]
     };
 
-    /* ---------- RENDER SIDEBAR LISTS ---------- */
+    /* ---------- RENDER SIDEBAR LISTS (별 아이콘 통일 및 개수 제거) ---------- */
     function renderWorldSidebar() {
       const container = document.getElementById('world-sidebar-list');
       let html = '';
@@ -1145,122 +1203,161 @@
       renderCalendarUI();
     }
 
-    /* ---------- 커스텀 아카이브 스타일 로그인 모달 ---------- */
-    function showAdminLoginModal() {
-      return new Promise((resolve) => {
-        const overlay = document.createElement('div');
-        overlay.className = 'archive-modal-overlay';
-        overlay.innerHTML = `
-          <div class="archive-modal-box">
-            <div class="archive-modal-title">ADMIN PASSWORD REQUIRED</div>
-            <input type="password" id="adminPwInput" class="archive-modal-input" placeholder="비밀번호 입력" autofocus>
-            <div class="archive-modal-btns">
-              <button class="archive-modal-btn cancel" id="modalCancelBtn">취소</button>
-              <button class="archive-modal-btn" id="modalSubmitBtn">확인</button>
-            </div>
-          </div>
-        `;
-        document.body.appendChild(overlay);
-
-        const input = document.getElementById('adminPwInput');
-        const submit = document.getElementById('modalSubmitBtn');
-        const cancel = document.getElementById('modalCancelBtn');
-
-        const close = (val) => {
-          overlay.remove();
-          resolve(val);
-        };
-
-        submit.onclick = () => close(input.value);
-        cancel.onclick = () => close(null);
-        input.onkeydown = (e) => {
-          if (e.key === 'Enter') close(input.value);
-        };
-      });
+    /* ---------- ADMIN LOGIC & CATEGORY EDITING ---------- */
+    function toggleAdminPanel() {
+      const panel = document.getElementById('admin-panel');
+      panel.classList.toggle('show');
+      updateAdminCategoryOptions();
+      renderCategoryEditList();
     }
 
-    const secretAdminBtn = document.getElementById('secretAdminBtn');
-    if (secretAdminBtn) {
-      secretAdminBtn.addEventListener('click', async () => {
-        const pw = await showAdminLoginModal();
-        if (pw === 'Loversleporineladymart') {
-          // 기존 글 수정 및 캘린더 일정 추가까지 가능한 고도화된 관리자 패널 창 오픈
-          const adminWindow = window.open('', '_blank', 'width=950,height=900');
-          adminWindow.document.write(`
-            <!DOCTYPE html>
-            <html lang="ko">
-            <head>
-              <meta charset="UTF-8">
-              <title>ARCHIVE MANAGEMENT PANEL</title>
-              <style>
-                body { font-family: 'Malgun Gothic', sans-serif; background: #1c2038; color: #fff; padding: 30px; }
-                h2 { border-bottom: 2px solid #eca8b9; padding-bottom: 10px; color: #eca8b9; margin-bottom: 20px; font-size: 18px; letter-spacing: 0.05em; }
-                .section-box { background: #262b48; border: 1.5px solid #eca8b9; padding: 20px; border-radius: 6px; margin-bottom: 20px; }
-                label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 13px; color: #eca8b9; }
-                input, select, textarea { width: 100%; padding: 10px; background: #1c2038; border: 1px solid #eca8b9; color: #fff; border-radius: 4px; font-size: 13px; box-sizing: border-box; margin-bottom: 12px; }
-                textarea { height: 100px; resize: vertical; }
-                button { background: #eca8b9; color: #1c2038; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; width: 100%; transition: opacity 0.2s; }
-                button:hover { opacity: 0.9; }
-                .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-              </style>
-            </head>
-            <body>
-              <h2>⚡ ARCHIVE MANAGEMENT &amp; CONTENT EDITOR</h2>
+    function renderCategoryEditList() {
+      const target = document.getElementById('adm-cat-target').value;
+      const container = document.getElementById('category-edit-container');
+      const groups = categoryGroups[target];
 
-              <div class="section-box">
-                <label>[1] 기존 글 선택 및 수정</label>
-                <div class="grid-2">
-                  <div>
-                    <label>카테고리 선택</label>
-                    <select id="editCategory" onchange="loadCategoryItems()">
-                      <option value="world">WORLD</option>
-                      <option value="characters">CHARACTERS</option>
-                      <option value="music">MUSIC</option>
-                      <option value="feed">FEED</option>
-                      <option value="notice">NOTICE</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label>항목 선택</label>
-                    <select id="editItemSelect" onchange="populateEditForm()">
-                      <option value="">항목을 선택하세요</option>
-                    </select>
-                  </div>
-                </div>
-                <input type="text" id="editTitle" placeholder="제목 / 이름">
-                <input type="text" id="editSub" placeholder="부제목 / 서브텍스트 / 날짜">
-                <textarea id="editContent" placeholder="본문 내용 (HTML 허용)"></textarea>
-                <button onclick="alert('성공적으로 수정 및 저장되었습니다!')">변경사항 저장하기</button>
-              </div>
-
-              <div class="section-box">
-                <label>[2] 캘린더 일정 추가하기</label>
-                <div class="grid-2">
-                  <input type="date" id="calEventDate">
-                  <input type="text" id="calEventText" placeholder="추가할 일정 내용">
-                </div>
-                <button onclick="alert('선택하신 날짜에 일정이 등록되었습니다!')">캘린더 일정 등록</button>
-              </div>
-
-              <script>
-                // 예시 연동 스크립트 구조
-                function loadCategoryItems() {
-                  const cat = document.getElementById('editCategory').value;
-                  const sel = document.getElementById('editItemSelect');
-                  sel.innerHTML = '<option value="">항목을 선택하세요</option>';
-                  // 실제 데이터 연동 예시
-                }
-                function populateEditForm() {
-                  // 선택된 항목의 데이터를 폼에 불러오기
-                }
-              </script>
-            </body>
-            </html>
-          `);
-        } else if (pw !== null) {
-          alert('비밀번호가 올바르지 않습니다.');
-        }
+      let html = '';
+      groups.forEach((gName, idx) => {
+        html += `
+          <div class="category-edit-row">
+            <input type="text" id="edit-cat-${target}-${idx}" class="admin-input" value="${gName}">
+            <button class="admin-btn" style="width:50px; margin-top:0; background:#4a527a;" onclick="updateCategoryName('${target}', ${idx})">수정</button>
+            <button class="admin-btn" style="width:50px; margin-top:0; background:#a84a4a;" onclick="deleteCategoryGroup('${target}', ${idx})">삭제</button>
+          </div>
+        `;
       });
+      container.innerHTML = html;
+    }
+
+    function updateCategoryName(target, idx) {
+      const inputEl = document.getElementById(`edit-cat-${target}-${idx}`);
+      const newName = inputEl.value.trim();
+      if (!newName) {
+        alert('분류 이름을 입력해주세요.');
+        return;
+      }
+
+      const oldName = categoryGroups[target][idx];
+      if (oldName === newName) return;
+
+      categoryGroups[target][idx] = newName;
+
+      if (database[target]) {
+        database[target].forEach(item => {
+          if (item.group === oldName) item.group = newName;
+        });
+      }
+
+      alert(`분류 이름이 "${newName}"(으)로 수정되었습니다.`);
+      renderAllSidebars();
+      renderCategoryEditList();
+      updateAdminCategoryOptions();
+    }
+
+    function deleteCategoryGroup(target, idx) {
+      const groupName = categoryGroups[target][idx];
+      if (categoryGroups[target].length <= 1) {
+        alert('최소 1개의 분류는 유지되어야 합니다.');
+        return;
+      }
+
+      if (confirm(`"${groupName}" 분류를 삭제하시겠습니까? 속한 항목들의 분류는 첫 번째 분류로 이동됩니다.`)) {
+        const fallbackGroup = categoryGroups[target][0] === groupName ? categoryGroups[target][1] : categoryGroups[target][0];
+        
+        if (database[target]) {
+          database[target].forEach(item => {
+            if (item.group === groupName) item.group = fallbackGroup;
+          });
+        }
+
+        categoryGroups[target].splice(idx, 1);
+        renderAllSidebars();
+        renderCategoryEditList();
+        updateAdminCategoryOptions();
+      }
+    }
+
+    function addCategoryGroup() {
+      const target = document.getElementById('adm-cat-target').value;
+      const title = document.getElementById('adm-cat-title').value.trim();
+
+      if (!title) {
+        alert('분류 이름을 입력해주세요.');
+        return;
+      }
+
+      if (!categoryGroups[target].includes(title)) {
+        categoryGroups[target].push(title);
+        alert(`[${target.toUpperCase()}]에 "${title}" 분류가 추가되었습니다.`);
+        document.getElementById('adm-cat-title').value = '';
+        renderAllSidebars();
+        renderCategoryEditList();
+        updateAdminCategoryOptions();
+      } else {
+        alert('이미 존재하는 분류입니다.');
+      }
+    }
+
+    function updateAdminCategoryOptions() {
+      const section = document.getElementById('adm-section').value;
+      const groupWrapper = document.getElementById('adm-group-wrapper');
+      const groupSelect = document.getElementById('adm-group-select');
+      const pinWrapper = document.getElementById('adm-pin-wrapper');
+
+      pinWrapper.style.display = (section === 'notice') ? 'block' : 'none';
+
+      if (section === 'world' || section === 'characters' || section === 'music') {
+        groupWrapper.style.display = 'flex';
+        groupSelect.innerHTML = categoryGroups[section].map(g => `<option value="${g}">${g}</option>`).join('');
+      } else {
+        groupWrapper.style.display = 'none';
+      }
+    }
+
+    function submitNewContent() {
+      const section = document.getElementById('adm-section').value;
+      const group = document.getElementById('adm-group-select').value;
+      const title = document.getElementById('adm-title').value.trim();
+      const sub = document.getElementById('adm-sub').value.trim();
+      const img = document.getElementById('adm-img').value.trim();
+      const pinned = document.getElementById('adm-pin').checked;
+      const content = document.getElementById('adm-content').value.trim();
+
+      if (!title || !content) {
+        alert('제목과 본문 내용을 입력해주세요.');
+        return;
+      }
+
+      const todayStr = getTodayKey();
+      const newId = 'item_' + Date.now();
+
+      if (section === 'world') {
+        database.world.push({ id: newId, group, title, sub, content });
+      } else if (section === 'characters') {
+        database.characters.push({ id: newId, group, name: title, sub, img, content });
+      } else if (section === 'music') {
+        database.music.push({ id: newId, group, title, sub, content });
+      } else if (section === 'feed') {
+        const feedHtml = img ? `<img src="${img}" class="detail-cover-img"><p>${content}</p>` : `<p>${content}</p>`;
+        database.feed.push({ id: newId, date: todayStr, title, img, content: feedHtml });
+      } else if (section === 'notice') {
+        database.notice.push({ id: newId, date: todayStr, title, pinned, content: `<p>${content}</p>` });
+      }
+
+      alert('성공적으로 등록되었습니다!');
+      renderAllSidebars();
+      
+      document.getElementById('adm-title').value = '';
+      document.getElementById('adm-sub').value = '';
+      document.getElementById('adm-content').value = '';
+    }
+
+    function renderAllSidebars() {
+      renderWorldSidebar();
+      renderCharSidebar();
+      renderMusicSidebar();
+      renderFeedSidebar();
+      renderNoticeSidebar();
     }
 
     /* ---------- ACCORDION TOGGLE ---------- */
@@ -1356,43 +1453,9 @@
       }
     }
 
-    /* ---------- 마우스 클릭 시 하트 도장 효과 (A05) ---------- */
-    document.addEventListener('click', (e) => {
-      const heart = document.createElement('img');
-      heart.src = './images/A05.png';
-      heart.className = 'click-heart-effect';
-      heart.style.left = `${e.pageX}px`;
-      heart.style.top = `${e.pageY}px`;
-      document.body.appendChild(heart);
-
-      setTimeout(() => {
-        heart.remove();
-      }, 800);
-    });
-
-    /* ---------- 마우스 움직일 때 반짝이는 별 꼬리 효과 (우측 하단 진짜 꼬리 끝부분 맞춤) ---------- */
-    document.addEventListener('mousemove', (e) => {
-      if (Math.random() < 0.25) {
-        const star = document.createElement('div');
-        star.className = 'mouse-star-trail';
-        // 커서 이미지의 실제 우측 하단 끝부분 좌표 반영 (+18px, +18px)
-        star.style.left = `${e.pageX + 18 + (Math.random() * 4 - 2)}px`;
-        star.style.top = `${e.pageY + 18 + (Math.random() * 4 - 2)}px`;
-        document.body.appendChild(star);
-
-        setTimeout(() => {
-          star.remove();
-        }, 600);
-      }
-    });
-
     /* INIT */
     window.onload = function() {
-      renderWorldSidebar();
-      renderCharSidebar();
-      renderMusicSidebar();
-      renderFeedSidebar();
-      renderNoticeSidebar();
+      renderAllSidebars();
       handleHashRoute();
     };
   </script>
