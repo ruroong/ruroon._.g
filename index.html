@@ -309,7 +309,7 @@
       color: var(--pink);
     }
 
-    /* [수정] 썸네일 자동 비율 조절 (object-fit: cover) */
+    /* 썸네일 자동 비율 조절 (object-fit: cover) */
     .item-thumb {
       width: 34px;
       height: 34px;
@@ -407,7 +407,6 @@
     }
   </style>
 </head>
-
 <body>
 
   <div id="yt-player-container">
@@ -546,7 +545,6 @@
         </div>
 
         <aside class="messenger-list-sidebar">
-          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
             <span>WORLDS (1)</span>
           </div>
@@ -567,40 +565,38 @@
         </aside>
       </div>
     </section>
-
     <!-- 3. CHARACTERS -->
     <section id="page-characters" class="page-section">
       <div class="section-head">
         <div>
-          <p class="section-kicker">02 / DATABASE</p>
+          <p class="section-kicker">02 / CHARACTERS</p>
           <h2 class="section-title">CHARACTERS</h2>
         </div>
-        <p class="section-note">selected records<br>from the archive.</p>
+        <p class="section-note">profiles, relationships<br>and details of characters.</p>
       </div>
 
       <div class="split-layout">
         <div class="detail-view-box" id="char-detail">
           <div class="detail-header">
             <h3 class="detail-title" id="char-detail-title">루룬 (Ruroon)</h3>
-            <p class="detail-subtitle" id="char-detail-sub">EMPECLA ARCHIVE / OBSERVER</p>
+            <p class="detail-subtitle" id="char-detail-sub">MAIN CHARACTER / EMPECLA</p>
           </div>
           <div class="detail-content-body" id="char-detail-body">
             <div style="background:#eca8b9; height:240px; display:flex; align-items:center; justify-content:center; border:1px solid var(--navy); font-weight:bold;">
               [ RUROON ILLUST / COVER ]
             </div>
-            <p>캐릭터의 프로필과 스토리, 설정 원화 등이 표출되는 영역입니다.</p>
+            <p>엠페클라 세계의 관찰자이자 아카이브 기록자입니다.</p>
           </div>
         </div>
 
         <aside class="messenger-list-sidebar">
-          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
             <span>CHARACTERS (3)</span>
           </div>
 
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
-              <span>▼ EMPECLA (2)</span>
+              <span>▼ EMPECLA (1)</span>
               <span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
@@ -610,30 +606,29 @@
                   <span class="item-name">루룬 (Ruroon)</span>
                 </div>
               </div>
-              <div class="list-item" onclick="loadCharDetail('character_b', this)">
-                <img src="./images/A02.png" alt="Character B" class="item-thumb">
-                <div class="item-info">
-                  <span class="item-name">캐릭터 B</span>
-                </div>
-              </div>
             </div>
           </div>
 
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
-              <span>▼ SUB WORLD (1)</span>
+              <span>▼ SUB WORLD (2)</span>
               <span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
+              <div class="list-item" onclick="loadCharDetail('character_b', this)">
+                <img src="./images/A02.png" alt="Char B" class="item-thumb">
+                <div class="item-info">
+                  <span class="item-name">캐릭터 B</span>
+                </div>
+              </div>
               <div class="list-item" onclick="loadCharDetail('character_c', this)">
-                <div class="item-thumb" style="background:#fff;"></div>
+                <img src="./images/A03.png" alt="Char C" class="item-thumb">
                 <div class="item-info">
                   <span class="item-name">캐릭터 C</span>
                 </div>
               </div>
             </div>
           </div>
-
         </aside>
       </div>
     </section>
@@ -642,37 +637,36 @@
     <section id="page-music" class="page-section">
       <div class="section-head">
         <div>
-          <p class="section-kicker">03 / SOUND</p>
+          <p class="section-kicker">03 / SOUNDS</p>
           <h2 class="section-title">MUSIC</h2>
         </div>
-        <p class="section-note">songs connected to<br>characters and worlds.</p>
+        <p class="section-note">playlists, ambient tracks<br>and thematic soundtracks.</p>
       </div>
 
       <div class="split-layout">
         <div class="detail-view-box">
           <div class="detail-header">
-            <h3 class="detail-title">Signal Theme #1</h3>
-            <p class="detail-subtitle">TRACK 01 / MAIN THEME</p>
+            <h3 class="detail-title">Main Playlist</h3>
+            <p class="detail-subtitle">RECOMMENDED TRACKS</p>
           </div>
           <div class="detail-content-body">
-            <p>음악 가사 및 노트 영역입니다.</p>
+            <p>선택한 트랙의 트랙 리스트 및 플레이어 정보가 여기에 표시됩니다.</p>
           </div>
         </div>
 
         <aside class="messenger-list-sidebar">
-          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
-            <span>TRACK LIST (1)</span>
+            <span>PLAYLISTS (1)</span>
           </div>
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
-              <span>▼ ALBUM 01 (1)</span>
+              <span>▼ ORIGINAL SOUNDS (1)</span>
               <span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
               <div class="list-item active">
                 <div class="item-info">
-                  <span class="item-name">01. Signal Theme #1</span>
+                  <span class="item-name">Empecla Theme Tracks</span>
                 </div>
               </div>
             </div>
@@ -685,46 +679,45 @@
     <section id="page-feed" class="page-section">
       <div class="section-head">
         <div>
-          <p class="section-kicker">04 / LOG</p>
+          <p class="section-kicker">04 / ARCHIVE LOGS</p>
           <h2 class="section-title">FEED</h2>
         </div>
-        <p class="section-note">latest fragments<br>and image logs.</p>
+        <p class="section-note">daily sketches, logs<br>and work in progress.</p>
       </div>
 
       <div class="split-layout">
-        <div class="detail-view-box" id="feed-detail">
+        <div class="detail-view-box">
           <div class="detail-header">
             <h3 class="detail-title" id="feed-detail-title">2026.08.24 Daily Log</h3>
-            <p class="detail-subtitle" id="feed-detail-sub">IMAGE &amp; WORK LOG</p>
+            <p class="detail-subtitle">DAILY ARCHIVE ENTRY</p>
           </div>
-          <div class="detail-content-body" id="feed-detail-body">
-            <img src="./images/A01.png" alt="Feed Image" class="detail-cover-img" id="feed-cover-img">
-            <p id="feed-text-content">피드에 작성된 일기나 비하인드 작업 노트 텍스트 내용이 여기에 연동됩니다.</p>
+          <div class="detail-content-body">
+            <img src="./images/A01.png" alt="Feed Cover" class="detail-cover-img" id="feed-cover-img">
+            <p id="feed-text-content">오늘의 작업 노트 및 일기 기록입니다.</p>
           </div>
         </div>
 
         <aside class="messenger-list-sidebar">
-          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
-            <span>LOG HISTORY (2)</span>
+            <span>ARCHIVE LOGS (2)</span>
           </div>
+
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
               <span>▼ 2026 LOGS (2)</span>
               <span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
-              <!-- 이미지 태그 연결 시 object-fit: cover로 자동 맞춤 -->
               <div class="list-item active" onclick="loadFeedDetail('log_01', this)">
                 <img src="./images/A01.png" alt="Log 01" class="item-thumb">
                 <div class="item-info">
-                  <span class="item-name">2026.08.24 Log</span>
+                  <span class="item-name">2026.08.24 Daily Log</span>
                 </div>
               </div>
               <div class="list-item" onclick="loadFeedDetail('log_02', this)">
                 <img src="./images/A02.png" alt="Log 02" class="item-thumb">
                 <div class="item-info">
-                  <span class="item-name">2026.08.20 Log</span>
+                  <span class="item-name">2026.08.20 Daily Log</span>
                 </div>
               </div>
             </div>
@@ -733,38 +726,35 @@
       </div>
     </section>
 
-    <!-- 6. NOTICE (상단 달력 추가) -->
+    <!-- 6. NOTICE -->
     <section id="page-notice" class="page-section">
       <div class="section-head">
         <div>
-          <p class="section-kicker">05 / INFORMATION</p>
+          <p class="section-kicker">05 / ANNOUNCEMENTS</p>
           <h2 class="section-title">NOTICE</h2>
         </div>
-        <p class="section-note">archive updates &amp;<br>announcements.</p>
+        <p class="section-note">updates, announcements<br>and schedule notes.</p>
       </div>
 
       <div class="split-layout">
         <div class="detail-view-box">
           <div class="detail-header">
             <h3 class="detail-title">Archive Renewal Notice</h3>
-            <p class="detail-subtitle">POSTED BY RUROON</p>
+            <p class="detail-subtitle">UPDATE LOG / 2026.08.24</p>
           </div>
           <div class="detail-content-body">
-            공지사항 본문입니다.
+            <p>아카이브 사이트가 새롭게 갱신되었습니다. 각 섹션에서 상세 정보를 확인하실 수 있습니다.</p>
           </div>
         </div>
 
         <aside class="messenger-list-sidebar">
-          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
-            <span>SCHEDULE &amp; NOTICES</span>
+            <span>CALENDAR & NOTICE</span>
           </div>
 
-          <!-- [신규] 미니 달력 위젯 (목록 최상단 고정) -->
           <div class="sidebar-calendar-box">
             <div class="cal-header">
-              <span>AUG 2026</span>
-              <span>CALENDAR</span>
+              <span>AUGUST 2026</span>
             </div>
             <div class="cal-grid">
               <div class="cal-day-name">S</div>
@@ -775,8 +765,13 @@
               <div class="cal-day-name">F</div>
               <div class="cal-day-name">S</div>
 
-              <!-- 날짜 (예시 세팅) -->
-              <div class="cal-day" style="grid-column-start: 7;">1</div>
+              <div class="cal-day"></div>
+              <div class="cal-day"></div>
+              <div class="cal-day"></div>
+              <div class="cal-day"></div>
+              <div class="cal-day"></div>
+              <div class="cal-day"></div>
+              <div class="cal-day">1</div>
               <div class="cal-day">2</div>
               <div class="cal-day">3</div>
               <div class="cal-day">4</div>
@@ -790,21 +785,21 @@
               <div class="cal-day">12</div>
               <div class="cal-day">13</div>
               <div class="cal-day">14</div>
-              <div class="cal-day event" title="캐릭터 생일">15</div>
+              <div class="cal-day">15</div>
               <div class="cal-day">16</div>
               <div class="cal-day">17</div>
               <div class="cal-day">18</div>
               <div class="cal-day">19</div>
-              <div class="cal-day event" title="원고 마감">20</div>
+              <div class="cal-day">20</div>
               <div class="cal-day">21</div>
               <div class="cal-day">22</div>
               <div class="cal-day">23</div>
-              <div class="cal-day today">24</div>
+              <div class="cal-day today event">24</div>
               <div class="cal-day">25</div>
               <div class="cal-day">26</div>
               <div class="cal-day">27</div>
               <div class="cal-day">28</div>
-              <div class="cal-day event" title="책 발권일">29</div>
+              <div class="cal-day">29</div>
               <div class="cal-day">30</div>
               <div class="cal-day">31</div>
             </div>
@@ -812,13 +807,13 @@
 
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
-              <span>▼ ANNOUNCEMENT (1)</span>
+              <span>▼ ANNOUNCEMENTS (1)</span>
               <span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
               <div class="list-item active">
                 <div class="item-info">
-                  <span class="item-name">Archive Renewal</span>
+                  <span class="item-name">Archive Renewal Notice</span>
                 </div>
               </div>
             </div>
@@ -831,28 +826,59 @@
 
   <footer class="slim-footer">
     <div class="container footer-content">
-      <span class="footer-copy">© ruroon._.g</span>
-      <span class="footer-center">PERSONAL ARCHIVE</span>
-      <button onclick="scrollToTop()" class="top-btn">TOP ▲</button>
+      <div class="footer-copy">ruroon._.g archive © 2026 all rights reserved.</div>
+      <div class="footer-center">DESIGNED FOR PERSONAL ARCHIVE</div>
+      <button class="top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">BACK TO TOP ↑</button>
     </div>
   </footer>
 
+  <!-- YOUTUBE API & INTERACTION SCRIPTS -->
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
+    // PAGE NAVIGATION SYSTEM
+    function switchPage(pageId) {
+      const pages = document.querySelectorAll('.page-section');
+      pages.forEach(page => page.classList.remove('active-page'));
+
+      const targetPage = document.getElementById(`page-${pageId}`);
+      if (targetPage) targetPage.classList.add('active-page');
+
+      const subNavbar = document.getElementById('sub-navbar');
+      if (pageId === 'signal') {
+        subNavbar.classList.remove('show');
+      } else {
+        subNavbar.classList.add('show');
+      }
+
+      const subLinks = document.querySelectorAll('.sub-navlinks a');
+      subLinks.forEach(link => link.classList.remove('active'));
+      const activeLink = document.getElementById(`sub-nav-${pageId}`);
+      if (activeLink) activeLink.classList.add('active');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ACCORDION TOGGLE
+    function toggleAccordion(header) {
+      const group = header.parentElement;
+      group.classList.toggle('collapsed');
+    }
+
+    // YOUTUBE BGM PLAYER (YOUTUBE AUDIO ONLY EMBED)
     let player;
     let isPlaying = false;
-    let progressTimer = null;
+    let progressInterval;
 
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('yt-player', {
         height: '0',
         width: '0',
-        videoId: '67QfTqSLSoI',
+        videoId: '5qap5aO4i9A', // 기본 BGM 유튜브 영상 ID
         playerVars: {
           'autoplay': 0,
           'controls': 0,
           'loop': 1,
-          'playlist': '67QfTqSLSoI'
+          'playlist': '5qap5aO4i9A'
         },
         events: {
           'onStateChange': onPlayerStateChange
@@ -861,40 +887,12 @@
     }
 
     function toggleBgm() {
-      if(!player) return;
-      if(isPlaying) {
+      if (!player || typeof player.getPlayerState !== 'function') return;
+      const state = player.getPlayerState();
+      if (state === YT.PlayerState.PLAYING) {
         player.pauseVideo();
       } else {
         player.playVideo();
-      }
-    }
-
-    function restartTrack() {
-      if(!player) return;
-      player.seekTo(0);
-    }
-
-    function updateProgressBar() {
-      if (!player || !isPlaying) return;
-      const currentTime = player.getCurrentTime();
-      const duration = player.getDuration();
-      if (duration > 0) {
-        const percent = (currentTime / duration) * 100;
-        document.getElementById('progress-fill').style.width = percent + '%';
-      }
-    }
-
-    function seekTrack(event) {
-      if (!player) return;
-      const container = document.getElementById('progress-container');
-      const rect = container.getBoundingClientRect();
-      const clickX = event.clientX - rect.left;
-      const percent = clickX / rect.width;
-      const duration = player.getDuration();
-      
-      if (duration > 0) {
-        player.seekTo(duration * percent);
-        document.getElementById('progress-fill').style.width = (percent * 100) + '%';
       }
     }
 
@@ -904,118 +902,112 @@
 
       if (event.data === YT.PlayerState.PLAYING) {
         isPlaying = true;
-        playBtn.innerText = "❚❚";
+        playBtn.innerText = '❚❚';
         soundWave.classList.add('playing');
-        if (!progressTimer) {
-          progressTimer = setInterval(updateProgressBar, 500);
-        }
-      } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-        isPlaying = false;
-        playBtn.innerText = "▶";
-        soundWave.classList.remove('playing');
-        if (progressTimer) {
-          clearInterval(progressTimer);
-          progressTimer = null;
-        }
-      }
-    }
-
-    /* ---------- Accordion Toggle ---------- */
-    function toggleAccordion(headerEl) {
-      const group = headerEl.parentElement;
-      group.classList.toggle('collapsed');
-    }
-
-    /* ---------- Character Data Switcher ---------- */
-    const charData = {
-      ruroon: {
-        title: "루룬 (Ruroon)",
-        sub: "EMPECLA ARCHIVE / OBSERVER",
-        content: `<div style="background:#eca8b9; height:240px; display:flex; align-items:center; justify-content:center; border:1px solid var(--navy); color:var(--navy); font-weight:bold;">[ RUROON ILLUST ]</div><p>메인 관찰자 캐릭터 루룬의 프로필과 상세 설정입니다.</p>`
-      },
-      character_b: {
-        title: "캐릭터 B",
-        sub: "EMPECLA / ARCHIVIST",
-        content: `<div style="background:#1c2038; height:240px; display:flex; align-items:center; justify-content:center; border:1px solid var(--navy); color:#fff; font-weight:bold;">[ CHARACTER B ILLUST ]</div><p>두 번째 캐릭터 B의 정보입니다.</p>`
-      },
-      character_c: {
-        title: "캐릭터 C",
-        sub: "SUB WORLD / TRAVELER",
-        content: `<div style="background:#fff; height:240px; display:flex; align-items:center; justify-content:center; border:1px solid var(--navy); color:var(--navy); font-weight:bold;">[ CHARACTER C ILLUST ]</div><p>서브 세계관에 속한 캐릭터 C의 정보입니다.</p>`
-      }
-    };
-
-    function loadCharDetail(key, element) {
-      const data = charData[key];
-      if(!data) return;
-
-      document.getElementById('char-detail-title').innerText = data.title;
-      document.getElementById('char-detail-sub').innerText = data.sub;
-      document.getElementById('char-detail-body').innerHTML = data.content;
-
-      if(element) {
-        document.querySelectorAll('#page-characters .list-item').forEach(item => item.classList.remove('active'));
-        element.classList.add('active');
-      }
-    }
-
-    /* ---------- Feed Data Switcher ---------- */
-    const feedData = {
-      log_01: {
-        title: "2026.08.24 Daily Log",
-        sub: "IMAGE & WORK LOG",
-        imgSrc: "./images/A01.png",
-        text: "8월 24일 자 작업 기록입니다. 피드 글 작성 시 이미지가 필수 포함되어 리스트 및 상세보기 영역에 표출됩니다."
-      },
-      log_02: {
-        title: "2026.08.20 Sketch Log",
-        sub: "SKETCH & IDEA",
-        imgSrc: "./images/A02.png",
-        text: "8월 20일 아이디어 스케치 기록입니다."
-      }
-    };
-
-    function loadFeedDetail(key, element) {
-      const data = feedData[key];
-      if(!data) return;
-
-      document.getElementById('feed-detail-title').innerText = data.title;
-      document.getElementById('feed-detail-sub').innerText = data.sub;
-      document.getElementById('feed-cover-img').src = data.imgSrc;
-      document.getElementById('feed-text-content').innerText = data.text;
-
-      if(element) {
-        document.querySelectorAll('#page-feed .list-item').forEach(item => item.classList.remove('active'));
-        element.classList.add('active');
-      }
-    }
-
-    function switchPage(pageId) {
-      document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
-      document.querySelectorAll('.sub-navlinks a').forEach(a => a.classList.remove('active'));
-
-      const targetPage = document.getElementById('page-' + pageId);
-      if(targetPage) {
-        targetPage.classList.add('active-page');
-      }
-
-      const subNavbar = document.getElementById('sub-navbar');
-
-      if (pageId === 'signal') {
-        subNavbar.classList.remove('show');
+        startProgressLoop();
       } else {
-        subNavbar.classList.add('show');
-        const activeSubNav = document.getElementById('sub-nav-' + pageId);
-        if(activeSubNav) {
-          activeSubNav.classList.add('active');
-        }
+        isPlaying = false;
+        playBtn.innerText = '▶';
+        soundWave.classList.remove('playing');
+        stopProgressLoop();
       }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    function startProgressLoop() {
+      stopProgressLoop();
+      progressInterval = setInterval(() => {
+        if (player && player.getDuration) {
+          const current = player.getCurrentTime();
+          const total = player.getDuration();
+          if (total > 0) {
+            const pct = (current / total) * 100;
+            document.getElementById('progress-fill').style.width = `${pct}%`;
+          }
+        }
+      }, 500);
+    }
+
+    function stopProgressLoop() {
+      clearInterval(progressInterval);
+    }
+
+    function seekTrack(e) {
+      if (!player || !player.getDuration) return;
+      const container = document.getElementById('progress-container');
+      const rect = container.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = clickX / rect.width;
+      const total = player.getDuration();
+      player.seekTo(total * pct, true);
+    }
+
+    function restartTrack() {
+      if (player && player.seekTo) {
+        player.seekTo(0, true);
+      }
+    }
+
+    // DYNAMIC DETAIL LOADERS
+    function loadWorldDetail(id, el) {
+      setActiveItem(el);
+      const title = document.getElementById('world-detail-title');
+      const body = document.getElementById('world-detail-body');
+      
+      if (id === 'empecla') {
+        title.innerText = 'Empecla (엠페클라)';
+        body.innerHTML = `
+          <div style="background:#fff; height:220px; display:flex; align-items:center; justify-content:center; border:1px solid var(--navy);">
+            [ WORLD CONCEPT MAP / IMAGE ]
+          </div>
+          <p>엠페클라 세계관의 메인 데이터베이스입니다. 날씨와 계절의 변화에 따라 세계의 구조가 변형되는 다차원 공간 설정을 가지고 있습니다.</p>
+        `;
+      }
+    }
+
+    function loadCharDetail(id, el) {
+      setActiveItem(el);
+      const title = document.getElementById('char-detail-title');
+      const body = document.getElementById('char-detail-body');
+
+      if (id === 'ruroon') {
+        title.innerText = '루룬 (Ruroon)';
+        body.innerHTML = `
+          <div style="background:#eca8b9; height:240px; display:flex; align-items:center; justify-content:center; border:1px solid var(--navy); font-weight:bold;">
+            [ RUROON ILLUST / COVER ]
+          </div>
+          <p>엠페클라 세계의 관찰자이자 아카이브 기록자입니다.</p>
+        `;
+      } else if (id === 'character_b') {
+        title.innerText = '캐릭터 B';
+        body.innerHTML = `<p>캐릭터 B의 프로필 및 상세 정보입니다.</p>`;
+      } else if (id === 'character_c') {
+        title.innerText = '캐릭터 C';
+        body.innerHTML = `<p>서브 세계관 캐릭터 C의 상세 정보입니다.</p>`;
+      }
+    }
+
+    function loadFeedDetail(id, el) {
+      setActiveItem(el);
+      const title = document.getElementById('feed-detail-title');
+      const img = document.getElementById('feed-cover-img');
+      const text = document.getElementById('feed-text-content');
+
+      if (id === 'log_01') {
+        title.innerText = '2026.08.24 Daily Log';
+        img.src = './images/A01.png';
+        text.innerText = '오늘의 작업 노트 및 일기 기록입니다.';
+      } else if (id === 'log_02') {
+        title.innerText = '2026.08.20 Daily Log';
+        img.src = './images/A02.png';
+        text.innerText = '이전 작업 스케치 및 아이디어 노트입니다.';
+      }
+    }
+
+    function setActiveItem(el) {
+      if (!el) return;
+      const siblings = el.parentElement.querySelectorAll('.list-item');
+      siblings.forEach(item => item.classList.remove('active'));
+      el.classList.add('active');
     }
   </script>
 </body>
