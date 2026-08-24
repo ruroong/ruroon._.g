@@ -936,8 +936,11 @@
       });
 
       let html = `
-        <div class="list-item" id="item-notice-calendar" onclick="selectItemWithUrl('notice', 'calendar')" style="border-top:none; background: rgba(28,32,56,0.04); font-weight:bold;">
-          <div class="item-info"><span class="item-name" style="font-family:var(--mono);">✦ CALENDAR</span></div>
+        <div class="list-item" id="item-notice-calendar" onclick="selectItemWithUrl('notice', 'calendar')">
+          <div class="item-info">
+            <span class="item-name">CALENDAR</span>
+            <span class="item-subtext">TIME RECORD</span>
+          </div>
         </div>
 
         <div class="accordion-group">
@@ -1062,7 +1065,7 @@
 
       if (id === 'calendar') {
         document.getElementById('notice-detail-title').innerText = "ARCHIVE CALENDAR";
-        document.getElementById('notice-detail-sub').innerText = "SCHEDULE & EVENTS";
+        document.getElementById('notice-detail-sub').innerText = "TIME RECORD";
         renderCalendarUI();
       } else {
         const item = database.notice.find(n => n.id === id);
@@ -1237,10 +1240,8 @@
       const oldName = categoryGroups[target][idx];
       if (oldName === newName) return;
 
-      // 그룹명 변경 반영
       categoryGroups[target][idx] = newName;
 
-      // 해당 그룹에 속한 컨텐츠들의 그룹명도 함께 업데이트
       if (database[target]) {
         database[target].forEach(item => {
           if (item.group === oldName) item.group = newName;
