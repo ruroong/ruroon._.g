@@ -21,7 +21,7 @@
       --pink: #ECA8B9;
       --navy: #1C2038;
       --white: #FFFFFF;
-      --line: rgba(28, 32, 56, 0.45);
+      --line: #1C2038;
       --shadow: 0 8px 0 rgba(28, 32, 56, 0.12);
       --mono: 'DM Mono', monospace;
       --sans: 'Manrope', sans-serif;
@@ -97,7 +97,7 @@
     header {
       background: rgba(236, 168, 185, 0.92);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1.5px solid var(--line);
     }
     
     .nav {
@@ -122,7 +122,7 @@
     .status { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; font: 11px var(--mono); }
     .status i { width: 7px; height: 7px; border-radius: 50%; background: var(--navy); animation: twinkle 1.5s infinite ease-in-out; }
 
-    .sub-navbar { background: rgba(236, 168, 185, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); display: none; }
+    .sub-navbar { background: rgba(236, 168, 185, 0.95); backdrop-filter: blur(10px); border-bottom: 1.5px solid var(--line); display: none; }
     .sub-navbar.show { display: block; }
     
     .sub-navlinks { display: flex; justify-content: center; gap: 32px; padding: 12px 0; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; }
@@ -215,7 +215,7 @@
     }
 
     .detail-header {
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1.5px solid var(--navy);
       padding-bottom: 12px;
       margin-bottom: 20px;
     }
@@ -260,7 +260,7 @@
 
     /* 아코디언 그룹 */
     .accordion-group {
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1.5px solid var(--navy);
     }
     .accordion-group:last-child { border-bottom: none; }
 
@@ -332,117 +332,124 @@
       overflow: hidden;
     }
 
-    /* ---------- REFINED LIGHT CALENDAR UI (NOTICE 전용) ---------- */
+    /* ---------- ORIGINAL RETRO CALENDAR (RESTORED) ---------- */
     .calendar-container-full {
       display: flex;
       flex-direction: column;
       gap: 16px;
-      background: rgba(255, 255, 255, 0.85);
-      padding: 18px;
-      border: 1px solid rgba(28, 32, 56, 0.2);
-      border-radius: 4px;
     }
     .cal-top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: transparent;
-      color: var(--navy);
-      padding: 6px 4px 12px 4px;
-      border-bottom: 1px solid rgba(28, 32, 56, 0.15);
       font-family: var(--mono);
       font-weight: 800;
       font-size: 16px;
+      letter-spacing: 0.1em;
+      padding-bottom: 8px;
     }
     .cal-nav-btn {
-      background: transparent;
-      border: 1px solid var(--navy);
+      background: var(--white);
+      border: 1.5px solid var(--navy);
       color: var(--navy);
-      padding: 4px 12px;
+      padding: 6px 14px;
       font-size: 11px;
       font-family: var(--mono);
       font-weight: bold;
-      transition: 0.2s;
-      border-radius: 2px;
+      box-shadow: 2px 2px 0 var(--navy);
+      transition: 0.15s;
     }
     .cal-nav-btn:hover {
-      background: var(--navy);
-      color: var(--white);
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 var(--navy);
+    }
+    .cal-nav-btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 var(--navy);
     }
 
-    /* 얇고 밝은 스마트 그리드 스타일 */
+    /* 복원된 캘린더 그리드 - 고정 칸 너비(1fr) 설정 */
     .full-cal-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      border-top: 1px solid rgba(28, 32, 56, 0.15);
-      border-left: 1px solid rgba(28, 32, 56, 0.15);
-      background: #ffffff;
+      border: 1.5px solid var(--navy);
+      background: var(--navy);
+      gap: 1.5px;
+      width: 100%;
+      table-layout: fixed;
     }
     .full-cal-head {
       font-family: var(--mono);
-      font-weight: 700;
+      font-weight: 800;
       font-size: 11px;
-      padding: 8px 0;
+      padding: 10px 0;
       text-align: center;
-      background: rgba(28, 32, 56, 0.03);
-      border-right: 1px solid rgba(28, 32, 56, 0.15);
-      border-bottom: 1px solid rgba(28, 32, 56, 0.15);
+      background: rgba(236, 168, 185, 0.4);
       color: var(--navy);
+      letter-spacing: 0.05em;
     }
+    
+    /* 날짜 셀만 순백색 + 도트 배경 제거 */
     .full-cal-day {
-      min-height: 80px;
-      background: #ffffff;
-      border-right: 1px solid rgba(28, 32, 56, 0.15);
-      border-bottom: 1px solid rgba(28, 32, 56, 0.15);
-      padding: 6px;
+      min-height: 90px;
+      background: #ffffff !important; /* 흰색 변경 */
+      padding: 8px;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
       gap: 4px;
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: 13px;
       transition: background 0.15s;
+      overflow: hidden; /* 영역 이탈 방지 */
     }
     .full-cal-day.empty {
-      background: rgba(28, 32, 56, 0.015);
+      background: rgba(255, 255, 255, 0.6) !important;
     }
     .full-cal-day:not(.empty):hover {
-      background: rgba(236, 168, 185, 0.15);
+      background: #f4e3e8 !important;
     }
     .full-cal-day.selected {
-      background: rgba(236, 168, 185, 0.25);
+      background: #f1cbd5 !important;
     }
     .full-cal-day.today {
       font-weight: bold;
       color: #d93856;
     }
     .day-num {
-      font-weight: 600;
-      margin-bottom: 2px;
+      font-weight: 700;
+      margin-bottom: 4px;
     }
 
-    /* 동그라미 점과 내용이 함께 나오는 이벤트 노출 스타일 */
+    /* 동그라미 아이콘 + 텍스트 & 말줄임표(...) 고정 처리 */
     .event-inline-list {
       display: flex;
       flex-direction: column;
       gap: 3px;
       width: 100%;
+      overflow: hidden;
     }
     .event-inline-item {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       font-size: 10px;
       font-family: var(--sans);
-      background: rgba(28, 32, 56, 0.05);
-      padding: 2px 5px;
+      background: rgba(28, 32, 56, 0.06);
+      padding: 3px 6px;
       border-radius: 3px;
       color: var(--navy);
+      width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .event-inline-text {
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
+      text-overflow: ellipsis; /* 글자수 넘치면 ... 처리 */
+      width: 100%;
+      display: block;
     }
     .event-dot-icon {
       width: 5px;
@@ -454,17 +461,16 @@
 
     /* 읽기 전용 일정 상세 패널 */
     .schedule-panel-read {
-      border-top: 1px dashed rgba(28, 32, 56, 0.3);
+      border-top: 1.5px dashed var(--navy);
       padding-top: 16px;
       margin-top: 8px;
     }
     .schedule-panel-title {
-      font-size: 14px;
+      font-size: 13px;
+      font-family: var(--mono);
       font-weight: 800;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
     }
     .schedule-list-ul {
       list-style: none;
@@ -473,13 +479,14 @@
       gap: 6px;
     }
     .schedule-list-ul li {
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(28, 32, 56, 0.15);
-      padding: 8px 12px;
+      background: var(--white);
+      border: 1.5px solid var(--navy);
+      padding: 10px 14px;
       font-size: 13px;
       display: flex;
       align-items: center;
       gap: 8px;
+      box-shadow: 2px 2px 0 rgba(28, 32, 56, 0.1);
     }
 
     /* ---------- SLIM FOOTER ---------- */
@@ -503,8 +510,8 @@
       .section-note { text-align: left; }
       .footer-center { display: none; }
       .side-stars-bg { display: none; }
-      .full-cal-day { min-height: 60px; }
-      .event-inline-item { font-size: 9px; padding: 1px 3px; }
+      .full-cal-day { min-height: 65px; padding: 4px; }
+      .event-inline-item { font-size: 9px; padding: 2px 4px; }
     }
   </style>
 </head>
@@ -1000,7 +1007,7 @@
       empecla: {
         title: "Empecla (엠페클라)",
         sub: "MAIN WORLD DATABASE",
-        content: `<div style="background:#fff; height:220px; display:flex; align-items:center; justify-content:center; border:1px solid var(--navy);">[ WORLD CONCEPT MAP / IMAGE ]</div><p>엠페클라 세계관의 배경과 설정이 표시되는 메인 영역입니다.</p>`
+        content: `<div style="background:#fff; height:220px; display:flex; align-items:center; justify-content:center; border:1.5px solid var(--navy);">[ WORLD CONCEPT MAP / IMAGE ]</div><p>엠페클라 세계관의 배경과 설정이 표시되는 메인 영역입니다.</p>`
       }
     };
 
@@ -1023,17 +1030,17 @@
       ruroon: {
         title: "루룬 (Ruroon)",
         sub: "EMPECLA ARCHIVE / OBSERVER",
-        content: `<div style="background:#eca8b9; height:240px; display:flex; align-items:center; justify-content:center; border:1px solid var(--navy); color:var(--navy); font-weight:bold;">[ RUROON ILLUST ]</div><p>메인 관찰자 캐릭터 루룬의 프로필과 상세 설정입니다.</p>`
+        content: `<div style="background:#eca8b9; height:240px; display:flex; align-items:center; justify-content:center; border:1.5px solid var(--navy); color:var(--navy); font-weight:bold;">[ RUROON ILLUST ]</div><p>메인 관찰자 캐릭터 루룬의 프로필과 상세 설정입니다.</p>`
       },
       character_b: {
         title: "캐릭터 B",
         sub: "EMPECLA / ARCHIVIST",
-        content: `<div style="background:#1c2038; height:240px; display:flex; align-items:center; justify-content:center; border:1px solid var(--navy); color:#fff; font-weight:bold;">[ CHARACTER B ILLUST ]</div><p>두 번째 캐릭터 B의 정보입니다.</p>`
+        content: `<div style="background:#1c2038; height:240px; display:flex; align-items:center; justify-content:center; border:1.5px solid var(--navy); color:#fff; font-weight:bold;">[ CHARACTER B ILLUST ]</div><p>두 번째 캐릭터 B의 정보입니다.</p>`
       },
       character_c: {
         title: "캐릭터 C",
         sub: "SUB WORLD / TRAVELER",
-        content: `<div style="background:#fff; height:240px; display:flex; align-items:center; justify-content:center; border:1px solid var(--navy); color:var(--navy); font-weight:bold;">[ CHARACTER C ILLUST ]</div><p>서브 세계관에 속한 캐릭터 C의 정보입니다.</p>`
+        content: `<div style="background:#fff; height:240px; display:flex; align-items:center; justify-content:center; border:1.5px solid var(--navy); color:var(--navy); font-weight:bold;">[ CHARACTER C ILLUST ]</div><p>서브 세계관에 속한 캐릭터 C의 정보입니다.</p>`
       }
     };
 
@@ -1102,8 +1109,8 @@
       }
     }
 
-    /* ---------- Notice & Refined Calendar Logic ---------- */
-    // 시스템 실제 날짜 연동
+    /* ---------- Notice & Restored Calendar Logic ---------- */
+    // 시스템 현재 날짜 자동 연동
     const nowSystemDate = new Date();
     let currentCalYear = nowSystemDate.getFullYear();
     let currentCalMonth = nowSystemDate.getMonth(); // 0~11
@@ -1118,13 +1125,8 @@
 
     let selectedDateKey = getTodayKey();
     
-    // 예시 등록 일정 데이터
-    let eventsData = {
-      "2026-08-15": ["캐릭터 생일"],
-      "2026-08-20": ["원고 마감"],
-      "2026-08-24": ["아카이브 리뉴얼 완료"],
-      "2026-08-29": ["책 발권일"]
-    };
+    // 요청에 따른 일정 데이터 전체 삭제 (빈 상태)
+    let eventsData = {};
 
     const noticeData = {
       renewal: {
@@ -1157,7 +1159,9 @@
     }
 
     function renderCalendarUI() {
-      const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+      const monthNames = ["AUG", "AUG", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+      // 원본 서식용 월 단어 표시
+      const fullMonthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
       const container = document.getElementById('notice-detail-body');
       const todayKeyStr = getTodayKey();
       
@@ -1165,7 +1169,7 @@
         <div class="calendar-container-full">
           <div class="cal-top-bar">
             <button class="cal-nav-btn" onclick="changeMonth(-1)">◀ PREV</button>
-            <span>${monthNames[currentCalMonth]} ${currentCalYear}</span>
+            <span>${fullMonthNames[currentCalMonth]} ${currentCalYear}</span>
             <button class="cal-nav-btn" onclick="changeMonth(1)">NEXT ▶</button>
           </div>
           
@@ -1197,14 +1201,14 @@
         const isToday = (dateKey === todayKeyStr) ? 'today' : '';
         const dayEvents = eventsData[dateKey] || [];
 
-        // 동그라미 아이콘 + 텍스트 노출
+        // 동그라미 아이콘 + 일정 텍스트(말줄임표) 표기
         let eventsHtml = '';
         if (dayEvents.length > 0) {
           eventsHtml = '<div class="event-inline-list">' + 
             dayEvents.map(evt => `
               <div class="event-inline-item" title="${evt}">
                 <span class="event-dot-icon"></span>
-                <span>${evt}</span>
+                <span class="event-inline-text">${evt}</span>
               </div>
             `).join('') + 
             '</div>';
@@ -1220,7 +1224,7 @@
 
       html += `</div>`; // .full-cal-grid
 
-      // 읽기 전용 일정 확인 영역
+      // 하단 선택된 날짜 정보 패널 (읽기 전용)
       const currentList = eventsData[selectedDateKey] || [];
       let listHtml = currentList.map(item => `
         <li>
