@@ -161,10 +161,6 @@
     .admin-only { display: none !important; }
     .admin-mode .admin-only { display: inline-flex !important; align-items: center; gap: 4px; }
     
-    .add-tab-btn { display: none; align-items: center; gap: 4px; padding: 2px 8px; border: 1.5px solid var(--navy); background: var(--white); font-weight: bold; font-size: 10px; cursor: pointer; border-radius: 3px; box-shadow: 1px 1px 0 var(--navy); }
-    .add-tab-btn:hover { background: var(--navy); color: var(--pink); }
-    .add-tab-btn .admin-svg-icon { stroke: currentColor; }
-
     /* PAGE VIEW SYSTEM */
     .page-section { display: none; padding: 40px 0; min-height: calc(100vh - 110px); }
     .page-section.active-page { display: block; }
@@ -255,6 +251,7 @@
       padding: 24px;
       min-height: 520px;
       box-shadow: var(--shadow);
+      position: relative;
     }
 
     .detail-header {
@@ -278,6 +275,75 @@
       object-fit: cover;
       border: 1.5px solid var(--navy);
       background: var(--white);
+    }
+
+    /* 블로그 포스트 스타일 인라인 편집 폼 */
+    .inline-edit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 16px;
+      border: 1.5px solid var(--navy);
+    }
+    .inline-edit-input, .inline-edit-textarea {
+      width: 100%;
+      border: 1.5px solid var(--navy);
+      padding: 10px;
+      font-family: var(--sans);
+      font-size: 13px;
+      background: var(--white);
+      color: var(--navy);
+      outline: none;
+    }
+    .inline-edit-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .inline-edit-textarea {
+      min-height: 220px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    .inline-edit-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .inline-btn {
+      padding: 8px 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: bold;
+      border: 1.5px solid var(--navy);
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--navy);
+      transition: transform 0.1s;
+    }
+    .inline-btn:hover { transform: translate(-1px, -1px); }
+    .inline-btn-save { background: var(--navy); color: var(--pink); }
+    .inline-btn-cancel { background: var(--white); color: var(--navy); }
+
+    /* EDIT INLINE TRIGGER BUTTON */
+    .inline-edit-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border: 1.5px solid var(--navy);
+      background: var(--white);
+      font-size: 10px;
+      font-family: var(--mono);
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 1px 1px 0 var(--navy);
+      transition: all 0.15s;
+    }
+    .inline-edit-trigger:hover {
+      background: var(--navy);
+      color: var(--pink);
     }
 
     /* RIGHT SIDEBAR LIST */
@@ -525,89 +591,6 @@
       text-align: center;
     }
 
-    /* ADMIN DASHBOARD POPUP MODAL */
-    .admin-modal-dialog {
-      background: var(--white);
-      border: 2px solid var(--navy);
-      box-shadow: 8px 8px 0px var(--navy);
-      width: min(720px, 94vw);
-      max-height: 85vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .admin-head {
-      background: var(--pink);
-      border-bottom: 2px solid var(--navy);
-      padding: 14px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-      font-family: var(--mono);
-    }
-
-    .admin-body-scroll {
-      padding: 20px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .admin-tab-nav {
-      display: flex;
-      gap: 8px;
-      border-bottom: 2px solid var(--navy);
-      padding-bottom: 10px;
-    }
-
-    .admin-tab-btn {
-      padding: 6px 14px;
-      font-family: var(--mono);
-      font-size: 12px;
-      font-weight: bold;
-      border: 1.5px solid var(--navy);
-      background: rgba(28, 32, 56, 0.05);
-    }
-    .admin-tab-btn.active {
-      background: var(--navy);
-      color: var(--pink);
-    }
-
-    .admin-form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
-    .admin-form-group label { font-size: 11px; font-family: var(--mono); font-weight: bold; }
-    .admin-input, .admin-select, .admin-textarea {
-      width: 100%;
-      padding: 8px 10px;
-      border: 1.5px solid var(--navy);
-      font-size: 12px;
-      font-family: var(--sans);
-      background: #fafafa;
-    }
-
-    .admin-btn {
-      background: var(--navy);
-      color: var(--white);
-      border: none;
-      padding: 9px 14px;
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 4px;
-    }
-
-    .category-edit-row, .item-manage-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      padding: 8px;
-      background: #f7f7f7;
-      border: 1px solid var(--navy);
-      margin-bottom: 6px;
-    }
-
     /* FOOTER */
     .slim-footer { background: var(--navy); color: var(--pink); padding: 16px 0; margin-top: 60px; position: relative; z-index: 5; }
     .footer-content { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; opacity: 0.9; }
@@ -648,111 +631,6 @@
     </div>
   </div>
 
-  <!-- [MODAL] ADMIN DASHBOARD PANEL -->
-  <div class="modal-backdrop" id="modal-admin-panel">
-    <div class="admin-modal-dialog">
-      <div class="admin-head">
-        <span>ARCHIVE MANAGEMENT PANEL</span>
-        <button onclick="closeAdminPanel()" style="font-size:16px; cursor:pointer; font-weight:bold;">✕</button>
-      </div>
-
-      <div class="admin-body-scroll">
-        <div class="admin-tab-nav">
-          <button class="admin-tab-btn active" id="tab-btn-create" onclick="switchAdminTab('create')">새 글 / 일정 등록</button>
-          <button class="admin-tab-btn" id="tab-btn-manage" onclick="switchAdminTab('manage')">기존 글 관리 / 수정</button>
-          <button class="admin-tab-btn" id="tab-btn-category" onclick="switchAdminTab('category')">분류 그룹 관리</button>
-        </div>
-
-        <!-- TAB 1: NEW CONTENT / SCHEDULE -->
-        <div id="admin-tab-content-create">
-          <div class="admin-form-group">
-            <label>작성 섹션 선택</label>
-            <select id="adm-section" class="admin-select" onchange="updateAdminCategoryOptions()">
-              <option value="world">WORLD</option>
-              <option value="characters">CHARACTERS</option>
-              <option value="music">MUSIC</option>
-              <option value="feed">FEED</option>
-              <option value="notice">NOTICE</option>
-              <option value="calendar">CALENDAR SCHEDULE (일정)</option>
-            </select>
-          </div>
-
-          <div class="admin-form-group" id="adm-group-wrapper">
-            <label>분류 선택</label>
-            <select id="adm-group-select" class="admin-select"></select>
-          </div>
-
-          <div class="admin-form-group" id="adm-date-wrapper" style="display:none;">
-            <label>일정 날짜 (YYYY-MM-DD)</label>
-            <input type="text" id="adm-date" class="admin-input" placeholder="예: 2026-08-24">
-          </div>
-
-          <div class="admin-form-group" id="adm-title-wrapper">
-            <label id="adm-title-label">제목</label>
-            <input type="text" id="adm-title" class="admin-input" placeholder="제목 또는 일정 내용 입력">
-          </div>
-
-          <div class="admin-form-group" id="adm-sub-wrapper">
-            <label>부제목 / 서브텍스트</label>
-            <input type="text" id="adm-sub" class="admin-input" placeholder="부제목 입력">
-          </div>
-
-          <div class="admin-form-group" id="adm-img-wrapper">
-            <label>이미지 경로 (선택)</label>
-            <input type="text" id="adm-img" class="admin-input" placeholder="./images/A01.png">
-          </div>
-
-          <div class="admin-form-group" id="adm-pin-wrapper" style="display:none;">
-            <label style="display:flex; align-items:center; gap:6px;">
-              <input type="checkbox" id="adm-pin"> Notice 상단 고정 (Pin)
-            </label>
-          </div>
-
-          <div class="admin-form-group" id="adm-content-wrapper">
-            <label>본문 내용</label>
-            <textarea id="adm-content" class="admin-textarea" rows="4" placeholder="본문 작성"></textarea>
-          </div>
-
-          <button class="admin-btn" style="width:100%; margin-top:8px;" onclick="submitNewContent()">등록하기</button>
-        </div>
-
-        <!-- TAB 2: EDIT EXISTING CONTENT -->
-        <div id="admin-tab-content-manage" style="display:none;">
-          <div class="admin-form-group">
-            <label>관리할 섹션</label>
-            <select id="adm-manage-section" class="admin-select" onchange="renderManageItemList()">
-              <option value="world">WORLD</option>
-              <option value="characters">CHARACTERS</option>
-              <option value="music">MUSIC</option>
-              <option value="feed">FEED</option>
-              <option value="notice">NOTICE</option>
-            </select>
-          </div>
-
-          <div id="admin-manage-list-container" style="display:flex; flex-direction:column; gap:8px;"></div>
-        </div>
-
-        <!-- TAB 3: CATEGORIES -->
-        <div id="admin-tab-content-category" style="display:none;">
-          <p style="font-size:11px; font-weight:bold; font-family:var(--mono); margin-bottom:6px;">분류 그룹 추가</p>
-          <div class="admin-form-group" style="flex-direction:row; gap:6px;">
-            <select id="adm-cat-target" class="admin-select" style="width:140px;" onchange="renderCategoryEditList()">
-              <option value="world">WORLD</option>
-              <option value="characters">CHARACTERS</option>
-              <option value="music">MUSIC</option>
-            </select>
-            <input type="text" id="adm-cat-title" class="admin-input" placeholder="새 분류 이름">
-            <button class="admin-btn" style="white-space:nowrap;" onclick="addCategoryGroup()">추가</button>
-          </div>
-
-          <p style="font-size:11px; font-weight:bold; font-family:var(--mono); margin: 16px 0 6px 0;">기존 분류 목록 및 수정</p>
-          <div id="category-edit-container" style="display:flex; flex-direction:column; gap:6px;"></div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
   <div class="sticky-header-group">
     <header>
       <div class="container nav">
@@ -780,12 +658,6 @@
         <a href="#music" onclick="navigateTo('music'); return false;" id="sub-nav-music">MUSIC</a>
         <a href="#feed" onclick="navigateTo('feed'); return false;" id="sub-nav-feed">FEED</a>
         <a href="#notice" onclick="navigateTo('notice'); return false;" id="sub-nav-notice">NOTICE</a>
-        
-        <!-- 관리자 로그인 시 탭 추가 버튼 -->
-        <button class="add-tab-btn admin-only" onclick="openAdminPanel()" title="새 글 / 일정 등록">
-          <svg class="admin-svg-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          TAB
-        </button>
       </div>
     </nav>
   </div>
@@ -1049,10 +921,9 @@
       if (!id) return '';
       return `
         <span class="admin-only" style="margin-left:6px;">
-          <svg class="admin-svg-icon" viewBox="0 0 24 24" onclick="event.stopPropagation(); editExistingItem('${section}', '${id}')" title="수정">
-            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-          </svg>
+          <button class="inline-edit-trigger" onclick="event.stopPropagation(); startInlineEdit('${section}', '${id}')" title="편집">
+            <svg class="admin-svg-icon" viewBox="0 0 24 24" style="width:12px; height:12px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> EDIT
+          </button>
           <svg class="admin-svg-icon" viewBox="0 0 24 24" onclick="event.stopPropagation(); deleteExistingItem('${section}', '${id}')" title="삭제">
             <polyline points="3 6 5 6 21 6"></polyline>
             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -1070,7 +941,7 @@
 
     const database = {
       world: [
-        { id: 'empecla', group: 'MAIN WORLDS', title: 'Empecla (엠페클라)', sub: 'MAIN WORLD DATABASE', content: '<div style="background:#fff; height:200px; display:flex; align-items:center; justify-content:center; border:1.5px solid var(--navy);">[ WORLD MAP ]</div><p>엠페클라 메인 세계관입니다.</p>' }
+        { id: 'empecla', group: 'MAIN WORLDS', title: 'Empecla (엠페클라)', sub: 'MAIN WORLD DATABASE', img: './images/A01.png', content: '<div style="background:#fff; height:200px; display:flex; align-items:center; justify-content:center; border:1.5px solid var(--navy);">[ WORLD MAP ]</div><p>엠페클라 메인 세계관입니다.</p>' }
       ],
       characters: [
         { id: 'ruroon', group: 'EMPECLA', name: '루룬 (Ruroon)', sub: 'EMPECLA ARCHIVE', img: './images/A01.png', content: '<div style="background:#eca8b9; height:220px; display:flex; align-items:center; justify-content:center; border:1.5px solid var(--navy); font-weight:bold;">[ RUROON ILLUST ]</div><p>메인 관찰자 캐릭터 루룬의 프로필입니다.</p>' },
@@ -1091,6 +962,7 @@
     };
 
     /* ---------- RENDER SIDEBAR LISTS ---------- */
+    /* 3. WORLD 사이드바도 CHARACTERS와 동일하게 이미지 썸네일 구조 적용 */
     function renderWorldSidebar() {
       const container = document.getElementById('world-sidebar-list');
       let html = '';
@@ -1105,6 +977,7 @@
             <div class="accordion-body">
               ${items.map(item => `
                 <div class="list-item" id="item-world-${item.id}" onclick="selectItemWithUrl('world', '${item.id}')">
+                  ${item.img ? `<img src="${item.img}" class="item-thumb">` : `<div class="item-thumb" style="background:#fff;"></div>`}
                   <div class="item-info">
                     <span class="item-name">
                       <span>${item.title}</span>
@@ -1369,6 +1242,101 @@
       }
     }
 
+    /* 4. 모든 페이지에서 블로그 포스트 수정 스타일의 인라인 편집 모드 기능 */
+    function startInlineEdit(section, id) {
+      const item = database[section].find(i => i.id === id);
+      if (!item) return;
+
+      const titleVal = item.title || item.name || '';
+      const subVal = item.sub || item.date || '';
+      const contentVal = item.content || '';
+
+      const detailBodyEl = document.getElementById(`${section}-detail-body`);
+
+      detailBodyEl.innerHTML = `
+        <div class="inline-edit-form">
+          <label style="font-size:11px; font-weight:bold; font-family:var(--mono);">제목 수정</label>
+          <input type="text" id="inline-edit-title-input" class="inline-edit-input inline-edit-title" value="${titleVal.replace(/"/g, '&quot;')}">
+          
+          <label style="font-size:11px; font-weight:bold; font-family:var(--mono);">서브 정보 / 날짜 수정</label>
+          <input type="text" id="inline-edit-sub-input" class="inline-edit-input" value="${subVal.replace(/"/g, '&quot;')}">
+
+          <label style="font-size:11px; font-weight:bold; font-family:var(--mono);">본문 내용 수정 (HTML 적용 가능)</label>
+          <textarea id="inline-edit-content-input" class="inline-edit-textarea">${contentVal}</textarea>
+
+          <div class="inline-edit-actions">
+            <button class="inline-btn inline-btn-cancel" onclick="cancelInlineEdit('${section}', '${id}')">취소</button>
+            <button class="inline-btn inline-btn-save" onclick="saveInlineEdit('${section}', '${id}')">저장하기</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function saveInlineEdit(section, id) {
+      const item = database[section].find(i => i.id === id);
+      if (!item) return;
+
+      const newTitle = document.getElementById('inline-edit-title-input').value.trim();
+      const newSub = document.getElementById('inline-edit-sub-input').value.trim();
+      const newContent = document.getElementById('inline-edit-content-input').value.trim();
+
+      if (!newTitle) {
+        alert('제목을 입력해 주세요.');
+        return;
+      }
+
+      if (section === 'characters') {
+        item.name = newTitle;
+        item.sub = newSub;
+      } else if (section === 'feed' || section === 'notice') {
+        item.title = newTitle;
+        item.date = newSub;
+      } else {
+        item.title = newTitle;
+        item.sub = newSub;
+      }
+
+      item.content = newContent;
+
+      alert('성공적으로 수정되었습니다.');
+      renderAllSidebars();
+
+      // 상세 영역 다시 로드
+      const el = document.getElementById(`item-${section}-${id}`);
+      if (section === 'world') selectWorldItem(id, el);
+      else if (section === 'characters') selectCharItem(id, el);
+      else if (section === 'music') selectMusicItem(id, el);
+      else if (section === 'feed') selectFeedItem(id, el);
+      else if (section === 'notice') selectNoticeItem(id, el);
+    }
+
+    function cancelInlineEdit(section, id) {
+      const el = document.getElementById(`item-${section}-${id}`);
+      if (section === 'world') selectWorldItem(id, el);
+      else if (section === 'characters') selectCharItem(id, el);
+      else if (section === 'music') selectMusicItem(id, el);
+      else if (section === 'feed') selectFeedItem(id, el);
+      else if (section === 'notice') selectNoticeItem(id, el);
+    }
+
+    function deleteExistingItem(section, id) {
+      if (confirm('해당 항목을 정말 삭제하시겠습니까?')) {
+        const idx = database[section].findIndex(i => i.id === id);
+        if (idx !== -1) {
+          database[section].splice(idx, 1);
+          alert('삭제되었습니다.');
+          renderAllSidebars();
+          
+          if (activeItemIds[section] === id) {
+            activeItemIds[section] = null;
+            document.getElementById(`${section}-detail-title`).innerText = `SELECT ${section.toUpperCase()}`;
+            document.getElementById(`${section}-detail-body`).innerHTML = `<p>항목이 삭제되었습니다.</p>`;
+            document.getElementById(`${section}-detail-admin-marks`).innerHTML = '';
+          }
+        }
+      }
+    }
+
     /* ---------- CALENDAR LOGIC ---------- */
     const nowSystemDate = new Date();
     let currentCalYear = nowSystemDate.getFullYear();
@@ -1523,13 +1491,13 @@
       document.getElementById('modal-login').classList.remove('show');
     }
 
+    /* 1. 로그인 성공 시 관리자 창(팝업)이 자동으로 뜨지 않도록 처리 */
     function verifyAdminPassword() {
       const input = document.getElementById('admin-pass-input').value;
       if (input === SECRET_PASS) {
         isAdminLoggedIn = true;
         closeAdminLogin();
         activateAdminMode();
-        openAdminPanel();
       } else {
         alert('비밀번호가 올바르지 않습니다.');
       }
@@ -1543,282 +1511,6 @@
         headerStatus.innerHTML = `<i></i> SIGNAL ONLINE (ADMIN)`;
       }
       renderAllSidebars();
-    }
-
-    function openAdminPanel() {
-      document.getElementById('modal-admin-panel').classList.add('show');
-      updateAdminCategoryOptions();
-      renderCategoryEditList();
-      renderManageItemList();
-    }
-
-    function closeAdminPanel() {
-      document.getElementById('modal-admin-panel').classList.remove('show');
-    }
-
-    function switchAdminTab(tabName) {
-      document.querySelectorAll('.admin-tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(`tab-btn-${tabName}`).classList.add('active');
-
-      document.getElementById('admin-tab-content-create').style.display = (tabName === 'create') ? 'block' : 'none';
-      document.getElementById('admin-tab-content-manage').style.display = (tabName === 'manage') ? 'block' : 'none';
-      document.getElementById('admin-tab-content-category').style.display = (tabName === 'category') ? 'block' : 'none';
-
-      if (tabName === 'manage') renderManageItemList();
-      if (tabName === 'category') renderCategoryEditList();
-    }
-
-    /* ---------- ADMIN MANAGING CONTENT ---------- */
-    function renderManageItemList() {
-      const targetSection = document.getElementById('adm-manage-section').value;
-      const container = document.getElementById('admin-manage-list-container');
-      const items = database[targetSection] || [];
-
-      if (items.length === 0) {
-        container.innerHTML = '<p style="font-size:12px; opacity:0.6; padding:10px;">등록된 데이터가 없습니다.</p>';
-        return;
-      }
-
-      let html = '';
-      items.forEach(item => {
-        const itemTitle = item.title || item.name || item.id;
-        html += `
-          <div class="item-manage-row">
-            <div style="flex-grow:1; overflow:hidden;">
-              <div style="font-weight:bold; font-size:12px; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${itemTitle}</div>
-              <div style="font-size:10px; opacity:0.6; font-family:var(--mono);">${item.group || item.date || ''}</div>
-            </div>
-            <button class="admin-btn" style="background:#4a527a; margin-top:0;" onclick="editExistingItem('${targetSection}', '${item.id}')">수정</button>
-            <button class="admin-btn" style="background:#a84a4a; margin-top:0;" onclick="deleteExistingItem('${targetSection}', '${item.id}')">삭제</button>
-          </div>
-        `;
-      });
-
-      container.innerHTML = html;
-    }
-
-    function deleteExistingItem(section, id) {
-      if (confirm('해당 항목을 정말 삭제하시겠습니까?')) {
-        const idx = database[section].findIndex(i => i.id === id);
-        if (idx !== -1) {
-          database[section].splice(idx, 1);
-          alert('삭제되었습니다.');
-          renderAllSidebars();
-          renderManageItemList();
-          
-          if (activeItemIds[section] === id) {
-            activeItemIds[section] = null;
-            document.getElementById(`${section}-detail-title`).innerText = `SELECT ${section.toUpperCase()}`;
-            document.getElementById(`${section}-detail-body`).innerHTML = `<p>항목이 삭제되었습니다.</p>`;
-            document.getElementById(`${section}-detail-admin-marks`).innerHTML = '';
-          }
-        }
-      }
-    }
-
-    function editExistingItem(section, id) {
-      const item = database[section].find(i => i.id === id);
-      if (!item) return;
-
-      const newTitle = prompt('제목 수정:', item.title || item.name);
-      if (newTitle === null) return;
-
-      const newContent = prompt('본문 내용 수정 (HTML 가능):', item.content);
-      if (newContent === null) return;
-
-      if (section === 'characters') item.name = newTitle;
-      else item.title = newTitle;
-
-      item.content = newContent;
-
-      alert('성공적으로 수정되었습니다.');
-      renderAllSidebars();
-      renderManageItemList();
-
-      if (activeItemIds[section] === id) {
-        document.getElementById(`${section}-detail-title`).innerText = newTitle;
-        document.getElementById(`${section}-detail-body`).innerHTML = newContent;
-      }
-    }
-
-    /* ---------- ADMIN CATEGORY EDITING ---------- */
-    function renderCategoryEditList() {
-      const target = document.getElementById('adm-cat-target').value;
-      const container = document.getElementById('category-edit-container');
-      const groups = categoryGroups[target];
-
-      let html = '';
-      groups.forEach((gName, idx) => {
-        html += `
-          <div class="category-edit-row">
-            <input type="text" id="edit-cat-${target}-${idx}" class="admin-input" value="${gName}">
-            <button class="admin-btn" style="width:60px; margin-top:0; background:#4a527a;" onclick="updateCategoryName('${target}', ${idx})">수정</button>
-            <button class="admin-btn" style="width:60px; margin-top:0; background:#a84a4a;" onclick="deleteCategoryGroup('${target}', ${idx})">삭제</button>
-          </div>
-        `;
-      });
-      container.innerHTML = html;
-    }
-
-    function updateCategoryName(target, idx) {
-      const inputEl = document.getElementById(`edit-cat-${target}-${idx}`);
-      const newName = inputEl.value.trim();
-      if (!newName) {
-        alert('분류 이름을 입력해주세요.');
-        return;
-      }
-
-      const oldName = categoryGroups[target][idx];
-      if (oldName === newName) return;
-
-      categoryGroups[target][idx] = newName;
-
-      if (database[target]) {
-        database[target].forEach(item => {
-          if (item.group === oldName) item.group = newName;
-        });
-      }
-
-      alert(`분류 이름이 "${newName}"(으)로 수정되었습니다.`);
-      renderAllSidebars();
-      renderCategoryEditList();
-      updateAdminCategoryOptions();
-    }
-
-    function deleteCategoryGroup(target, idx) {
-      const groupName = categoryGroups[target][idx];
-      if (categoryGroups[target].length <= 1) {
-        alert('최소 1개의 분류는 유지되어야 합니다.');
-        return;
-      }
-
-      if (confirm(`"${groupName}" 분류를 삭제하시겠습니까? 속한 항목들의 분류는 첫 번째 분류로 이동됩니다.`)) {
-        const fallbackGroup = categoryGroups[target][0] === groupName ? categoryGroups[target][1] : categoryGroups[target][0];
-        
-        if (database[target]) {
-          database[target].forEach(item => {
-            if (item.group === groupName) item.group = fallbackGroup;
-          });
-        }
-
-        categoryGroups[target].splice(idx, 1);
-        renderAllSidebars();
-        renderCategoryEditList();
-        updateAdminCategoryOptions();
-      }
-    }
-
-    function addCategoryGroup() {
-      const target = document.getElementById('adm-cat-target').value;
-      const title = document.getElementById('adm-cat-title').value.trim();
-
-      if (!title) {
-        alert('분류 이름을 입력해주세요.');
-        return;
-      }
-
-      if (!categoryGroups[target].includes(title)) {
-        categoryGroups[target].push(title);
-        alert(`[${target.toUpperCase()}]에 "${title}" 분류가 추가되었습니다.`);
-        document.getElementById('adm-cat-title').value = '';
-        renderAllSidebars();
-        renderCategoryEditList();
-        updateAdminCategoryOptions();
-      } else {
-        alert('이미 존재하는 분류입니다.');
-      }
-    }
-
-    function updateAdminCategoryOptions() {
-      const section = document.getElementById('adm-section').value;
-      const groupWrapper = document.getElementById('adm-group-wrapper');
-      const groupSelect = document.getElementById('adm-group-select');
-      const pinWrapper = document.getElementById('adm-pin-wrapper');
-      const dateWrapper = document.getElementById('adm-date-wrapper');
-      const subWrapper = document.getElementById('adm-sub-wrapper');
-      const imgWrapper = document.getElementById('adm-img-wrapper');
-      const contentWrapper = document.getElementById('adm-content-wrapper');
-      const titleLabel = document.getElementById('adm-title-label');
-
-      pinWrapper.style.display = (section === 'notice') ? 'block' : 'none';
-      dateWrapper.style.display = (section === 'calendar') ? 'flex' : 'none';
-
-      if (section === 'calendar') {
-        groupWrapper.style.display = 'none';
-        subWrapper.style.display = 'none';
-        imgWrapper.style.display = 'none';
-        contentWrapper.style.display = 'none';
-        titleLabel.innerText = "일정 메모 내용";
-      } else {
-        subWrapper.style.display = 'flex';
-        imgWrapper.style.display = 'flex';
-        contentWrapper.style.display = 'flex';
-        titleLabel.innerText = "제목";
-
-        if (section === 'world' || section === 'characters' || section === 'music') {
-          groupWrapper.style.display = 'flex';
-          groupSelect.innerHTML = categoryGroups[section].map(g => `<option value="${g}">${g}</option>`).join('');
-        } else {
-          groupWrapper.style.display = 'none';
-        }
-      }
-    }
-
-    function submitNewContent() {
-      const section = document.getElementById('adm-section').value;
-
-      if (section === 'calendar') {
-        const dateKey = document.getElementById('adm-date').value.trim();
-        const eventText = document.getElementById('adm-title').value.trim();
-
-        if (!dateKey || !eventText) {
-          alert('날짜와 일정 메모 내용을 입력해주세요.');
-          return;
-        }
-
-        if (!eventsData[dateKey]) eventsData[dateKey] = [];
-        eventsData[dateKey].push(eventText);
-
-        alert(`[${dateKey}] 일정이 등록되었습니다.`);
-        document.getElementById('adm-title').value = '';
-        if (location.hash.includes('notice')) renderCalendarUI();
-        return;
-      }
-
-      const group = document.getElementById('adm-group-select').value;
-      const title = document.getElementById('adm-title').value.trim();
-      const sub = document.getElementById('adm-sub').value.trim();
-      const img = document.getElementById('adm-img').value.trim();
-      const pinned = document.getElementById('adm-pin').checked;
-      const content = document.getElementById('adm-content').value.trim();
-
-      if (!title || !content) {
-        alert('제목과 본문 내용을 입력해주세요.');
-        return;
-      }
-
-      const todayStr = getTodayKey();
-      const newId = 'item_' + Date.now();
-
-      if (section === 'world') {
-        database.world.push({ id: newId, group, title, sub, content });
-      } else if (section === 'characters') {
-        database.characters.push({ id: newId, group, name: title, sub, img, content });
-      } else if (section === 'music') {
-        database.music.push({ id: newId, group, title, sub, content });
-      } else if (section === 'feed') {
-        const feedHtml = img ? `<img src="${img}" class="detail-cover-img"><p>${content}</p>` : `<p>${content}</p>`;
-        database.feed.push({ id: newId, date: todayStr, title, img, content: feedHtml });
-      } else if (section === 'notice') {
-        database.notice.push({ id: newId, date: todayStr, title, pinned, content: `<p>${content}</p>` });
-      }
-
-      alert('성공적으로 등록되었습니다!');
-      renderAllSidebars();
-      
-      document.getElementById('adm-title').value = '';
-      document.getElementById('adm-sub').value = '';
-      document.getElementById('adm-content').value = '';
     }
 
     function renderAllSidebars() {
