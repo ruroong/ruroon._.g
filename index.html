@@ -6,7 +6,7 @@
   <title>ruroon._.g ARCHIVE</title>
   <meta name="description" content="ruroon._.g personal archive">
 
-  <!-- Pretendard CDN 불러오기 -->
+  <!-- Pretendard & Fonts -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,7 +43,7 @@
       cursor: url('./images/A03.png') 10 10, auto;
     }
 
-    a, button, .list-item, .accordion-header, .full-cal-day, .cal-nav-btn {
+    a, button, .list-item, .accordion-header, .full-cal-day, .cal-nav-btn, .gal-thumb-item, .char-select-card {
       cursor: url('./images/A03.png') 10 10, pointer;
     }
 
@@ -65,43 +65,17 @@
     .mono { font-family: var(--mono); }
 
     /* ANIMATIONS */
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    @keyframes orbit-tilt { 0% { transform: translate(-50%, -55%) rotate(-2deg); } 50% { transform: translate(-50%, -55%) rotate(2deg); } 100% { transform: translate(-50%, -55%) rotate(-2deg); } }
+    @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+    @keyframes star-sparkle { 0%, 100% { opacity: 0.15; transform: scale(0.7) rotate(0deg); } 50% { opacity: 1.3; transform: scale(1.3) rotate(15deg); } }
+    @keyframes sound-wave { 0%, 100% { height: 4px; } 50% { height: 20px; } }
 
-    @keyframes orbit-tilt {
-      0% { transform: translate(-50%, -55%) rotate(-2deg); }
-      50% { transform: translate(-50%, -55%) rotate(2deg); }
-      100% { transform: translate(-50%, -55%) rotate(-2deg); }
-    }
-
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.2; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.2); }
-    }
-
-    @keyframes star-sparkle {
-      0%, 100% { opacity: 0.15; transform: scale(0.7) rotate(0deg); }
-      50% { opacity: 1.3; transform: scale(1.3) rotate(15deg); }
-    }
-
-    @keyframes sound-wave {
-      0%, 100% { height: 4px; }
-      50% { height: 20px; }
-    }
-
-    /* 클릭 하트 도장 효과 (A05.png) */
+    /* 클릭 하트 도장 효과 */
     .click-stamp {
-      position: fixed;
-      width: 32px;
-      height: 32px;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%) scale(0.6);
-      animation: stamp-pop 0.6s ease-out forwards;
+      position: fixed; width: 32px; height: 32px; pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%) scale(0.6); animation: stamp-pop 0.6s ease-out forwards;
     }
-
     @keyframes stamp-pop {
       0% { opacity: 1; transform: translate(-50%, -50%) scale(0.6); }
       50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.1); }
@@ -110,14 +84,8 @@
 
     /* 마우스 꼬리 별 스파클 */
     .tail-star {
-      position: fixed;
-      pointer-events: none;
-      z-index: 9998;
-      color: var(--navy);
-      font-size: 10px;
-      animation: tail-fade 0.7s linear forwards;
+      position: fixed; pointer-events: none; z-index: 9998; color: var(--navy); font-size: 10px; animation: tail-fade 0.7s linear forwards;
     }
-
     @keyframes tail-fade {
       0% { opacity: 1; transform: scale(1) rotate(0deg) translateY(0); }
       100% { opacity: 0; transform: scale(0.2) rotate(45deg) translateY(12px); }
@@ -141,8 +109,6 @@
     
     .status { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; font: 11px var(--mono); }
     .status i { width: 7px; height: 7px; border-radius: 50%; background: var(--navy); animation: twinkle 1.5s infinite ease-in-out; }
-    
-    /* 관리자 로그인 시 시그널 온라인 붉은 불빛 스타일 */
     .status.admin-active { color: #D32F2F; font-weight: bold; }
     .status.admin-active i { background: #FF4D4D; box-shadow: 0 0 8px #FF4D4D; }
 
@@ -213,22 +179,9 @@
     .player-svg-icon { width: 14px; height: 14px; fill: var(--navy); }
 
     .external-signal-bottom { margin-top: auto; padding-top: 50px; padding-bottom: 20px; }
-    .admin-trigger-btn {
-      background: transparent;
-      border: none;
-      padding: 0;
-      display: inline-block;
-      transition: transform 0.2s;
-    }
-    .admin-trigger-btn:hover {
-      transform: scale(1.1);
-    }
-    .admin-trigger-btn img {
-      width: 42px;
-      height: 42px;
-      object-fit: contain;
-      display: block;
-    }
+    .admin-trigger-btn { background: transparent; border: none; padding: 0; display: inline-block; transition: transform 0.2s; }
+    .admin-trigger-btn:hover { transform: scale(1.1); }
+    .admin-trigger-btn img { width: 42px; height: 42px; object-fit: contain; display: block; }
 
     /* COMMON HEADERS */
     .section-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
@@ -237,221 +190,104 @@
     .section-note { font: 10px var(--mono); text-align: right; opacity: 0.75; line-height: 1.6; }
 
     /* SPLIT MASTER-DETAIL LAYOUT */
-    .split-layout {
-      display: grid;
-      grid-template-columns: 1fr 310px;
-      gap: 24px;
-      align-items: start;
-    }
+    .split-layout { display: grid; grid-template-columns: 1fr 310px; gap: 24px; align-items: start; }
 
-    /* LEFT DETAIL VIEW */
-    .detail-view-box {
-      border: 1.5px solid var(--navy);
-      background: rgba(255, 255, 255, 0.5);
-      padding: 24px;
-      min-height: 520px;
-      box-shadow: var(--shadow);
-      position: relative;
-    }
-
-    .detail-header {
-      border-bottom: 1.5px solid var(--navy);
-      padding-bottom: 12px;
-      margin-bottom: 20px;
-    }
+    /* DETAIL VIEW BOX */
+    .detail-view-box { border: 1.5px solid var(--navy); background: rgba(255, 255, 255, 0.5); padding: 24px; min-height: 520px; box-shadow: var(--shadow); position: relative; }
+    .detail-header { border-bottom: 1.5px solid var(--navy); padding-bottom: 12px; margin-bottom: 20px; }
     .detail-title { font-size: 24px; font-weight: 800; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
     .detail-subtitle { font-family: var(--mono); font-size: 11px; opacity: 0.7; margin-top: 4px; }
-    
-    .detail-content-body {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      line-height: 1.6;
-      font-size: 14px;
-    }
-    .detail-cover-img {
-      width: 100%;
-      max-height: 340px;
-      object-fit: cover;
-      border: 1.5px solid var(--navy);
-      background: var(--white);
-    }
-
-    /* 블로그 포스트 스타일 인라인 편집 폼 */
-    .inline-edit-form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.6);
-      padding: 16px;
-      border: 1.5px solid var(--navy);
-    }
-    .inline-edit-input, .inline-edit-textarea {
-      width: 100%;
-      border: 1.5px solid var(--navy);
-      padding: 10px;
-      font-family: var(--sans);
-      font-size: 13px;
-      background: var(--white);
-      color: var(--navy);
-      outline: none;
-    }
-    .inline-edit-title {
-      font-size: 18px;
-      font-weight: bold;
-    }
-    .inline-edit-textarea {
-      min-height: 220px;
-      resize: vertical;
-      line-height: 1.6;
-    }
-    .inline-edit-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    .inline-btn {
-      padding: 8px 16px;
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: bold;
-      border: 1.5px solid var(--navy);
-      cursor: pointer;
-      box-shadow: 2px 2px 0 var(--navy);
-      transition: transform 0.1s;
-    }
-    .inline-btn:hover { transform: translate(-1px, -1px); }
-    .inline-btn-save { background: var(--navy); color: var(--pink); }
-    .inline-btn-cancel { background: var(--white); color: var(--navy); }
+    .detail-content-body { display: flex; flex-direction: column; gap: 16px; line-height: 1.6; font-size: 14px; }
 
     /* EDIT INLINE TRIGGER BUTTON */
     .inline-edit-trigger {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px 8px;
-      border: 1.5px solid var(--navy);
-      background: var(--white);
-      font-size: 10px;
-      font-family: var(--mono);
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 1px 1px 0 var(--navy);
-      transition: all 0.15s;
+      display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border: 1.5px solid var(--navy); background: var(--white);
+      font-size: 10px; font-family: var(--mono); font-weight: bold; cursor: pointer; box-shadow: 1px 1px 0 var(--navy); transition: all 0.15s;
     }
-    .inline-edit-trigger:hover {
-      background: var(--navy);
-      color: var(--pink);
-    }
+    .inline-edit-trigger:hover { background: var(--navy); color: var(--pink); }
 
     /* RIGHT SIDEBAR LIST */
-    .messenger-list-sidebar {
-      border: 1.5px solid var(--navy);
-      background: rgba(255, 255, 255, 0.3);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      max-height: 580px;
-    }
-
-    .sidebar-title-bar {
-      background: var(--navy);
-      color: var(--white);
-      padding: 12px 14px;
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-shrink: 0;
-    }
-
-    .sidebar-scroll-area {
-      overflow-y: auto;
-      flex-grow: 1;
-    }
-
+    .messenger-list-sidebar { border: 1.5px solid var(--navy); background: rgba(255, 255, 255, 0.3); box-shadow: var(--shadow); display: flex; flex-direction: column; max-height: 580px; }
+    .sidebar-title-bar { background: var(--navy); color: var(--white); padding: 12px 14px; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .sidebar-scroll-area { overflow-y: auto; flex-grow: 1; }
     .sidebar-scroll-area::-webkit-scrollbar { width: 6px; }
     .sidebar-scroll-area::-webkit-scrollbar-track { background: rgba(28, 32, 56, 0.05); }
     .sidebar-scroll-area::-webkit-scrollbar-thumb { background: var(--navy); }
 
     .accordion-group { border-bottom: 1.5px solid var(--navy); }
     .accordion-group:last-child { border-bottom: none; }
-
-    .accordion-header {
-      padding: 10px 12px;
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      background: rgba(28, 32, 56, 0.08);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      user-select: none;
-      transition: background 0.2s;
-    }
+    .accordion-header { padding: 10px 12px; font-family: var(--mono); font-size: 11px; font-weight: 700; background: rgba(28, 32, 56, 0.08); display: flex; justify-content: space-between; align-items: center; user-select: none; transition: background 0.2s; }
     .accordion-header:hover { background: rgba(28, 32, 56, 0.15); }
-
     .accordion-body { display: flex; flex-direction: column; }
     .accordion-group.collapsed .accordion-body { display: none; }
     .accordion-group.collapsed .acc-icon { transform: rotate(-90deg); }
     .acc-icon { transition: transform 0.2s; }
 
-    .list-item {
-      padding: 10px 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-top: 1px dashed rgba(28, 32, 56, 0.2);
-      transition: background 0.2s;
-      position: relative;
-    }
+    .list-item { padding: 10px 12px; display: flex; align-items: center; gap: 10px; border-top: 1px dashed rgba(28, 32, 56, 0.2); transition: background 0.2s; position: relative; }
     .list-item:hover { background: rgba(255, 255, 255, 0.6); }
-    .list-item.active {
-      background: var(--navy) !important;
-      color: var(--pink) !important;
-    }
+    .list-item.active { background: var(--navy) !important; color: var(--pink) !important; }
 
-    .pin-badge {
-      font-size: 10px;
-      background: var(--navy);
-      color: var(--pink);
-      padding: 1px 4px;
-      border-radius: 2px;
-      margin-right: 4px;
-      font-weight: bold;
-    }
-    .list-item.active .pin-badge {
-      background: var(--pink);
-      color: var(--navy);
-    }
+    .pin-badge { font-size: 10px; background: var(--navy); color: var(--pink); padding: 1px 4px; border-radius: 2px; margin-right: 4px; font-weight: bold; }
+    .list-item.active .pin-badge { background: var(--pink); color: var(--navy); }
 
-    .item-thumb {
-      width: 34px;
-      height: 34px;
-      border-radius: 4px;
-      border: 1px solid var(--navy);
-      background: #eee;
-      object-fit: cover;
-      flex-shrink: 0;
-    }
-
+    .item-thumb { width: 34px; height: 34px; border-radius: 4px; border: 1px solid var(--navy); background: #eee; object-fit: cover; flex-shrink: 0; }
     .item-info { display: flex; flex-direction: column; overflow: hidden; width: 100%; }
-    .item-name {
-      font-size: 13px;
-      font-weight: 700;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    .item-name { font-size: 13px; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; display: flex; align-items: center; justify-content: space-between; }
     .item-subtext { font-size: 10px; opacity: 0.7; font-family: var(--mono); }
+
+    /* CHARACTER PROFILE STRUCTURE */
+    .char-profile-container { display: flex; flex-direction: column; gap: 20px; }
+    .char-main-top { display: grid; grid-template-columns: 180px 1fr; gap: 20px; }
+    .char-main-img-box { width: 100%; height: 230px; border: 1.5px solid var(--navy); background: var(--white); overflow: hidden; position: relative; }
+    .char-main-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    
+    .char-meta-table { display: flex; flex-direction: column; gap: 8px; font-size: 13px; justify-content: center; }
+    .char-meta-row { display: flex; border-bottom: 1px dashed rgba(28, 32, 56, 0.2); padding-bottom: 6px; align-items: center; }
+    .char-meta-label { width: 100px; font-family: var(--mono); font-weight: 700; font-size: 11px; opacity: 0.8; }
+    .char-meta-val { flex-grow: 1; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    
+    .tag-pill { display: inline-block; background: rgba(28,32,56,0.08); border: 1px solid var(--navy); padding: 2px 6px; border-radius: 3px; font-size: 11px; font-family: var(--mono); margin-right: 4px; margin-bottom: 4px; }
+    .cal-link-btn { font-size: 10px; font-family: var(--mono); background: var(--navy); color: var(--pink); border: none; padding: 2px 6px; cursor: pointer; border-radius: 2px; }
+
+    /* GALLERY 01 (HORIZONTAL SWIPE) & 갤러리 레이아웃 */
+    .gallery-section-title { font-family: var(--mono); font-size: 12px; font-weight: 800; border-bottom: 1.5px solid var(--navy); padding-bottom: 4px; margin-top: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    
+    .gal01-scroll-wrapper {
+      display: flex; gap: 10px; overflow-x: auto; padding: 6px 2px 12px 2px; scrollbar-width: thin; scrollbar-color: var(--navy) transparent; cursor: grab;
+    }
+    .gal01-scroll-wrapper::-webkit-scrollbar { height: 6px; }
+    .gal01-scroll-wrapper::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 3px; }
+
+    .gal-thumb-item {
+      position: relative; width: 90px; height: 90px; flex-shrink: 0; border: 1.5px solid var(--navy); background: #fff; overflow: hidden; transition: transform 0.15s;
+    }
+    .gal-thumb-item:hover { transform: translateY(-2px); }
+    .gal-thumb-img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* RED SQUARE LINK SVG BADGE */
+    .link-svg-badge {
+      position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; background: #FF3366; border: 1px solid var(--navy);
+      display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5; transition: transform 0.1s;
+    }
+    .link-svg-badge:hover { transform: scale(1.15); }
+    .link-svg-badge svg { width: 12px; height: 12px; stroke: #FFF; fill: none; stroke-width: 2.5; }
+
+    /* GALLERY 02 (LIST TYPE WITH ACCORDION) */
+    .gal02-accordion-item { border: 1.5px solid var(--navy); background: #fff; margin-bottom: 10px; }
+    .gal02-acc-header { background: rgba(28, 32, 56, 0.06); padding: 10px 12px; font-weight: 700; font-size: 13px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .gal02-acc-desc { font-size: 11px; opacity: 0.75; padding: 6px 12px; border-bottom: 1px dashed rgba(28, 32, 56, 0.2); background: rgba(255,255,255,0.8); }
+    .gal02-acc-body { padding: 12px; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; }
+    .gal02-accordion-item.collapsed .gal02-acc-body { display: none; }
+
+    /* WORLD CHARACTER CARDS GRID */
+    .world-char-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-top: 10px; }
+    .world-char-card {
+      border: 1.5px solid var(--navy); background: #fff; padding: 8px; text-align: center; box-shadow: 2px 2px 0 var(--navy); transition: transform 0.15s; cursor: pointer;
+    }
+    .world-char-card:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--navy); }
+    .world-char-card img { width: 100%; height: 110px; object-fit: cover; border: 1px solid var(--navy); margin-bottom: 6px; }
+    .world-char-card .card-name { font-weight: 800; font-size: 12px; }
+    .world-char-card .card-sub { font-size: 10px; opacity: 0.7; font-family: var(--mono); }
 
     /* RETRO CALENDAR */
     .calendar-container-full { display: flex; flex-direction: column; gap: 16px; }
@@ -459,39 +295,9 @@
     .cal-nav-btn { background: var(--white); border: 1.5px solid var(--navy); color: var(--navy); padding: 6px 14px; font-size: 11px; font-family: var(--mono); font-weight: bold; box-shadow: 2px 2px 0 var(--navy); transition: 0.15s; }
     .cal-nav-btn:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--navy); }
 
-    .full-cal-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      border: 1.5px solid var(--navy);
-      background: var(--navy);
-      gap: 1.5px;
-      width: 100%;
-    }
-    
-    .full-cal-head {
-      font-family: var(--mono);
-      font-weight: 800;
-      font-size: 11px;
-      padding: 10px 0;
-      text-align: center;
-      background: var(--pink) !important;
-      color: var(--navy);
-    }
-    
-    .full-cal-day {
-      min-height: 85px;
-      background: #ffffff !important;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-      gap: 4px;
-      font-family: var(--mono);
-      font-size: 13px;
-      transition: background 0.15s;
-      overflow: hidden;
-    }
+    .full-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); border: 1.5px solid var(--navy); background: var(--navy); gap: 1.5px; width: 100%; }
+    .full-cal-head { font-family: var(--mono); font-weight: 800; font-size: 11px; padding: 10px 0; text-align: center; background: var(--pink) !important; color: var(--navy); }
+    .full-cal-day { min-height: 85px; background: #ffffff !important; padding: 8px; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 4px; font-family: var(--mono); font-size: 13px; transition: background 0.15s; overflow: hidden; }
     .full-cal-day.empty { background: #ffffff !important; }
     .full-cal-day:not(.empty):hover { background: #f4e3e8 !important; }
     .full-cal-day.selected { background: #f1cbd5 !important; }
@@ -508,88 +314,38 @@
     .schedule-list-ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
     .schedule-list-ul li { background: var(--white); border: 1.5px solid var(--navy); padding: 10px 14px; font-size: 13px; display: flex; align-items: center; gap: 8px; box-shadow: 2px 2px 0 rgba(28, 32, 56, 0.1); }
 
-    /* MODAL BACKDROP */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(28, 32, 56, 0.45);
-      backdrop-filter: blur(4px);
-      z-index: 1000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
+    /* MODAL BACKDROP & DIALOGS */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(28, 32, 56, 0.65); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: center; justify-content: center; }
     .modal-backdrop.show { display: flex; }
 
-    /* ADMIN LOGIN MODAL */
-    .login-modal {
-      background: #ECA8B9;
-      border: 2px solid var(--navy);
-      box-shadow: 6px 6px 0px var(--navy);
-      width: min(420px, 90vw);
-      padding: 28px 24px 22px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    .login-modal, .admin-edit-modal, .link-view-modal {
+      background: #ECA8B9; border: 2px solid var(--navy); box-shadow: 6px 6px 0px var(--navy); width: min(520px, 92vw); padding: 24px; display: flex; flex-direction: column; gap: 16px; max-height: 90vh; overflow-y: auto;
     }
+    .admin-edit-modal { width: min(680px, 95vw); }
 
-    .login-sub-title {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: rgba(28, 32, 56, 0.65);
-      font-weight: bold;
-      letter-spacing: 0.05em;
-    }
+    .modal-title { font-family: var(--broadway); font-size: 28px; color: var(--navy); }
+    .modal-input, .modal-textarea { width: 100%; background: #F9EBEF; border: 1.5px solid var(--navy); padding: 10px; font-family: var(--sans); font-size: 13px; color: var(--navy); outline: none; }
+    .modal-textarea { min-height: 80px; resize: vertical; }
 
-    .login-main-title {
-      font-family: var(--broadway);
-      font-size: 32px;
-      color: var(--navy);
-      letter-spacing: 0.02em;
-      margin-top: -8px;
-    }
+    .modal-btn-group { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+    .modal-btn { padding: 8px 16px; font-family: var(--mono); font-weight: bold; font-size: 12px; border: 1.5px solid var(--navy); cursor: pointer; box-shadow: 2px 2px 0 var(--navy); }
+    .modal-btn-save { background: var(--navy); color: var(--pink); }
+    .modal-btn-cancel { background: var(--white); color: var(--navy); }
 
-    .login-input {
-      width: 100%;
-      background: #F9EBEF;
-      border: 2px solid var(--navy);
-      padding: 12px 14px;
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--navy);
-      outline: none;
-      box-shadow: 3px 3px 0px var(--navy);
-    }
-    .login-input::placeholder { color: #A8959A; font-weight: bold; }
+    /* LIGHTBOX MODAL FOR GALLERY */
+    .lightbox-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; display: none; align-items: center; justify-content: center; flex-direction: column; }
+    .lightbox-modal.show { display: flex; }
+    .lightbox-img-wrapper { position: relative; max-width: 85vw; max-height: 80vh; display: flex; justify-content: center; align-items: center; }
+    .lightbox-img { max-width: 100%; max-height: 80vh; border: 2px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+    .lightbox-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(28,32,56,0.8); color: #fff; border: 1px solid #fff; padding: 12px; font-size: 20px; cursor: pointer; user-select: none; }
+    .lightbox-prev { left: -60px; }
+    .lightbox-next { right: -60px; }
+    .lightbox-close { position: absolute; top: -40px; right: 0; color: #fff; font-size: 24px; font-weight: bold; cursor: pointer; }
 
-    .login-btn-group {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 6px;
-    }
-
-    .login-btn-cancel {
-      background: var(--white);
-      color: var(--navy);
-      border: 2px solid var(--navy);
-      padding: 10px;
-      font-family: var(--broadway);
-      font-size: 14px;
-      letter-spacing: 0.05em;
-      text-align: center;
-    }
-
-    .login-btn-enter {
-      background: var(--navy);
-      color: var(--pink);
-      border: 2px solid var(--navy);
-      padding: 10px;
-      font-family: var(--broadway);
-      font-size: 14px;
-      letter-spacing: 0.05em;
-      text-align: center;
-    }
+    /* SELECTABLE CARDS IN ADMIN FORM */
+    .char-select-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; max-height: 180px; overflow-y: auto; background: #fff; padding: 8px; border: 1.5px solid var(--navy); }
+    .char-select-card { border: 1px solid #ccc; padding: 4px; text-align: center; font-size: 11px; background: #f9f9f9; }
+    .char-select-card.selected { border: 2px solid var(--navy); background: var(--pink); font-weight: bold; }
 
     /* FOOTER */
     .slim-footer { background: var(--navy); color: var(--pink); padding: 16px 0; margin-top: 60px; position: relative; z-index: 5; }
@@ -601,6 +357,10 @@
     @media (max-width: 820px) {
       .split-layout { grid-template-columns: 1fr; }
       .messenger-list-sidebar { order: -1; max-height: 380px; }
+      .char-main-top { grid-template-columns: 1fr; }
+      .char-main-img-box { height: 260px; }
+      .lightbox-prev { left: 10px; }
+      .lightbox-next { right: 10px; }
       .status { display: none; }
       .hero-visual-wrapper { margin-top: 50px; }
       .main-navlinks { gap: 18px; font-size: 11px; margin-top: 60px; }
@@ -614,21 +374,45 @@
 
 <body>
 
-  <div id="yt-player-container">
-    <div id="yt-player"></div>
-  </div>
+  <div id="yt-player-container"><div id="yt-player"></div></div>
 
   <!-- [MODAL] LOGIN MODAL -->
   <div class="modal-backdrop" id="modal-login">
     <div class="login-modal">
-      <div class="login-sub-title">ARCHIVE / PRIVATE ACCESS</div>
-      <div class="login-main-title">ADMIN LOGIN</div>
-      <input type="password" id="admin-pass-input" class="login-input" placeholder="PASSWORD" onkeydown="if(event.key==='Enter') verifyAdminPassword()">
-      <div class="login-btn-group">
-        <button class="login-btn-cancel" onclick="closeAdminLogin()">CANCEL</button>
-        <button class="login-btn-enter" onclick="verifyAdminPassword()">ENTER</button>
+      <div style="font-family:var(--mono); font-size:11px; opacity:0.7;">ARCHIVE / PRIVATE ACCESS</div>
+      <div class="modal-title">ADMIN LOGIN</div>
+      <input type="password" id="admin-pass-input" class="modal-input" placeholder="PASSWORD" onkeydown="if(event.key==='Enter') verifyAdminPassword()">
+      <div class="modal-btn-group">
+        <button class="modal-btn modal-btn-cancel" onclick="closeAdminLogin()">CANCEL</button>
+        <button class="modal-btn modal-btn-save" onclick="verifyAdminPassword()">ENTER</button>
       </div>
     </div>
+  </div>
+
+  <!-- [MODAL] LIGHTBOX FOR GALLERY -->
+  <div class="lightbox-modal" id="lightbox-modal">
+    <div class="lightbox-img-wrapper">
+      <span class="lightbox-close" onclick="closeLightbox()">✕ CLOSE</span>
+      <button class="lightbox-nav-btn lightbox-prev" onclick="navLightbox(-1)">◀</button>
+      <img id="lightbox-img" class="lightbox-img" src="" alt="Enlarged View">
+      <button class="lightbox-nav-btn lightbox-next" onclick="navLightbox(1)">▶</button>
+    </div>
+  </div>
+
+  <!-- [MODAL] WORK LINKS DISPLAY -->
+  <div class="modal-backdrop" id="modal-links">
+    <div class="link-view-modal">
+      <div class="modal-title" style="font-size:20px;">LINKED WORKS</div>
+      <div id="links-modal-body" style="display:flex; flex-direction:column; gap:8px;"></div>
+      <div class="modal-btn-group">
+        <button class="modal-btn modal-btn-cancel" onclick="document.getElementById('modal-links').classList.remove('show')">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- [MODAL] ADMIN EDIT DIALOG -->
+  <div class="modal-backdrop" id="modal-admin-edit">
+    <div class="admin-edit-modal" id="admin-edit-container"></div>
   </div>
 
   <div class="sticky-header-group">
@@ -667,19 +451,14 @@
     <!-- 1. SIGNAL (HOME) -->
     <section id="page-signal" class="page-section active-page">
       <div class="side-stars-bg">
-        <span class="sparkle-star star-1">✦</span>
-        <span class="sparkle-star star-2">✦</span>
-        <span class="sparkle-star star-3">✦</span>
-        <span class="sparkle-star star-4">✦</span>
-        <span class="sparkle-star star-5">✦</span>
-        <span class="sparkle-star star-6">✦</span>
-        <span class="sparkle-star star-7">✦</span>
-        <span class="sparkle-star star-8">✦</span>
+        <span class="sparkle-star star-1">✦</span><span class="sparkle-star star-2">✦</span>
+        <span class="sparkle-star star-3">✦</span><span class="sparkle-star star-4">✦</span>
+        <span class="sparkle-star star-5">✦</span><span class="sparkle-star star-6">✦</span>
+        <span class="sparkle-star star-7">✦</span><span class="sparkle-star star-8">✦</span>
       </div>
 
       <div class="hero">
         <div></div>
-
         <div class="hero-visual-wrapper">
           <img src="./images/A02.png" alt="orbit" class="orbit-bg-img">
           <img src="./images/A01.png" alt="ARCHIVE @ruroon._.g" class="main-title-img">
@@ -695,39 +474,21 @@
 
         <div class="player-minimal">
           <div class="sound-wave-container" id="sound-wave">
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
           </div>
-
           <div class="progress-bar-container" id="progress-container" onclick="seekTrack(event)">
-            <div class="progress-bar-fill" id="progress-fill">
-              <div class="progress-thumb"></div>
-            </div>
+            <div class="progress-bar-fill" id="progress-fill"><div class="progress-thumb"></div></div>
           </div>
-
           <div class="player-controls">
-            <button class="ctrl-btn" onclick="restartTrack()">
-              <svg class="player-svg-icon" viewBox="0 0 24 24"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>
-            </button>
-            <button class="ctrl-btn play-main" id="play-btn" onclick="toggleBgm()">
-              <svg class="player-svg-icon" style="width:18px; height:18px;" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-            <button class="ctrl-btn" onclick="restartTrack()">
-              <svg class="player-svg-icon" viewBox="0 0 24 24"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg>
-            </button>
+            <button class="ctrl-btn" onclick="restartTrack()"><svg class="player-svg-icon" viewBox="0 0 24 24"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg></button>
+            <button class="ctrl-btn play-main" id="play-btn" onclick="toggleBgm()"><svg class="player-svg-icon" style="width:18px; height:18px;" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <button class="ctrl-btn" onclick="restartTrack()"><svg class="player-svg-icon" viewBox="0 0 24 24"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg></button>
           </div>
         </div>
 
         <div class="external-signal-bottom">
-          <!-- A04 장식 스타일의 관리자 로그인 연결 버튼 -->
           <button class="admin-trigger-btn" onclick="openAdminLogin()" title="Admin Login">
             <img src="./images/A04.png" alt="Admin Access" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231C2038\'><path d=\'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z\'/></svg>'">
           </button>
@@ -738,10 +499,7 @@
     <!-- 2. WORLD -->
     <section id="page-world" class="page-section">
       <div class="section-head">
-        <div>
-          <p class="section-kicker">01 / WORLDS</p>
-          <h2 class="section-title">WORLD</h2>
-        </div>
+        <div><p class="section-kicker">01 / WORLDS</p><h2 class="section-title">WORLD</h2></div>
         <p class="section-note">places, eras and settings<br>where the stories exist.</p>
       </div>
 
@@ -762,6 +520,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>WORLDS</span>
+            <span class="admin-only"><button onclick="openAddModal('world')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="world-sidebar-list"></div>
         </aside>
@@ -771,10 +530,7 @@
     <!-- 3. CHARACTERS -->
     <section id="page-characters" class="page-section">
       <div class="section-head">
-        <div>
-          <p class="section-kicker">02 / DATABASE</p>
-          <h2 class="section-title">CHARACTERS</h2>
-        </div>
+        <div><p class="section-kicker">02 / DATABASE</p><h2 class="section-title">CHARACTERS</h2></div>
         <p class="section-note">selected records<br>from the archive.</p>
       </div>
 
@@ -795,6 +551,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>CHARACTERS</span>
+            <span class="admin-only"><button onclick="openAddModal('characters')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="char-sidebar-list"></div>
         </aside>
@@ -804,10 +561,7 @@
     <!-- 4. MUSIC -->
     <section id="page-music" class="page-section">
       <div class="section-head">
-        <div>
-          <p class="section-kicker">03 / SOUND</p>
-          <h2 class="section-title">MUSIC</h2>
-        </div>
+        <div><p class="section-kicker">03 / SOUND</p><h2 class="section-title">MUSIC</h2></div>
         <p class="section-note">songs connected to<br>characters and worlds.</p>
       </div>
 
@@ -828,6 +582,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>TRACK LIST</span>
+            <span class="admin-only"><button onclick="openAddModal('music')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="music-sidebar-list"></div>
         </aside>
@@ -837,10 +592,7 @@
     <!-- 5. FEED -->
     <section id="page-feed" class="page-section">
       <div class="section-head">
-        <div>
-          <p class="section-kicker">04 / LOG</p>
-          <h2 class="section-title">FEED</h2>
-        </div>
+        <div><p class="section-kicker">04 / LOG</p><h2 class="section-title">FEED</h2></div>
         <p class="section-note">latest fragments<br>and image logs.</p>
       </div>
 
@@ -861,6 +613,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>LOG HISTORY</span>
+            <span class="admin-only"><button onclick="openAddModal('feed')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="feed-sidebar-list"></div>
         </aside>
@@ -870,10 +623,7 @@
     <!-- 6. NOTICE -->
     <section id="page-notice" class="page-section">
       <div class="section-head">
-        <div>
-          <p class="section-kicker">05 / INFORMATION</p>
-          <h2 class="section-title">NOTICE</h2>
-        </div>
+        <div><p class="section-kicker">05 / INFORMATION</p><h2 class="section-title">NOTICE</h2></div>
         <p class="section-note">archive updates &amp;<br>announcements.</p>
       </div>
 
@@ -894,6 +644,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>SCHEDULE &amp; NOTICES</span>
+            <span class="admin-only"><button onclick="openAddModal('notice')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="notice-sidebar-list"></div>
         </aside>
@@ -915,13 +666,15 @@
     /* ---------- GLOBAL STATE ---------- */
     let isAdminLoggedIn = false;
     let activeItemIds = { world: null, characters: null, music: null, feed: null, notice: null };
+    let currentLightboxList = [];
+    let currentLightboxIdx = 0;
 
     /* ---------- SVG ICONS HTML GENERATOR ---------- */
     function getAdminSvgMarksHtml(section, id) {
       if (!id) return '';
       return `
         <span class="admin-only" style="margin-left:6px;">
-          <button class="inline-edit-trigger" onclick="event.stopPropagation(); startInlineEdit('${section}', '${id}')" title="편집">
+          <button class="inline-edit-trigger" onclick="event.stopPropagation(); openEditModal('${section}', '${id}')" title="편집">
             <svg class="admin-svg-icon" viewBox="0 0 24 24" style="width:12px; height:12px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> EDIT
           </button>
           <svg class="admin-svg-icon" viewBox="0 0 24 24" onclick="event.stopPropagation(); deleteExistingItem('${section}', '${id}')" title="삭제">
@@ -941,28 +694,69 @@
 
     const database = {
       world: [
-        { id: 'empecla', group: 'MAIN WORLDS', title: 'Empecla (엠페클라)', sub: 'MAIN WORLD DATABASE', img: './images/A01.png', content: '<div style="background:#fff; height:200px; display:flex; align-items:center; justify-content:center; border:1.5px solid var(--navy);">[ WORLD MAP ]</div><p>엠페클라 메인 세계관입니다.</p>' }
+        { 
+          id: 'empecla', 
+          group: 'MAIN WORLDS', 
+          title: 'Empecla (엠페클라)', 
+          sub: 'MAIN WORLD DATABASE', 
+          img: './images/A01.png', 
+          desc: '날씨와 기상의 변화가 세계 전체의 흐름을 좌우하는 엠페클라 메인 세계관입니다.',
+          charIds: ['ruroon', 'char_b']
+        }
       ],
       characters: [
-        { id: 'ruroon', group: 'EMPECLA', name: '루룬 (Ruroon)', sub: 'EMPECLA ARCHIVE', img: './images/A01.png', content: '<div style="background:#eca8b9; height:220px; display:flex; align-items:center; justify-content:center; border:1.5px solid var(--navy); font-weight:bold;">[ RUROON ILLUST ]</div><p>메인 관찰자 캐릭터 루룬의 프로필입니다.</p>' },
-        { id: 'char_b', group: 'EMPECLA', name: '캐릭터 B', sub: 'EMPECLA ARCHIVIST', img: './images/A02.png', content: '<p>캐릭터 B의 정보입니다.</p>' },
-        { id: 'char_c', group: 'SUB WORLD', name: '캐릭터 C', sub: 'SUB WORLD TRAVELER', img: '', content: '<p>서브 세계관 속 캐릭터 C입니다.</p>' }
+        { 
+          id: 'ruroon', 
+          group: 'EMPECLA', 
+          name: '루룬 (Ruroon)', 
+          sub: 'EMPECLA ARCHIVE', 
+          alias: 'Obsidian Star',
+          birthday: '05-17',
+          tags: ['#핑크헤어', '#제복', '#오드아이', '#금속장식'],
+          img: './images/A01.png', 
+          tmi: '단 음식을 대단히 좋아하며, 별 모양의 장신구를 매일 다르게 수집하는 취미가 있다.',
+          gallery01: [
+            { img: './images/A01.png', links: [{ title: 'Pixiv Artwork', url: 'https://pixiv.net' }, { title: 'Twitter Post', url: 'https://x.com' }] },
+            { img: './images/A02.png', links: [] },
+            { img: './images/A01.png', links: [] }
+          ],
+          gallery02: [
+            {
+              title: '초기 컨셉 시안 & Rough Cuts',
+              desc: '초기 캐릭터 디자인 시안 및 표정 시트 모음입니다.',
+              images: [
+                { img: './images/A02.png', links: [] },
+                { img: './images/A01.png', links: [] }
+              ]
+            }
+          ]
+        },
+        { 
+          id: 'char_b', 
+          group: 'EMPECLA', 
+          name: '캐릭터 B', 
+          sub: 'EMPECLA ARCHIVIST', 
+          alias: 'N/A',
+          birthday: '11-03',
+          tags: ['#안경', '#연구원'],
+          img: './images/A02.png', 
+          tmi: '밤샘 연구가 일상이다.',
+          gallery01: [{ img: './images/A02.png', links: [] }],
+          gallery02: []
+        }
       ],
       music: [
         { id: 'track_01', group: 'ALBUM 01', title: '01. Signal Theme #1', sub: 'TRACK 01 / MAIN THEME', content: '<p>Signal Theme #1의 가사 및 정보입니다.</p>' }
       ],
       feed: [
-        { id: 'feed_1', date: '2026-08-24', title: '2026.08.24 Daily Log', img: './images/A01.png', content: '<img src="./images/A01.png" class="detail-cover-img"><p>최신 기록입니다. 피드는 날짜 기준 자동 정렬되어 최상단에 보여집니다.</p>' },
-        { id: 'feed_2', date: '2026-08-20', title: '2026.08.20 Sketch Log', img: './images/A02.png', content: '<img src="./images/A02.png" class="detail-cover-img"><p>이전 스케치 아이디어 기록입니다.</p>' }
+        { id: 'feed_1', date: '2026-08-24', title: '2026.08.24 Daily Log', img: './images/A01.png', content: '<img src="./images/A01.png" style="width:100%; max-height:300px; object-fit:cover; border:1.5px solid var(--navy);"><p style="margin-top:10px;">최신 기록입니다.</p>' }
       ],
       notice: [
-        { id: 'renewal', date: '2026-08-24', title: 'Archive Renewal', pinned: true, content: '<p>아카이브 시스템이 리뉴얼되었습니다! 상단 고정글 테스트입니다.</p>' },
-        { id: 'update_1', date: '2026-08-21', title: 'System Notice', pinned: false, content: '<p>일반 공지사항입니다.</p>' }
+        { id: 'renewal', date: '2026-08-24', title: 'Archive Renewal', pinned: true, content: '<p>아카이브 시스템이 리뉴얼되었습니다!</p>' }
       ]
     };
 
     /* ---------- RENDER SIDEBAR LISTS ---------- */
-    /* 3. WORLD 사이드바도 CHARACTERS와 동일하게 이미지 썸네일 구조 적용 */
     function renderWorldSidebar() {
       const container = document.getElementById('world-sidebar-list');
       let html = '';
@@ -971,13 +765,12 @@
         html += `
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
-              <span>✦ ${groupName}</span>
-              <span class="acc-icon">▼</span>
+              <span>✦ ${groupName}</span><span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
               ${items.map(item => `
-                <div class="list-item" id="item-world-${item.id}" onclick="selectItemWithUrl('world', '${item.id}')">
-                  ${item.img ? `<img src="${item.img}" class="item-thumb">` : `<div class="item-thumb" style="background:#fff;"></div>`}
+                <div class="list-item" id="item-world-${item.id}" onclick="selectWorldItem('${item.id}', this)">
+                  ${item.img ? `<img src="${item.img}" class="item-thumb">` : `<div class="item-thumb"></div>`}
                   <div class="item-info">
                     <span class="item-name">
                       <span>${item.title}</span>
@@ -1001,13 +794,12 @@
         html += `
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
-              <span>✦ ${groupName}</span>
-              <span class="acc-icon">▼</span>
+              <span>✦ ${groupName}</span><span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
               ${items.map(item => `
-                <div class="list-item" id="item-characters-${item.id}" onclick="selectItemWithUrl('characters', '${item.id}')">
-                  ${item.img ? `<img src="${item.img}" class="item-thumb">` : `<div class="item-thumb" style="background:#fff;"></div>`}
+                <div class="list-item" id="item-characters-${item.id}" onclick="selectCharItem('${item.id}', this)">
+                  ${item.img ? `<img src="${item.img}" class="item-thumb">` : `<div class="item-thumb"></div>`}
                   <div class="item-info">
                     <span class="item-name">
                       <span>${item.name}</span>
@@ -1031,12 +823,11 @@
         html += `
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
-              <span>✦ ${groupName}</span>
-              <span class="acc-icon">▼</span>
+              <span>✦ ${groupName}</span><span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
               ${items.map(item => `
-                <div class="list-item" id="item-music-${item.id}" onclick="selectItemWithUrl('music', '${item.id}')">
+                <div class="list-item" id="item-music-${item.id}" onclick="selectMusicItem('${item.id}', this)">
                   <div class="item-info">
                     <span class="item-name">
                       <span>${item.title}</span>
@@ -1058,12 +849,11 @@
       let html = `
         <div class="accordion-group">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>✦ ALL LOGS</span>
-            <span class="acc-icon">▼</span>
+            <span>✦ ALL LOGS</span><span class="acc-icon">▼</span>
           </div>
           <div class="accordion-body">
             ${sortedFeed.map(item => `
-              <div class="list-item" id="item-feed-${item.id}" onclick="selectItemWithUrl('feed', '${item.id}')">
+              <div class="list-item" id="item-feed-${item.id}" onclick="selectFeedItem('${item.id}', this)">
                 <img src="${item.img || './images/A01.png'}" class="item-thumb">
                 <div class="item-info">
                   <span class="item-name">
@@ -1088,7 +878,7 @@
       });
 
       let html = `
-        <div class="list-item" id="item-notice-calendar" onclick="selectItemWithUrl('notice', 'calendar')">
+        <div class="list-item" id="item-notice-calendar" onclick="selectNoticeItem('calendar', this)">
           <div class="item-info">
             <span class="item-name">CALENDAR</span>
             <span class="item-subtext">TIME RECORD</span>
@@ -1097,12 +887,11 @@
 
         <div class="accordion-group">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>✦ ANNOUNCEMENTS</span>
-            <span class="acc-icon">▼</span>
+            <span>✦ ANNOUNCEMENTS</span><span class="acc-icon">▼</span>
           </div>
           <div class="accordion-body">
             ${sortedNotice.map(item => `
-              <div class="list-item" id="item-notice-${item.id}" onclick="selectItemWithUrl('notice', '${item.id}')">
+              <div class="list-item" id="item-notice-${item.id}" onclick="selectNoticeItem('${item.id}', this)">
                 <div class="item-info">
                   <span class="item-name">
                     <span>${item.pinned ? `<span class="pin-badge">FIX</span>` : ''}${item.title}</span>
@@ -1118,26 +907,14 @@
       container.innerHTML = html;
     }
 
-    /* ---------- URL HASH DEEP LINKING SYSTEM ---------- */
-    function selectItemWithUrl(pageId, itemId) {
-      location.hash = `#${pageId}/${itemId}`;
-    }
-
+    /* ---------- URL & SELECTION SYSTEM ---------- */
     function navigateTo(pageId) {
-      if (!pageId) {
-        location.hash = '';
-      } else {
-        location.hash = `#${pageId}`;
-      }
+      location.hash = pageId ? `#${pageId}` : '';
     }
 
     function handleHashRoute() {
       const hash = location.hash.replace('#', '');
-      if (!hash) {
-        switchPageRaw('signal');
-        return;
-      }
-
+      if (!hash) { switchPageRaw('signal'); return; }
       const parts = hash.split('/');
       const pageId = parts[0];
       const itemId = parts[1];
@@ -1160,43 +937,173 @@
 
     window.addEventListener('hashchange', handleHashRoute);
 
-    /* ---------- SELECT / DETAIL CONTROLLERS ---------- */
-    function handleListSelection(element, parentSelector) {
+    /* 1. 다시 누르면 선택 표시(남색) 풀리도록 수정 */
+    function handleListSelection(element, parentSelector, sectionKey) {
       const isAlreadyActive = element.classList.contains('active');
       document.querySelectorAll(`${parentSelector} .list-item`).forEach(i => i.classList.remove('active'));
-      if (isAlreadyActive) return false;
+      
+      if (isAlreadyActive) {
+        activeItemIds[sectionKey] = null;
+        document.getElementById(`${sectionKey}-detail-title`).innerText = `SELECT ${sectionKey.toUpperCase()}`;
+        document.getElementById(`${sectionKey}-detail-sub`).innerText = '목록에서 항목을 선택해 주세요.';
+        document.getElementById(`${sectionKey}-detail-body`).innerHTML = '<p>선택이 해제되었습니다.</p>';
+        document.getElementById(`${sectionKey}-detail-admin-marks`).innerHTML = '';
+        return false;
+      }
+
       element.classList.add('active');
       return true;
     }
 
+    /* ---------- SELECT ITEM HANDLERS ---------- */
     function selectWorldItem(id, el) {
-      if (handleListSelection(el, '#page-world')) {
+      if (handleListSelection(el, '#page-world', 'world')) {
         const item = database.world.find(w => w.id === id);
         if (item) {
           activeItemIds.world = id;
           document.getElementById('world-detail-title').innerText = item.title;
           document.getElementById('world-detail-sub').innerText = item.sub;
-          document.getElementById('world-detail-body').innerHTML = item.content;
+          
+          let cardsHtml = '';
+          if (item.charIds && item.charIds.length > 0) {
+            cardsHtml = `
+              <div class="gallery-section-title"><span>APPEARING CHARACTERS</span></div>
+              <div class="world-char-cards-grid">
+                ${item.charIds.map(cId => {
+                  const c = database.characters.find(char => char.id === cId);
+                  if(!c) return '';
+                  return `
+                    <div class="world-char-card" onclick="location.hash='#characters/${c.id}'">
+                      <img src="${c.img || './images/A01.png'}">
+                      <div class="card-name">${c.name}</div>
+                      <div class="card-sub">${c.alias || 'N/A'}</div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `;
+          }
+
+          document.getElementById('world-detail-body').innerHTML = `
+            ${item.img ? `<img src="${item.img}" style="width:100%; max-height:280px; object-fit:cover; border:1.5px solid var(--navy); margin-bottom:12px;">` : ''}
+            <p style="line-height:1.6; font-size:14px; margin-bottom:16px;">${item.desc || ''}</p>
+            ${cardsHtml}
+          `;
           document.getElementById('world-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('world', id);
         }
       }
     }
 
     function selectCharItem(id, el) {
-      if (handleListSelection(el, '#page-characters')) {
+      if (handleListSelection(el, '#page-characters', 'characters')) {
         const item = database.characters.find(c => c.id === id);
         if (item) {
           activeItemIds.characters = id;
           document.getElementById('char-detail-title').innerText = item.name;
-          document.getElementById('char-detail-sub').innerText = item.sub;
-          document.getElementById('char-detail-body').innerHTML = item.content;
+          document.getElementById('char-detail-sub').innerText = item.sub || 'CHARACTER PROFILE';
+
+          // 갤러리 이미지 통합 수집
+          let allGallery01Imgs = (item.gallery01 || []).map(g => typeof g === 'string' ? { img: g, links: [] } : g);
+
+          // Gallery 01 HTML (1줄 좌르륵 드래그)
+          let gal01Html = '';
+          if (allGallery01Imgs.length > 0) {
+            gal01Html = `
+              <div class="gallery-section-title"><span>OFFICIAL GALLERY (01)</span></div>
+              <div class="gal01-scroll-wrapper" id="gal01-scroll-box">
+                ${allGallery01Imgs.map((gObj, idx) => `
+                  <div class="gal-thumb-item" onclick="openLightboxFromData('gal01', ${idx})">
+                    <img src="${gObj.img}" class="gal-thumb-img">
+                    ${(gObj.links && gObj.links.length > 0) ? `
+                      <div class="link-svg-badge" onclick="event.stopPropagation(); showLinksModal('${item.id}', 'gal01', ${idx})">
+                        <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                      </div>
+                    ` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          }
+
+          // Gallery 02 HTML (목록 아코디언형)
+          let gal02Html = '';
+          if (item.gallery02 && item.gallery02.length > 0) {
+            gal02Html = `
+              <div class="gallery-section-title" style="margin-top:16px;"><span>ARCHIVE GALLERY (02)</span></div>
+              <div>
+                ${item.gallery02.map((group, gIdx) => `
+                  <div class="gal02-accordion-item">
+                    <div class="gal02-acc-header" onclick="this.parentElement.classList.toggle('collapsed')">
+                      <span>✦ ${group.title} (${group.images ? group.images.length : 0})</span>
+                      <span>▼</span>
+                    </div>
+                    ${group.desc ? `<div class="gal02-acc-desc">${group.desc}</div>` : ''}
+                    <div class="gal02-acc-body">
+                      ${(group.images || []).map((imgObj, iIdx) => {
+                        const actualObj = typeof imgObj === 'string' ? { img: imgObj, links: [] } : imgObj;
+                        return `
+                          <div class="gal-thumb-item" onclick="openLightboxFromData('gal02', ${gIdx}, ${iIdx})">
+                            <img src="${actualObj.img}" class="gal-thumb-img">
+                            ${(actualObj.links && actualObj.links.length > 0) ? `
+                              <div class="link-svg-badge" onclick="event.stopPropagation(); showLinksModal('${item.id}', 'gal02', ${gIdx}, ${iIdx})">
+                                <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                              </div>
+                            ` : ''}
+                          </div>
+                        `;
+                      }).join('')}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          }
+
+          const tagsHtml = (item.tags || []).map(t => `<span class="tag-pill">${t}</span>`).join('');
+
+          document.getElementById('char-detail-body').innerHTML = `
+            <div class="char-profile-container">
+              <div class="char-main-top">
+                <div class="char-main-img-box">
+                  <img src="${item.img || './images/A01.png'}" class="char-main-img">
+                </div>
+                <div class="char-meta-table">
+                  <div class="char-meta-row">
+                    <span class="char-meta-label">NAME</span>
+                    <span class="char-meta-val">${item.name}</span>
+                  </div>
+                  <div class="char-meta-row">
+                    <span class="char-meta-label">ALIAS</span>
+                    <span class="char-meta-val">${item.alias || 'N/A'}</span>
+                  </div>
+                  <div class="char-meta-row">
+                    <span class="char-meta-label">BIRTHDAY</span>
+                    <span class="char-meta-val">
+                      ${item.birthday || '미정'}
+                      ${item.birthday ? `<button class="cal-link-btn" onclick="jumpToCalendar('${item.birthday}', '${item.name}')">CALENDAR ↗</button>` : ''}
+                    </span>
+                  </div>
+                  <div class="char-meta-row">
+                    <span class="char-meta-label">TAGS</span>
+                    <span class="char-meta-val" style="flex-wrap:wrap;">${tagsHtml || 'None'}</span>
+                  </div>
+                </div>
+              </div>
+
+              ${gal01Html}
+              ${gal02Html}
+
+              <div class="gallery-section-title" style="margin-top:10px;"><span>NOTES &amp; LORE</span></div>
+              <p style="white-space:pre-line; line-height:1.6; font-size:13px; background:rgba(255,255,255,0.7); padding:12px; border:1px solid var(--navy);">${item.tmi || '등록된 기타 정보가 없습니다.'}</p>
+            </div>
+          `;
           document.getElementById('char-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('characters', id);
         }
       }
     }
 
     function selectMusicItem(id, el) {
-      if (handleListSelection(el, '#page-music')) {
+      if (handleListSelection(el, '#page-music', 'music')) {
         const item = database.music.find(m => m.id === id);
         if (item) {
           activeItemIds.music = id;
@@ -1209,7 +1116,7 @@
     }
 
     function selectFeedItem(id, el) {
-      if (handleListSelection(el, '#page-feed')) {
+      if (handleListSelection(el, '#page-feed', 'feed')) {
         const item = database.feed.find(f => f.id === id);
         if (item) {
           activeItemIds.feed = id;
@@ -1222,8 +1129,7 @@
     }
 
     function selectNoticeItem(id, el) {
-      if (!handleListSelection(el, '#page-notice')) return;
-
+      if (!handleListSelection(el, '#page-notice', 'notice')) return;
       if (id === 'calendar') {
         activeItemIds.notice = null;
         document.getElementById('notice-detail-title').innerText = "ARCHIVE CALENDAR";
@@ -1242,81 +1148,221 @@
       }
     }
 
-    /* 4. 모든 페이지에서 블로그 포스트 수정 스타일의 인라인 편집 모드 기능 */
-    function startInlineEdit(section, id) {
-      const item = database[section].find(i => i.id === id);
-      if (!item) return;
+    /* ---------- CALENDAR & BIRTHDAY LINK ---------- */
+    function jumpToCalendar(bdayStr, charName) {
+      const parts = bdayStr.split('-');
+      const m = parseInt(parts[0]) - 1;
+      const d = parseInt(parts[1]);
+      currentCalMonth = m;
+      selectedDateKey = `${currentCalYear}-${parts[0].padStart(2,'0')}-${parts[1].padStart(2,'0')}`;
+      
+      // 일정이 없으면 생일 일정 등록
+      if (!eventsData[selectedDateKey]) eventsData[selectedDateKey] = [];
+      const evtText = `🎂 ${charName} 생일`;
+      if (!eventsData[selectedDateKey].includes(evtText)) eventsData[selectedDateKey].push(evtText);
 
-      const titleVal = item.title || item.name || '';
-      const subVal = item.sub || item.date || '';
-      const contentVal = item.content || '';
-
-      const detailBodyEl = document.getElementById(`${section}-detail-body`);
-
-      detailBodyEl.innerHTML = `
-        <div class="inline-edit-form">
-          <label style="font-size:11px; font-weight:bold; font-family:var(--mono);">제목 수정</label>
-          <input type="text" id="inline-edit-title-input" class="inline-edit-input inline-edit-title" value="${titleVal.replace(/"/g, '&quot;')}">
-          
-          <label style="font-size:11px; font-weight:bold; font-family:var(--mono);">서브 정보 / 날짜 수정</label>
-          <input type="text" id="inline-edit-sub-input" class="inline-edit-input" value="${subVal.replace(/"/g, '&quot;')}">
-
-          <label style="font-size:11px; font-weight:bold; font-family:var(--mono);">본문 내용 수정 (HTML 적용 가능)</label>
-          <textarea id="inline-edit-content-input" class="inline-edit-textarea">${contentVal}</textarea>
-
-          <div class="inline-edit-actions">
-            <button class="inline-btn inline-btn-cancel" onclick="cancelInlineEdit('${section}', '${id}')">취소</button>
-            <button class="inline-btn inline-btn-save" onclick="saveInlineEdit('${section}', '${id}')">저장하기</button>
-          </div>
-        </div>
-      `;
+      navigateTo('notice');
+      setTimeout(() => {
+        const calEl = document.getElementById('item-notice-calendar');
+        if (calEl) selectNoticeItem('calendar', calEl);
+      }, 100);
     }
 
-    function saveInlineEdit(section, id) {
+    /* ---------- LIGHTBOX & LINKS MODAL ---------- */
+    function openLightboxFromData(type, p1, p2) {
+      const char = database.characters.find(c => c.id === activeItemIds.characters);
+      if (!char) return;
+
+      if (type === 'gal01') {
+        currentLightboxList = (char.gallery01 || []).map(g => typeof g === 'string' ? g : g.img);
+        currentLightboxIdx = p1;
+      } else if (type === 'gal02') {
+        const group = char.gallery02[p1];
+        currentLightboxList = (group.images || []).map(g => typeof g === 'string' ? g : g.img);
+        currentLightboxIdx = p2;
+      }
+
+      showLightboxImg();
+    }
+
+    function showLightboxImg() {
+      document.getElementById('lightbox-img').src = currentLightboxList[currentLightboxIdx];
+      document.getElementById('lightbox-modal').classList.add('show');
+    }
+
+    function navLightbox(dir) {
+      currentLightboxIdx += dir;
+      if (currentLightboxIdx < 0) currentLightboxIdx = currentLightboxList.length - 1;
+      if (currentLightboxIdx >= currentLightboxList.length) currentLightboxIdx = 0;
+      showLightboxImg();
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox-modal').classList.remove('show');
+    }
+
+    document.addEventListener('keydown', e => {
+      if (document.getElementById('lightbox-modal').classList.contains('show')) {
+        if (e.key === 'ArrowLeft') navLightbox(-1);
+        if (e.key === 'ArrowRight') navLightbox(1);
+        if (e.key === 'Escape') closeLightbox();
+      }
+    });
+
+    function showLinksModal(charId, type, p1, p2) {
+      const char = database.characters.find(c => c.id === charId);
+      if(!char) return;
+      let links = [];
+      if(type === 'gal01') links = char.gallery01[p1].links || [];
+      else if(type === 'gal02') links = char.gallery02[p1].images[p2].links || [];
+
+      const modalBody = document.getElementById('links-modal-body');
+      if (links.length === 0) {
+        modalBody.innerHTML = '<p style="font-size:13px;">연결된 작품 링크가 없습니다.</p>';
+      } else {
+        modalBody.innerHTML = links.map(l => `
+          <a href="${l.url}" target="_blank" style="display:flex; justify-content:space-between; background:#fff; padding:10px; border:1.5px solid var(--navy); font-weight:bold; font-size:13px;">
+            <span>✦ ${l.title}</span>
+            <span style="font-family:var(--mono);">GO ↗</span>
+          </a>
+        `).join('');
+      }
+      document.getElementById('modal-links').classList.add('show');
+    }
+
+    /* ---------- FULL EDIT & ADD SYSTEM (ADMIN) ---------- */
+    function openEditModal(section, id) {
       const item = database[section].find(i => i.id === id);
       if (!item) return;
+      renderAdminEditForm(section, item, false);
+    }
 
-      const newTitle = document.getElementById('inline-edit-title-input').value.trim();
-      const newSub = document.getElementById('inline-edit-sub-input').value.trim();
-      const newContent = document.getElementById('inline-edit-content-input').value.trim();
+    function openAddModal(section) {
+      const newItem = { id: `${section}_${Date.now()}` };
+      if (section === 'world') newItem.group = categoryGroups.world[0];
+      if (section === 'characters') newItem.group = categoryGroups.characters[0];
+      if (section === 'music') newItem.group = categoryGroups.music[0];
+      renderAdminEditForm(section, newItem, true);
+    }
 
-      if (!newTitle) {
-        alert('제목을 입력해 주세요.');
-        return;
+    function renderAdminEditForm(section, item, isNew) {
+      const container = document.getElementById('admin-edit-container');
+      let fieldsHtml = '';
+
+      if (section === 'characters') {
+        const gal01Str = (item.gallery01 || []).map(g => typeof g === 'string' ? g : g.img).join('\n');
+        fieldsHtml = `
+          <label class="modal-label">캐릭터 이름</label>
+          <input type="text" id="edit-name" class="modal-input" value="${item.name || ''}">
+          
+          <label class="modal-label">그룹 (카테고리)</label>
+          <input type="text" id="edit-group" class="modal-input" value="${item.group || categoryGroups.characters[0]}">
+
+          <label class="modal-label">애칭 / 별명 (없으면 ALIAS 또는 N/A)</label>
+          <input type="text" id="edit-alias" class="modal-input" value="${item.alias || 'ALIAS'}">
+
+          <label class="modal-label">생일 (MM-DD 형식 예: 05-17)</label>
+          <input type="text" id="edit-bday" class="modal-input" value="${item.birthday || ''}">
+
+          <label class="modal-label">외형 태그 (쉼표 구분 예: #핑크헤어, #제복)</label>
+          <input type="text" id="edit-tags" class="modal-input" value="${(item.tags || []).join(', ')}">
+
+          <label class="modal-label">메인 프로필 이미지 URL</label>
+          <input type="text" id="edit-img" class="modal-input" value="${item.img || ''}">
+
+          <label class="modal-label">갤러리 01 이미지 URL 목록 (줄바꿈으로 구분)</label>
+          <textarea id="edit-gal01" class="modal-textarea">${gal01Str}</textarea>
+
+          <label class="modal-label">NOTES & LORE (TMI 및 설정)</label>
+          <textarea id="edit-tmi" class="modal-textarea">${item.tmi || ''}</textarea>
+        `;
+      } else if (section === 'world') {
+        const selectedCharIds = item.charIds || [];
+        fieldsHtml = `
+          <label class="modal-label">세계관 제목</label>
+          <input type="text" id="edit-title" class="modal-input" value="${item.title || ''}">
+          
+          <label class="modal-label">서브 타이틀</label>
+          <input type="text" id="edit-sub" class="modal-input" value="${item.sub || ''}">
+
+          <label class="modal-label">메인 이미지 URL</label>
+          <input type="text" id="edit-img" class="modal-input" value="${item.img || ''}">
+
+          <label class="modal-label">세계관 설명</label>
+          <textarea id="edit-desc" class="modal-textarea">${item.desc || ''}</textarea>
+
+          <label class="modal-label">등장 캐릭터 카드 선택 (클릭하여 추가/해제)</label>
+          <div class="char-select-grid">
+            ${database.characters.map(c => `
+              <div class="char-select-card ${selectedCharIds.includes(c.id) ? 'selected' : ''}" onclick="this.classList.toggle('selected')" data-cid="${c.id}">
+                ${c.name}
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else {
+        fieldsHtml = `
+          <label class="modal-label">제목</label>
+          <input type="text" id="edit-title" class="modal-input" value="${item.title || item.name || ''}">
+          <label class="modal-label">서브 / 날짜</label>
+          <input type="text" id="edit-sub" class="modal-input" value="${item.sub || item.date || ''}">
+          <label class="modal-label">내용 (HTML 가능)</label>
+          <textarea id="edit-content" class="modal-textarea">${item.content || ''}</textarea>
+        `;
+      }
+
+      container.innerHTML = `
+        <div class="modal-title">${isNew ? 'ADD NEW ITEM' : 'EDIT ITEM'}</div>
+        ${fieldsHtml}
+        <div class="modal-btn-group">
+          <button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button>
+          <button class="modal-btn modal-btn-save" onclick="saveAdminEdit('${section}', '${item.id}', ${isNew})">SAVE</button>
+        </div>
+      `;
+
+      document.getElementById('modal-admin-edit').classList.add('show');
+    }
+
+    function closeAdminEditModal() {
+      document.getElementById('modal-admin-edit').classList.remove('show');
+    }
+
+    function saveAdminEdit(section, id, isNew) {
+      let item = database[section].find(i => i.id === id);
+      if (isNew) {
+        item = { id: id };
+        database[section].push(item);
       }
 
       if (section === 'characters') {
-        item.name = newTitle;
-        item.sub = newSub;
-      } else if (section === 'feed' || section === 'notice') {
-        item.title = newTitle;
-        item.date = newSub;
+        item.name = document.getElementById('edit-name').value;
+        item.group = document.getElementById('edit-group').value;
+        item.alias = document.getElementById('edit-alias').value;
+        item.birthday = document.getElementById('edit-bday').value;
+        item.tags = document.getElementById('edit-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+        item.img = document.getElementById('edit-img').value;
+        item.tmi = document.getElementById('edit-tmi').value;
+
+        const gal01Lines = document.getElementById('edit-gal01').value.split('\n').map(l => l.trim()).filter(Boolean);
+        item.gallery01 = gal01Lines.map(url => ({ img: url, links: [] }));
+      } else if (section === 'world') {
+        item.title = document.getElementById('edit-title').value;
+        item.sub = document.getElementById('edit-sub').value;
+        item.img = document.getElementById('edit-img').value;
+        item.desc = document.getElementById('edit-desc').value;
+        item.group = categoryGroups.world[0];
+
+        const selectedCards = document.querySelectorAll('.char-select-card.selected');
+        item.charIds = Array.from(selectedCards).map(el => el.getAttribute('data-cid'));
       } else {
-        item.title = newTitle;
-        item.sub = newSub;
+        item.title = document.getElementById('edit-title').value;
+        item.sub = document.getElementById('edit-sub').value;
+        item.content = document.getElementById('edit-content').value;
       }
 
-      item.content = newContent;
-
-      alert('성공적으로 수정되었습니다.');
+      alert('저장되었습니다.');
+      closeAdminEditModal();
       renderAllSidebars();
-
-      // 상세 영역 다시 로드
-      const el = document.getElementById(`item-${section}-${id}`);
-      if (section === 'world') selectWorldItem(id, el);
-      else if (section === 'characters') selectCharItem(id, el);
-      else if (section === 'music') selectMusicItem(id, el);
-      else if (section === 'feed') selectFeedItem(id, el);
-      else if (section === 'notice') selectNoticeItem(id, el);
-    }
-
-    function cancelInlineEdit(section, id) {
-      const el = document.getElementById(`item-${section}-${id}`);
-      if (section === 'world') selectWorldItem(id, el);
-      else if (section === 'characters') selectCharItem(id, el);
-      else if (section === 'music') selectMusicItem(id, el);
-      else if (section === 'feed') selectFeedItem(id, el);
-      else if (section === 'notice') selectNoticeItem(id, el);
     }
 
     function deleteExistingItem(section, id) {
@@ -1324,161 +1370,12 @@
         const idx = database[section].findIndex(i => i.id === id);
         if (idx !== -1) {
           database[section].splice(idx, 1);
-          alert('삭제되었습니다.');
           renderAllSidebars();
-          
-          if (activeItemIds[section] === id) {
-            activeItemIds[section] = null;
-            document.getElementById(`${section}-detail-title`).innerText = `SELECT ${section.toUpperCase()}`;
-            document.getElementById(`${section}-detail-body`).innerHTML = `<p>항목이 삭제되었습니다.</p>`;
-            document.getElementById(`${section}-detail-admin-marks`).innerHTML = '';
-          }
         }
       }
     }
 
-    /* ---------- CALENDAR LOGIC ---------- */
-    const nowSystemDate = new Date();
-    let currentCalYear = nowSystemDate.getFullYear();
-    let currentCalMonth = nowSystemDate.getMonth();
-    
-    function getTodayKey() {
-      const y = nowSystemDate.getFullYear();
-      const m = String(nowSystemDate.getMonth() + 1).padStart(2, '0');
-      const d = String(nowSystemDate.getDate()).padStart(2, '0');
-      return `${y}-${m}-${d}`;
-    }
-
-    let selectedDateKey = getTodayKey();
-    let eventsData = {};
-
-    function renderCalendarUI() {
-      const container = document.getElementById('notice-detail-body');
-      const todayKeyStr = getTodayKey();
-      const formattedMonth = String(currentCalMonth + 1).padStart(2, '0');
-      const monthDisplayStr = `${currentCalYear}.${formattedMonth}`;
-      
-      let html = `
-        <div class="calendar-container-full">
-          <div class="cal-top-bar">
-            <button class="cal-nav-btn" onclick="changeMonth(-1)">◀ PREV</button>
-            <span>${monthDisplayStr}</span>
-            <button class="cal-nav-btn" onclick="changeMonth(1)">NEXT ▶</button>
-          </div>
-          
-          <div class="full-cal-grid">
-            <div class="full-cal-head">SUN</div>
-            <div class="full-cal-head">MON</div>
-            <div class="full-cal-head">TUE</div>
-            <div class="full-cal-head">WED</div>
-            <div class="full-cal-head">THU</div>
-            <div class="full-cal-head">FRI</div>
-            <div class="full-cal-head">SAT</div>
-      `;
-
-      const firstDay = new Date(currentCalYear, currentCalMonth, 1).getDay();
-      const daysInMonth = new Date(currentCalYear, currentCalMonth + 1, 0).getDate();
-
-      for (let i = 0; i < firstDay; i++) {
-        html += `<div class="full-cal-day empty"></div>`;
-      }
-
-      for (let day = 1; day <= daysInMonth; day++) {
-        const mStr = String(currentCalMonth + 1).padStart(2, '0');
-        const dStr = String(day).padStart(2, '0');
-        const dateKey = `${currentCalYear}-${mStr}-${dStr}`;
-        
-        const isSelected = (dateKey === selectedDateKey) ? 'selected' : '';
-        const isToday = (dateKey === todayKeyStr) ? 'today' : '';
-        const dayEvents = eventsData[dateKey] || [];
-
-        let eventsHtml = '';
-        if (dayEvents.length > 0) {
-          eventsHtml = '<div class="event-inline-list">' + 
-            dayEvents.map(evt => `
-              <div class="event-inline-item">
-                <span class="event-dot-icon"></span>
-                <span class="event-inline-text">${evt}</span>
-              </div>
-            `).join('') + 
-            '</div>';
-        }
-
-        html += `
-          <div class="full-cal-day ${isSelected} ${isToday}" onclick="selectCalDate('${dateKey}')">
-            <span class="day-num">${day}</span>
-            ${eventsHtml}
-          </div>
-        `;
-      }
-
-      const totalCellsFilled = firstDay + daysInMonth;
-      const remainingCells = (7 - (totalCellsFilled % 7)) % 7;
-      for (let i = 0; i < remainingCells; i++) {
-        html += `<div class="full-cal-day empty"></div>`;
-      }
-
-      html += `</div>`;
-
-      const currentList = eventsData[selectedDateKey] || [];
-      let listHtml = currentList.map((item, idx) => `
-        <li style="justify-content: space-between;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span class="event-dot-icon"></span>
-            <span>${item}</span>
-          </div>
-          <span class="admin-only">
-            <svg class="admin-svg-icon" viewBox="0 0 24 24" onclick="deleteCalendarEvent('${selectedDateKey}', ${idx})" title="삭제">
-              <polyline points="3 6 5 6 21 6"></polyline>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            </svg>
-          </span>
-        </li>
-      `).join('');
-
-      if (currentList.length === 0) {
-        listHtml = `<li style="opacity:0.6;">등록된 일정이 없습니다.</li>`;
-      }
-
-      html += `
-        <div class="schedule-panel-read">
-          <div class="schedule-panel-title">
-            <span>✦ ${selectedDateKey} SCHEDULE</span>
-          </div>
-          <ul class="schedule-list-ul">
-            ${listHtml}
-          </ul>
-        </div>
-      </div>`;
-
-      container.innerHTML = html;
-    }
-
-    function changeMonth(delta) {
-      currentCalMonth += delta;
-      if (currentCalMonth < 0) {
-        currentCalMonth = 11;
-        currentCalYear--;
-      } else if (currentCalMonth > 11) {
-        currentCalMonth = 0;
-        currentCalYear++;
-      }
-      renderCalendarUI();
-    }
-
-    function selectCalDate(dateKey) {
-      selectedDateKey = dateKey;
-      renderCalendarUI();
-    }
-
-    function deleteCalendarEvent(dateKey, idx) {
-      if (confirm('해당 일정을 삭제하시겠습니까?')) {
-        eventsData[dateKey].splice(idx, 1);
-        renderCalendarUI();
-      }
-    }
-
-    /* ---------- AUTH & MODAL SYSTEM ---------- */
+    /* ---------- AUTH SYSTEM ---------- */
     const SECRET_PASS = "Loversleporineladymart";
 
     function openAdminLogin() {
@@ -1491,7 +1388,6 @@
       document.getElementById('modal-login').classList.remove('show');
     }
 
-    /* 1. 로그인 성공 시 관리자 창(팝업)이 자동으로 뜨지 않도록 처리 */
     function verifyAdminPassword() {
       const input = document.getElementById('admin-pass-input').value;
       if (input === SECRET_PASS) {
@@ -1521,83 +1417,169 @@
       renderNoticeSidebar();
     }
 
-    /* ---------- ACCORDION TOGGLE ---------- */
-    function toggleAccordion(headerEl) {
-      headerEl.parentElement.classList.toggle('collapsed');
+    /* ---------- CALENDAR UI ---------- */
+    const nowSystemDate = new Date();
+    let currentCalYear = nowSystemDate.getFullYear();
+    let currentCalMonth = nowSystemDate.getMonth();
+    
+    function getTodayKey() {
+      const y = nowSystemDate.getFullYear();
+      const m = String(nowSystemDate.getMonth() + 1).padStart(2, '0');
+      const d = String(nowSystemDate.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
     }
 
-    /* ---------- PAGE SWITCHER ---------- */
+    let selectedDateKey = getTodayKey();
+    let eventsData = {};
+
+    function renderCalendarUI() {
+      const container = document.getElementById('notice-detail-body');
+      const todayKeyStr = getTodayKey();
+      const formattedMonth = String(currentCalMonth + 1).padStart(2, '0');
+      const monthDisplayStr = `${currentCalYear}.${formattedMonth}`;
+      
+      let html = `
+        <div class="calendar-container-full">
+          <div class="cal-top-bar">
+            <button class="cal-nav-btn" onclick="changeMonth(-1)">◀ PREV</button>
+            <span>${monthDisplayStr}</span>
+            <button class="cal-nav-btn" onclick="changeMonth(1)">NEXT ▶</button>
+          </div>
+          <div class="full-cal-grid">
+            <div class="full-cal-head">SUN</div><div class="full-cal-head">MON</div>
+            <div class="full-cal-head">TUE</div><div class="full-cal-head">WED</div>
+            <div class="full-cal-head">THU</div><div class="full-cal-head">FRI</div>
+            <div class="full-cal-head">SAT</div>
+      `;
+
+      const firstDay = new Date(currentCalYear, currentCalMonth, 1).getDay();
+      const daysInMonth = new Date(currentCalYear, currentCalMonth + 1, 0).getDate();
+
+      for (let i = 0; i < firstDay; i++) html += `<div class="full-cal-day empty"></div>`;
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const mStr = String(currentCalMonth + 1).padStart(2, '0');
+        const dStr = String(day).padStart(2, '0');
+        const dateKey = `${currentCalYear}-${mStr}-${dStr}`;
+        
+        const isSelected = (dateKey === selectedDateKey) ? 'selected' : '';
+        const isToday = (dateKey === todayKeyStr) ? 'today' : '';
+        const dayEvents = eventsData[dateKey] || [];
+
+        let eventsHtml = '';
+        if (dayEvents.length > 0) {
+          eventsHtml = '<div class="event-inline-list">' + 
+            dayEvents.map(evt => `<div class="event-inline-item"><span class="event-dot-icon"></span><span class="event-inline-text">${evt}</span></div>`).join('') + 
+            '</div>';
+        }
+
+        html += `
+          <div class="full-cal-day ${isSelected} ${isToday}" onclick="selectCalDate('${dateKey}')">
+            <span class="day-num">${day}</span>
+            ${eventsHtml}
+          </div>
+        `;
+      }
+
+      const remainingCells = (7 - ((firstDay + daysInMonth) % 7)) % 7;
+      for (let i = 0; i < remainingCells; i++) html += `<div class="full-cal-day empty"></div>`;
+      html += `</div>`;
+
+      const currentList = eventsData[selectedDateKey] || [];
+      let listHtml = currentList.map((item, idx) => `
+        <li style="justify-content: space-between;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="event-dot-icon"></span><span>${item}</span>
+          </div>
+          <span class="admin-only">
+            <svg class="admin-svg-icon" viewBox="0 0 24 24" onclick="deleteCalendarEvent('${selectedDateKey}', ${idx})" title="삭제"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          </span>
+        </li>
+      `).join('');
+
+      if (currentList.length === 0) listHtml = `<li style="opacity:0.6;">등록된 일정이 없습니다.</li>`;
+
+      html += `
+        <div class="schedule-panel-read">
+          <div class="schedule-panel-title"><span>✦ ${selectedDateKey} SCHEDULE</span></div>
+          <ul class="schedule-list-ul">${listHtml}</ul>
+        </div>
+      </div>`;
+
+      container.innerHTML = html;
+    }
+
+    function changeMonth(delta) {
+      currentCalMonth += delta;
+      if (currentCalMonth < 0) { currentCalMonth = 11; currentCalYear--; }
+      else if (currentCalMonth > 11) { currentCalMonth = 0; currentCalYear++; }
+      renderCalendarUI();
+    }
+
+    function selectCalDate(dateKey) {
+      selectedDateKey = dateKey;
+      renderCalendarUI();
+    }
+
+    function deleteCalendarEvent(dateKey, idx) {
+      if (confirm('해당 일정을 삭제하시겠습니까?')) {
+        eventsData[dateKey].splice(idx, 1);
+        renderCalendarUI();
+      }
+    }
+
+    /* ---------- ACCORDION & PAGE SWITCH ---------- */
+    function toggleAccordion(headerEl) { headerEl.parentElement.classList.toggle('collapsed'); }
+
     function switchPageRaw(pageId) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
       document.querySelectorAll('.sub-navlinks a').forEach(a => a.classList.remove('active'));
 
       const targetPage = document.getElementById('page-' + pageId);
-      if (targetPage) {
-        targetPage.classList.add('active-page');
-      } else {
-        document.getElementById('page-signal').classList.add('active-page');
-      }
+      if (targetPage) targetPage.classList.add('active-page');
+      else document.getElementById('page-signal').classList.add('active-page');
 
       const subNavbar = document.getElementById('sub-navbar');
-      if (!pageId || pageId === 'signal') {
-        subNavbar.classList.remove('show');
-      } else {
+      if (!pageId || pageId === 'signal') subNavbar.classList.remove('show');
+      else {
         subNavbar.classList.add('show');
         const activeSubNav = document.getElementById('sub-nav-' + pageId);
         if (activeSubNav) activeSubNav.classList.add('active');
       }
     }
 
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-    /* ---------- MOUSE CLICK STAMP (A05.png) & STAR TAIL EFFECT ---------- */
+    /* ---------- MOUSE STAMP & SPARKLE ---------- */
     document.addEventListener('click', function(e) {
-      // 도장 효과 (A05.png)
       const stamp = document.createElement('img');
       stamp.src = './images/A05.png';
       stamp.className = 'click-stamp';
       stamp.style.left = e.clientX + 'px';
       stamp.style.top = e.clientY + 'px';
-      
-      // 이미지 로드 실패 시 SVG fallback 하트 도장
       stamp.onerror = function() {
         this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ECA8B9" stroke="%231C2038" stroke-width="1.5"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
       };
-
       document.body.appendChild(stamp);
-
-      setTimeout(() => {
-        stamp.remove();
-      }, 600);
+      setTimeout(() => stamp.remove(), 600);
     });
 
     let lastStarTime = 0;
     document.addEventListener('mousemove', function(e) {
       const now = Date.now();
-      if (now - lastStarTime < 45) return; // 생성 간격 제어
+      if (now - lastStarTime < 45) return;
       lastStarTime = now;
-
       const star = document.createElement('span');
       star.className = 'tail-star';
       star.innerText = '✦';
-      // 커서 오프셋 (A03 커서 꼬리 끝 우하단 좌표)
       star.style.left = (e.clientX + 16) + 'px';
       star.style.top = (e.clientY + 18) + 'px';
-
       document.body.appendChild(star);
-
-      setTimeout(() => {
-        star.remove();
-      }, 700);
+      setTimeout(() => star.remove(), 700);
     });
 
     /* ---------- BGM PLAYER ---------- */
-    let player;
-    let isPlaying = false;
-    let progressTimer = null;
-
+    let player, isPlaying = false, progressTimer = null;
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('yt-player', {
         height: '0', width: '0', videoId: '67QfTqSLSoI',
@@ -1605,43 +1587,25 @@
         events: { 'onStateChange': onPlayerStateChange }
       });
     }
-
-    function toggleBgm() {
-      if(!player) return;
-      if(isPlaying) player.pauseVideo();
-      else player.playVideo();
-    }
-
-    function restartTrack() {
-      if(!player) return;
-      player.seekTo(0);
-    }
-
+    function toggleBgm() { if(!player) return; if(isPlaying) player.pauseVideo(); else player.playVideo(); }
+    function restartTrack() { if(!player) return; player.seekTo(0); }
     function updateProgressBar() {
       if (!player || !isPlaying) return;
       const currentTime = player.getCurrentTime();
       const duration = player.getDuration();
-      if (duration > 0) {
-        document.getElementById('progress-fill').style.width = ((currentTime / duration) * 100) + '%';
-      }
+      if (duration > 0) document.getElementById('progress-fill').style.width = ((currentTime / duration) * 100) + '%';
     }
-
     function seekTrack(event) {
       if (!player) return;
       const container = document.getElementById('progress-container');
       const rect = container.getBoundingClientRect();
       const percent = (event.clientX - rect.left) / rect.width;
       const duration = player.getDuration();
-      if (duration > 0) {
-        player.seekTo(duration * percent);
-        document.getElementById('progress-fill').style.width = (percent * 100) + '%';
-      }
+      if (duration > 0) { player.seekTo(duration * percent); document.getElementById('progress-fill').style.width = (percent * 100) + '%'; }
     }
-
     function onPlayerStateChange(event) {
       const playBtn = document.getElementById('play-btn');
       const soundWave = document.getElementById('sound-wave');
-
       if (event.data === YT.PlayerState.PLAYING) {
         isPlaying = true;
         playBtn.innerHTML = '<svg class="player-svg-icon" style="width:18px; height:18px;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
