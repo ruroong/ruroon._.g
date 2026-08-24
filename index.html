@@ -91,7 +91,7 @@
       50% { height: 20px; }
     }
 
-    /* 클릭 하트 도장 효과 */
+    /* 클릭 하트 도장 효과 (A05.png) */
     .click-stamp {
       position: fixed;
       width: 32px;
@@ -141,15 +141,29 @@
     
     .status { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; font: 11px var(--mono); }
     .status i { width: 7px; height: 7px; border-radius: 50%; background: var(--navy); animation: twinkle 1.5s infinite ease-in-out; }
+    
+    /* 관리자 로그인 시 시그널 온라인 붉은 불빛 스타일 */
+    .status.admin-active { color: #D32F2F; font-weight: bold; }
+    .status.admin-active i { background: #FF4D4D; box-shadow: 0 0 8px #FF4D4D; }
 
     .sub-navbar { background: rgba(236, 168, 185, 0.95); backdrop-filter: blur(10px); border-bottom: 1.5px solid var(--line); display: none; }
     .sub-navbar.show { display: block; }
     
-    .sub-navlinks { display: flex; justify-content: center; gap: 32px; padding: 12px 0; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; }
+    .sub-navlinks { display: flex; justify-content: center; align-items: center; gap: 32px; padding: 12px 0; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; position: relative; }
     .sub-navlinks a { position: relative; padding: 4px 2px; opacity: 0.65; transition: 0.2s; font-weight: 500; }
     .sub-navlinks a:hover, .sub-navlinks a.active { opacity: 1; font-weight: 700; }
     .sub-navlinks a::after { content: ""; position: absolute; left: 0; bottom: 0; width: 0; height: 1.5px; background: var(--navy); transition: 0.25s; }
     .sub-navlinks a:hover::after, .sub-navlinks a.active::after { width: 100%; }
+
+    /* SVG UI MARKS & BUTTONS */
+    .admin-svg-icon { width: 14px; height: 14px; stroke: var(--navy); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; cursor: pointer; transition: transform 0.15s, stroke 0.15s; }
+    .admin-svg-icon:hover { transform: scale(1.2); stroke: #D32F2F; }
+    .admin-only { display: none !important; }
+    .admin-mode .admin-only { display: inline-flex !important; align-items: center; gap: 4px; }
+    
+    .add-tab-btn { display: none; align-items: center; gap: 4px; padding: 2px 8px; border: 1.5px solid var(--navy); background: var(--white); font-weight: bold; font-size: 10px; cursor: pointer; border-radius: 3px; box-shadow: 1px 1px 0 var(--navy); }
+    .add-tab-btn:hover { background: var(--navy); color: var(--pink); }
+    .add-tab-btn .admin-svg-icon { stroke: currentColor; }
 
     /* PAGE VIEW SYSTEM */
     .page-section { display: none; padding: 40px 0; min-height: calc(100vh - 110px); }
@@ -248,7 +262,7 @@
       padding-bottom: 12px;
       margin-bottom: 20px;
     }
-    .detail-title { font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+    .detail-title { font-size: 24px; font-weight: 800; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
     .detail-subtitle { font-family: var(--mono); font-size: 11px; opacity: 0.7; margin-top: 4px; }
     
     .detail-content-body {
@@ -328,6 +342,7 @@
       gap: 10px;
       border-top: 1px dashed rgba(28, 32, 56, 0.2);
       transition: background 0.2s;
+      position: relative;
     }
     .list-item:hover { background: rgba(255, 255, 255, 0.6); }
     .list-item.active {
@@ -366,6 +381,9 @@
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
     .item-subtext { font-size: 10px; opacity: 0.7; font-family: var(--mono); }
 
@@ -437,7 +455,7 @@
     }
     .modal-backdrop.show { display: flex; }
 
-    /* ADMIN LOGIN MODAL (IMAGE EXACT MATCH) */
+    /* ADMIN LOGIN MODAL */
     .login-modal {
       background: #ECA8B9;
       border: 2px solid var(--navy);
@@ -751,7 +769,7 @@
           </svg>
         </a>
 
-        <div class="status"><i></i> SIGNAL ONLINE</div>
+        <div class="status" id="header-status"><i></i> SIGNAL ONLINE</div>
       </div>
     </header>
 
@@ -762,6 +780,12 @@
         <a href="#music" onclick="navigateTo('music'); return false;" id="sub-nav-music">MUSIC</a>
         <a href="#feed" onclick="navigateTo('feed'); return false;" id="sub-nav-feed">FEED</a>
         <a href="#notice" onclick="navigateTo('notice'); return false;" id="sub-nav-notice">NOTICE</a>
+        
+        <!-- 관리자 로그인 시 탭 추가 버튼 -->
+        <button class="add-tab-btn admin-only" onclick="openAdminPanel()" title="새 글 / 일정 등록">
+          <svg class="admin-svg-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          TAB
+        </button>
       </div>
     </nav>
   </div>
@@ -852,7 +876,10 @@
       <div class="split-layout">
         <div class="detail-view-box">
           <div class="detail-header">
-            <h3 class="detail-title" id="world-detail-title">SELECT WORLD</h3>
+            <div class="detail-title">
+              <span id="world-detail-title">SELECT WORLD</span>
+              <span class="admin-only" id="world-detail-admin-marks"></span>
+            </div>
             <p class="detail-subtitle" id="world-detail-sub">목록에서 세계관을 선택해 주세요.</p>
           </div>
           <div class="detail-content-body" id="world-detail-body">
@@ -882,7 +909,10 @@
       <div class="split-layout">
         <div class="detail-view-box">
           <div class="detail-header">
-            <h3 class="detail-title" id="char-detail-title">SELECT CHARACTER</h3>
+            <div class="detail-title">
+              <span id="char-detail-title">SELECT CHARACTER</span>
+              <span class="admin-only" id="char-detail-admin-marks"></span>
+            </div>
             <p class="detail-subtitle" id="char-detail-sub">목록에서 캐릭터를 선택해 주세요.</p>
           </div>
           <div class="detail-content-body" id="char-detail-body">
@@ -912,7 +942,10 @@
       <div class="split-layout">
         <div class="detail-view-box">
           <div class="detail-header">
-            <h3 class="detail-title" id="music-detail-title">SELECT MUSIC</h3>
+            <div class="detail-title">
+              <span id="music-detail-title">SELECT MUSIC</span>
+              <span class="admin-only" id="music-detail-admin-marks"></span>
+            </div>
             <p class="detail-subtitle" id="music-detail-sub">TRACK LIST</p>
           </div>
           <div class="detail-content-body" id="music-detail-body">
@@ -942,7 +975,10 @@
       <div class="split-layout">
         <div class="detail-view-box">
           <div class="detail-header">
-            <h3 class="detail-title" id="feed-detail-title">SELECT LOG</h3>
+            <div class="detail-title">
+              <span id="feed-detail-title">SELECT LOG</span>
+              <span class="admin-only" id="feed-detail-admin-marks"></span>
+            </div>
             <p class="detail-subtitle" id="feed-detail-sub">IMAGE &amp; WORK LOG</p>
           </div>
           <div class="detail-content-body" id="feed-detail-body">
@@ -972,7 +1008,10 @@
       <div class="split-layout">
         <div class="detail-view-box">
           <div class="detail-header">
-            <h3 class="detail-title" id="notice-detail-title">NOTICE &amp; CALENDAR</h3>
+            <div class="detail-title">
+              <span id="notice-detail-title">NOTICE &amp; CALENDAR</span>
+              <span class="admin-only" id="notice-detail-admin-marks"></span>
+            </div>
             <p class="detail-subtitle" id="notice-detail-sub">INFORMATION ARCHIVE</p>
           </div>
           <div class="detail-content-body" id="notice-detail-body">
@@ -1001,6 +1040,27 @@
 
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
+    /* ---------- GLOBAL STATE ---------- */
+    let isAdminLoggedIn = false;
+    let activeItemIds = { world: null, characters: null, music: null, feed: null, notice: null };
+
+    /* ---------- SVG ICONS HTML GENERATOR ---------- */
+    function getAdminSvgMarksHtml(section, id) {
+      if (!id) return '';
+      return `
+        <span class="admin-only" style="margin-left:6px;">
+          <svg class="admin-svg-icon" viewBox="0 0 24 24" onclick="event.stopPropagation(); editExistingItem('${section}', '${id}')" title="수정">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          <svg class="admin-svg-icon" viewBox="0 0 24 24" onclick="event.stopPropagation(); deleteExistingItem('${section}', '${id}')" title="삭제">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </span>
+      `;
+    }
+
     /* ---------- DATA STORES ---------- */
     let categoryGroups = {
       world: ["MAIN WORLDS"],
@@ -1045,7 +1105,12 @@
             <div class="accordion-body">
               ${items.map(item => `
                 <div class="list-item" id="item-world-${item.id}" onclick="selectItemWithUrl('world', '${item.id}')">
-                  <div class="item-info"><span class="item-name">${item.title}</span></div>
+                  <div class="item-info">
+                    <span class="item-name">
+                      <span>${item.title}</span>
+                      ${getAdminSvgMarksHtml('world', item.id)}
+                    </span>
+                  </div>
                 </div>
               `).join('')}
             </div>
@@ -1070,7 +1135,12 @@
               ${items.map(item => `
                 <div class="list-item" id="item-characters-${item.id}" onclick="selectItemWithUrl('characters', '${item.id}')">
                   ${item.img ? `<img src="${item.img}" class="item-thumb">` : `<div class="item-thumb" style="background:#fff;"></div>`}
-                  <div class="item-info"><span class="item-name">${item.name}</span></div>
+                  <div class="item-info">
+                    <span class="item-name">
+                      <span>${item.name}</span>
+                      ${getAdminSvgMarksHtml('characters', item.id)}
+                    </span>
+                  </div>
                 </div>
               `).join('')}
             </div>
@@ -1094,7 +1164,12 @@
             <div class="accordion-body">
               ${items.map(item => `
                 <div class="list-item" id="item-music-${item.id}" onclick="selectItemWithUrl('music', '${item.id}')">
-                  <div class="item-info"><span class="item-name">${item.title}</span></div>
+                  <div class="item-info">
+                    <span class="item-name">
+                      <span>${item.title}</span>
+                      ${getAdminSvgMarksHtml('music', item.id)}
+                    </span>
+                  </div>
                 </div>
               `).join('')}
             </div>
@@ -1118,7 +1193,10 @@
               <div class="list-item" id="item-feed-${item.id}" onclick="selectItemWithUrl('feed', '${item.id}')">
                 <img src="${item.img || './images/A01.png'}" class="item-thumb">
                 <div class="item-info">
-                  <span class="item-name">${item.title}</span>
+                  <span class="item-name">
+                    <span>${item.title}</span>
+                    ${getAdminSvgMarksHtml('feed', item.id)}
+                  </span>
                   <span class="item-subtext">${item.date}</span>
                 </div>
               </div>
@@ -1154,7 +1232,8 @@
               <div class="list-item" id="item-notice-${item.id}" onclick="selectItemWithUrl('notice', '${item.id}')">
                 <div class="item-info">
                   <span class="item-name">
-                    ${item.pinned ? `<span class="pin-badge">FIX</span>` : ''}${item.title}
+                    <span>${item.pinned ? `<span class="pin-badge">FIX</span>` : ''}${item.title}</span>
+                    ${getAdminSvgMarksHtml('notice', item.id)}
                   </span>
                   <span class="item-subtext">${item.date}</span>
                 </div>
@@ -1221,9 +1300,11 @@
       if (handleListSelection(el, '#page-world')) {
         const item = database.world.find(w => w.id === id);
         if (item) {
+          activeItemIds.world = id;
           document.getElementById('world-detail-title').innerText = item.title;
           document.getElementById('world-detail-sub').innerText = item.sub;
           document.getElementById('world-detail-body').innerHTML = item.content;
+          document.getElementById('world-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('world', id);
         }
       }
     }
@@ -1232,9 +1313,11 @@
       if (handleListSelection(el, '#page-characters')) {
         const item = database.characters.find(c => c.id === id);
         if (item) {
+          activeItemIds.characters = id;
           document.getElementById('char-detail-title').innerText = item.name;
           document.getElementById('char-detail-sub').innerText = item.sub;
           document.getElementById('char-detail-body').innerHTML = item.content;
+          document.getElementById('char-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('characters', id);
         }
       }
     }
@@ -1243,9 +1326,11 @@
       if (handleListSelection(el, '#page-music')) {
         const item = database.music.find(m => m.id === id);
         if (item) {
+          activeItemIds.music = id;
           document.getElementById('music-detail-title').innerText = item.title;
           document.getElementById('music-detail-sub').innerText = item.sub;
           document.getElementById('music-detail-body').innerHTML = item.content;
+          document.getElementById('music-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('music', id);
         }
       }
     }
@@ -1254,9 +1339,11 @@
       if (handleListSelection(el, '#page-feed')) {
         const item = database.feed.find(f => f.id === id);
         if (item) {
+          activeItemIds.feed = id;
           document.getElementById('feed-detail-title').innerText = item.title;
           document.getElementById('feed-detail-sub').innerText = item.date;
           document.getElementById('feed-detail-body').innerHTML = item.content;
+          document.getElementById('feed-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('feed', id);
         }
       }
     }
@@ -1265,15 +1352,19 @@
       if (!handleListSelection(el, '#page-notice')) return;
 
       if (id === 'calendar') {
+        activeItemIds.notice = null;
         document.getElementById('notice-detail-title').innerText = "ARCHIVE CALENDAR";
         document.getElementById('notice-detail-sub').innerText = "TIME RECORD";
+        document.getElementById('notice-detail-admin-marks').innerHTML = '';
         renderCalendarUI();
       } else {
         const item = database.notice.find(n => n.id === id);
         if (item) {
+          activeItemIds.notice = id;
           document.getElementById('notice-detail-title').innerText = item.title;
           document.getElementById('notice-detail-sub').innerText = `${item.date} ${item.pinned ? '(고정됨)' : ''}`;
           document.getElementById('notice-detail-body').innerHTML = item.content;
+          document.getElementById('notice-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('notice', id);
         }
       }
     }
@@ -1362,10 +1453,18 @@
       html += `</div>`;
 
       const currentList = eventsData[selectedDateKey] || [];
-      let listHtml = currentList.map(item => `
-        <li>
-          <span class="event-dot-icon"></span>
-          <span>${item}</span>
+      let listHtml = currentList.map((item, idx) => `
+        <li style="justify-content: space-between;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="event-dot-icon"></span>
+            <span>${item}</span>
+          </div>
+          <span class="admin-only">
+            <svg class="admin-svg-icon" viewBox="0 0 24 24" onclick="deleteCalendarEvent('${selectedDateKey}', ${idx})" title="삭제">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+          </span>
         </li>
       `).join('');
 
@@ -1404,6 +1503,13 @@
       renderCalendarUI();
     }
 
+    function deleteCalendarEvent(dateKey, idx) {
+      if (confirm('해당 일정을 삭제하시겠습니까?')) {
+        eventsData[dateKey].splice(idx, 1);
+        renderCalendarUI();
+      }
+    }
+
     /* ---------- AUTH & MODAL SYSTEM ---------- */
     const SECRET_PASS = "Loversleporineladymart";
 
@@ -1420,11 +1526,23 @@
     function verifyAdminPassword() {
       const input = document.getElementById('admin-pass-input').value;
       if (input === SECRET_PASS) {
+        isAdminLoggedIn = true;
         closeAdminLogin();
+        activateAdminMode();
         openAdminPanel();
       } else {
         alert('비밀번호가 올바르지 않습니다.');
       }
+    }
+
+    function activateAdminMode() {
+      document.body.classList.add('admin-mode');
+      const headerStatus = document.getElementById('header-status');
+      if (headerStatus) {
+        headerStatus.classList.add('admin-active');
+        headerStatus.innerHTML = `<i></i> SIGNAL ONLINE (ADMIN)`;
+      }
+      renderAllSidebars();
     }
 
     function openAdminPanel() {
@@ -1487,6 +1605,13 @@
           alert('삭제되었습니다.');
           renderAllSidebars();
           renderManageItemList();
+          
+          if (activeItemIds[section] === id) {
+            activeItemIds[section] = null;
+            document.getElementById(`${section}-detail-title`).innerText = `SELECT ${section.toUpperCase()}`;
+            document.getElementById(`${section}-detail-body`).innerHTML = `<p>항목이 삭제되었습니다.</p>`;
+            document.getElementById(`${section}-detail-admin-marks`).innerHTML = '';
+          }
         }
       }
     }
@@ -1509,6 +1634,11 @@
       alert('성공적으로 수정되었습니다.');
       renderAllSidebars();
       renderManageItemList();
+
+      if (activeItemIds[section] === id) {
+        document.getElementById(`${section}-detail-title`).innerText = newTitle;
+        document.getElementById(`${section}-detail-body`).innerHTML = newContent;
+      }
     }
 
     /* ---------- ADMIN CATEGORY EDITING ---------- */
@@ -1730,7 +1860,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* ---------- MOUSE CLICK STAMP & STAR TAIL EFFECT ---------- */
+    /* ---------- MOUSE CLICK STAMP (A05.png) & STAR TAIL EFFECT ---------- */
     document.addEventListener('click', function(e) {
       // 도장 효과 (A05.png)
       const stamp = document.createElement('img');
