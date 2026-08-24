@@ -41,7 +41,7 @@
       cursor: url('./images/A03.png') 10 10, auto;
     }
 
-    a, button, .world-card, .progress-bar-container, .list-item, .accordion-header {
+    a, button, .world-card, .progress-bar-container, .list-item, .accordion-header, .cal-day {
       cursor: url('./images/A03.png') 10 10, pointer;
     }
 
@@ -205,7 +205,7 @@
       align-items: start;
     }
 
-    /* LEFT DETAIL VIEW (상세보기 영역) */
+    /* LEFT DETAIL VIEW */
     .detail-view-box {
       border: 1.5px solid var(--navy);
       background: rgba(255, 255, 255, 0.4);
@@ -237,7 +237,7 @@
       background: var(--white);
     }
 
-    /* RIGHT SIDEBAR LIST (접이식 메신저 스타일 리스트) */
+    /* RIGHT SIDEBAR LIST */
     .messenger-list-sidebar {
       border: 1.5px solid var(--navy);
       background: rgba(255, 255, 255, 0.25);
@@ -245,7 +245,6 @@
       overflow: hidden;
     }
 
-    /* [수정] 남색 바 가독성을 위해 글씨 색상을 흰색(#FFFFFF)으로 변경 */
     .sidebar-title-bar {
       background: var(--navy);
       color: var(--white);
@@ -293,7 +292,7 @@
     }
     .acc-icon { transition: transform 0.2s; }
 
-    /* 리스트 아이템 (개별 캐릭터/항목) */
+    /* 리스트 아이템 */
     .list-item {
       padding: 10px 12px;
       display: flex;
@@ -310,6 +309,7 @@
       color: var(--pink);
     }
 
+    /* [수정] 썸네일 자동 비율 조절 (object-fit: cover) */
     .item-thumb {
       width: 34px;
       height: 34px;
@@ -325,13 +325,62 @@
       flex-direction: column;
       overflow: hidden;
     }
-    /* [수정] 텍스트가 잘 보이도록 크기와 굵기 조정 */
     .item-name {
       font-size: 13px;
       font-weight: 700;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
+    }
+
+    /* ---------- MINI CALENDAR WIDGET (NOTICE 용) ---------- */
+    .sidebar-calendar-box {
+      border-bottom: 1.5px solid var(--navy);
+      background: rgba(255, 255, 255, 0.4);
+      padding: 12px;
+    }
+    .cal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+    .cal-day-name {
+      font-weight: 700;
+      opacity: 0.6;
+      padding-bottom: 4px;
+    }
+    .cal-day {
+      padding: 4px 0;
+      position: relative;
+      border-radius: 2px;
+    }
+    .cal-day.event::after {
+      content: "";
+      position: absolute;
+      bottom: 1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 3px;
+      background: var(--navy);
+      border-radius: 50%;
+    }
+    .cal-day.today {
+      background: var(--navy);
+      color: var(--pink);
+      font-weight: 700;
     }
 
     /* ---------- SLIM FOOTER ---------- */
@@ -472,7 +521,7 @@
       </div>
     </section>
 
-    <!-- 2. WORLD (수정: 이름만 깔끔하게 보이기) -->
+    <!-- 2. WORLD -->
     <section id="page-world" class="page-section">
       <div class="section-head">
         <div>
@@ -497,9 +546,9 @@
         </div>
 
         <aside class="messenger-list-sidebar">
+          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
             <span>WORLDS (1)</span>
-            <span>📂</span>
           </div>
           
           <div class="accordion-group">
@@ -519,7 +568,7 @@
       </div>
     </section>
 
-    <!-- 3. CHARACTERS (수정: 이름만 깔끔하게 보이기) -->
+    <!-- 3. CHARACTERS -->
     <section id="page-characters" class="page-section">
       <div class="section-head">
         <div>
@@ -544,9 +593,9 @@
         </div>
 
         <aside class="messenger-list-sidebar">
+          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
             <span>CHARACTERS (3)</span>
-            <span>👥</span>
           </div>
 
           <div class="accordion-group">
@@ -556,13 +605,13 @@
             </div>
             <div class="accordion-body">
               <div class="list-item active" onclick="loadCharDetail('ruroon', this)">
-                <div class="item-thumb" style="background:#eca8b9;"></div>
+                <img src="./images/A01.png" alt="Ruroon" class="item-thumb">
                 <div class="item-info">
                   <span class="item-name">루룬 (Ruroon)</span>
                 </div>
               </div>
               <div class="list-item" onclick="loadCharDetail('character_b', this)">
-                <div class="item-thumb" style="background:#1c2038;"></div>
+                <img src="./images/A02.png" alt="Character B" class="item-thumb">
                 <div class="item-info">
                   <span class="item-name">캐릭터 B</span>
                 </div>
@@ -611,9 +660,9 @@
         </div>
 
         <aside class="messenger-list-sidebar">
+          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
             <span>TRACK LIST (1)</span>
-            <span>🎵</span>
           </div>
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
@@ -632,7 +681,7 @@
       </div>
     </section>
 
-    <!-- 5. FEED (수정: 썸네일 이미지 필수 포함 레이아웃) -->
+    <!-- 5. FEED -->
     <section id="page-feed" class="page-section">
       <div class="section-head">
         <div>
@@ -649,16 +698,15 @@
             <p class="detail-subtitle" id="feed-detail-sub">IMAGE &amp; WORK LOG</p>
           </div>
           <div class="detail-content-body" id="feed-detail-body">
-            <!-- 피드 필수 이미지 영역 -->
             <img src="./images/A01.png" alt="Feed Image" class="detail-cover-img" id="feed-cover-img">
             <p id="feed-text-content">피드에 작성된 일기나 비하인드 작업 노트 텍스트 내용이 여기에 연동됩니다.</p>
           </div>
         </div>
 
         <aside class="messenger-list-sidebar">
+          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
             <span>LOG HISTORY (2)</span>
-            <span>🖼️</span>
           </div>
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
@@ -666,14 +714,15 @@
               <span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
+              <!-- 이미지 태그 연결 시 object-fit: cover로 자동 맞춤 -->
               <div class="list-item active" onclick="loadFeedDetail('log_01', this)">
-                <div class="item-thumb" style="background:#eca8b9;"></div>
+                <img src="./images/A01.png" alt="Log 01" class="item-thumb">
                 <div class="item-info">
                   <span class="item-name">2026.08.24 Log</span>
                 </div>
               </div>
               <div class="list-item" onclick="loadFeedDetail('log_02', this)">
-                <div class="item-thumb" style="background:#fff;"></div>
+                <img src="./images/A02.png" alt="Log 02" class="item-thumb">
                 <div class="item-info">
                   <span class="item-name">2026.08.20 Log</span>
                 </div>
@@ -684,7 +733,7 @@
       </div>
     </section>
 
-    <!-- 6. NOTICE -->
+    <!-- 6. NOTICE (상단 달력 추가) -->
     <section id="page-notice" class="page-section">
       <div class="section-head">
         <div>
@@ -706,10 +755,61 @@
         </div>
 
         <aside class="messenger-list-sidebar">
+          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
-            <span>NOTICES</span>
-            <span>📢</span>
+            <span>SCHEDULE &amp; NOTICES</span>
           </div>
+
+          <!-- [신규] 미니 달력 위젯 (목록 최상단 고정) -->
+          <div class="sidebar-calendar-box">
+            <div class="cal-header">
+              <span>AUG 2026</span>
+              <span>CALENDAR</span>
+            </div>
+            <div class="cal-grid">
+              <div class="cal-day-name">S</div>
+              <div class="cal-day-name">M</div>
+              <div class="cal-day-name">T</div>
+              <div class="cal-day-name">W</div>
+              <div class="cal-day-name">T</div>
+              <div class="cal-day-name">F</div>
+              <div class="cal-day-name">S</div>
+
+              <!-- 날짜 (예시 세팅) -->
+              <div class="cal-day" style="grid-column-start: 7;">1</div>
+              <div class="cal-day">2</div>
+              <div class="cal-day">3</div>
+              <div class="cal-day">4</div>
+              <div class="cal-day">5</div>
+              <div class="cal-day">6</div>
+              <div class="cal-day">7</div>
+              <div class="cal-day">8</div>
+              <div class="cal-day">9</div>
+              <div class="cal-day">10</div>
+              <div class="cal-day">11</div>
+              <div class="cal-day">12</div>
+              <div class="cal-day">13</div>
+              <div class="cal-day">14</div>
+              <div class="cal-day event" title="캐릭터 생일">15</div>
+              <div class="cal-day">16</div>
+              <div class="cal-day">17</div>
+              <div class="cal-day">18</div>
+              <div class="cal-day">19</div>
+              <div class="cal-day event" title="원고 마감">20</div>
+              <div class="cal-day">21</div>
+              <div class="cal-day">22</div>
+              <div class="cal-day">23</div>
+              <div class="cal-day today">24</div>
+              <div class="cal-day">25</div>
+              <div class="cal-day">26</div>
+              <div class="cal-day">27</div>
+              <div class="cal-day">28</div>
+              <div class="cal-day event" title="책 발권일">29</div>
+              <div class="cal-day">30</div>
+              <div class="cal-day">31</div>
+            </div>
+          </div>
+
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
               <span>▼ ANNOUNCEMENT (1)</span>
@@ -859,7 +959,7 @@
       }
     }
 
-    /* ---------- Feed Data Switcher (이미지 필수 연동) ---------- */
+    /* ---------- Feed Data Switcher ---------- */
     const feedData = {
       log_01: {
         title: "2026.08.24 Daily Log",
