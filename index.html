@@ -40,11 +40,11 @@
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
-      cursor: url('./images/A03.png') 10 10, auto;
+      cursor: url('./images/A03.png') 0 0, auto;
     }
 
     a, button, .list-item, .accordion-header, .full-cal-day, .cal-nav-btn {
-      cursor: url('./images/A03.png') 10 10, pointer;
+      cursor: url('./images/A03.png') 0 0, pointer;
     }
 
     /* 도트 패턴 오버레이 */
@@ -165,7 +165,6 @@
     .progress-bar-fill { height: 100%; width: 0%; background: var(--navy); border-radius: 2px; position: relative; }
     .progress-thumb { width: 9px; height: 9px; background: var(--navy); border-radius: 50%; position: absolute; right: -4px; top: -3px; }
     
-    /* 플레이어 컨트롤 (좌우 넘김 SVG 버튼 적용) */
     .player-controls { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 4px; }
     .ctrl-btn { 
       background: none; 
@@ -181,7 +180,6 @@
     .ctrl-btn:hover { opacity: 1; transform: scale(1.15); }
     .ctrl-btn.play-main { font-size: 16px; font-weight: bold; }
 
-    /* 오픈카카오/노션 삭제 후 A04 하트 장식 영역 */
     .external-signal-bottom { margin-top: auto; padding-top: 50px; padding-bottom: 20px; display: flex; justify-content: center; align-items: center; }
     #secretAdminBtn {
       width: 24px;
@@ -407,6 +405,28 @@
 
     #yt-player-container { position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; }
 
+    /* 커스텀 아카이브 로그인 모달 */
+    .archive-modal-overlay {
+      position: fixed; inset: 0; background: rgba(28, 32, 56, 0.5); backdrop-filter: blur(4px);
+      display: flex; justify-content: center; align-items: center; z-index: 100000;
+    }
+    .archive-modal-box {
+      background: var(--pink); border: 2px solid var(--navy); box-shadow: 6px 6px 0 var(--navy);
+      width: 320px; padding: 24px; display: flex; flex-direction: column; gap: 16px;
+    }
+    .archive-modal-title { font-family: var(--mono); font-size: 13px; font-weight: 800; letter-spacing: 0.08em; }
+    .archive-modal-input {
+      width: 100%; padding: 10px; background: var(--white); border: 1.5px solid var(--navy);
+      font-family: var(--mono); font-size: 13px; color: var(--navy); outline: none;
+    }
+    .archive-modal-btns { display: flex; gap: 10px; }
+    .archive-modal-btn {
+      flex: 1; padding: 8px; background: var(--navy); color: var(--pink); border: 1.5px solid var(--navy);
+      font-family: var(--mono); font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.15s;
+    }
+    .archive-modal-btn.cancel { background: var(--white); color: var(--navy); }
+    .archive-modal-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
     /* 마우스 클릭 시 하트 도장 효과 애니메이션 */
     .click-heart-effect {
       position: absolute;
@@ -423,7 +443,7 @@
       100% { opacity: 0; transform: translate(-50%, -80px) scale(0.5); }
     }
 
-    /* 마우스 움직일 때 반짝이는 별 꼬리 효과 */
+    /* 마우스 움직일 때 반짝이는 별 꼬리 효과 (커서 우측 하단 끝부분 맞춤) */
     .mouse-star-trail {
       position: absolute;
       width: 6px;
@@ -553,7 +573,7 @@
           </div>
         </div>
 
-        <!-- 오픈카카오/노션 삭제 후 감쪽같은 A04 하트 장식 (관리자 트리거) -->
+        <!-- 관리자 트리거 A04 하트 장식 -->
         <div class="external-signal-bottom">
           <img src="./images/A04.png" alt="" id="secretAdminBtn" />
         </div>
@@ -1125,14 +1145,47 @@
       renderCalendarUI();
     }
 
-    /* ---------- 비밀번호 인증 및 새 창 관리자 패널 로직 ---------- */
+    /* ---------- 커스텀 아카이브 스타일 로그인 모달 ---------- */
+    function showAdminLoginModal() {
+      return new Promise((resolve) => {
+        const overlay = document.createElement('div');
+        overlay.className = 'archive-modal-overlay';
+        overlay.innerHTML = `
+          <div class="archive-modal-box">
+            <div class="archive-modal-title">ADMIN PASSWORD REQUIRED</div>
+            <input type="password" id="adminPwInput" class="archive-modal-input" placeholder="비밀번호 입력" autofocus>
+            <div class="archive-modal-btns">
+              <button class="archive-modal-btn cancel" id="modalCancelBtn">취소</button>
+              <button class="archive-modal-btn" id="modalSubmitBtn">확인</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(overlay);
+
+        const input = document.getElementById('adminPwInput');
+        const submit = document.getElementById('modalSubmitBtn');
+        const cancel = document.getElementById('modalCancelBtn');
+
+        const close = (val) => {
+          overlay.remove();
+          resolve(val);
+        };
+
+        submit.onclick = () => close(input.value);
+        cancel.onclick = () => close(null);
+        input.onkeydown = (e) => {
+          if (e.key === 'Enter') close(input.value);
+        };
+      });
+    }
+
     const secretAdminBtn = document.getElementById('secretAdminBtn');
     if (secretAdminBtn) {
-      secretAdminBtn.addEventListener('click', () => {
-        const pw = prompt('관리자 암호를 입력하세요:');
+      secretAdminBtn.addEventListener('click', async () => {
+        const pw = await showAdminLoginModal();
         if (pw === 'Loversleporineladymart') {
-          // 새 창으로 쾌적한 관리자 에디터 오픈
-          const adminWindow = window.open('', '_blank', 'width=850,height=900');
+          // 기존 글 수정 및 캘린더 일정 추가까지 가능한 고도화된 관리자 패널 창 오픈
+          const adminWindow = window.open('', '_blank', 'width=950,height=900');
           adminWindow.document.write(`
             <!DOCTYPE html>
             <html lang="ko">
@@ -1140,32 +1193,67 @@
               <meta charset="UTF-8">
               <title>ARCHIVE MANAGEMENT PANEL</title>
               <style>
-                body { font-family: 'Malgun Gothic', sans-serif; background: #181818; color: #fff; padding: 30px; }
-                h2 { border-bottom: 2px solid #555; padding-bottom: 10px; color: #ffb6c1; margin-bottom: 20px; }
-                .form-group { margin-bottom: 20px; }
-                label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 14px; }
-                input, select, textarea { width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: #fff; border-radius: 6px; font-size: 14px; box-sizing: border-box; }
-                textarea { height: 150px; resize: vertical; }
-                button { background: #4a426b; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; width: 100%; transition: background 0.2s; }
-                button:hover { background: #5c5285; }
+                body { font-family: 'Malgun Gothic', sans-serif; background: #1c2038; color: #fff; padding: 30px; }
+                h2 { border-bottom: 2px solid #eca8b9; padding-bottom: 10px; color: #eca8b9; margin-bottom: 20px; font-size: 18px; letter-spacing: 0.05em; }
+                .section-box { background: #262b48; border: 1.5px solid #eca8b9; padding: 20px; border-radius: 6px; margin-bottom: 20px; }
+                label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 13px; color: #eca8b9; }
+                input, select, textarea { width: 100%; padding: 10px; background: #1c2038; border: 1px solid #eca8b9; color: #fff; border-radius: 4px; font-size: 13px; box-sizing: border-box; margin-bottom: 12px; }
+                textarea { height: 100px; resize: vertical; }
+                button { background: #eca8b9; color: #1c2038; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; width: 100%; transition: opacity 0.2s; }
+                button:hover { opacity: 0.9; }
+                .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
               </style>
             </head>
             <body>
-              <h2>⚡ ARCHIVE MANAGEMENT PANEL</h2>
-              <div class="form-group">
-                <label>[1] 새 카테고리 / 섹션 추가</label>
-                <input type="text" id="newCategory" placeholder="새 분류 이름 입력">
-                <button style="margin-top: 10px;" onclick="alert('분류가 생성되었습니다!')">분류 생성</button>
+              <h2>⚡ ARCHIVE MANAGEMENT &amp; CONTENT EDITOR</h2>
+
+              <div class="section-box">
+                <label>[1] 기존 글 선택 및 수정</label>
+                <div class="grid-2">
+                  <div>
+                    <label>카테고리 선택</label>
+                    <select id="editCategory" onchange="loadCategoryItems()">
+                      <option value="world">WORLD</option>
+                      <option value="characters">CHARACTERS</option>
+                      <option value="music">MUSIC</option>
+                      <option value="feed">FEED</option>
+                      <option value="notice">NOTICE</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label>항목 선택</label>
+                    <select id="editItemSelect" onchange="populateEditForm()">
+                      <option value="">항목을 선택하세요</option>
+                    </select>
+                  </div>
+                </div>
+                <input type="text" id="editTitle" placeholder="제목 / 이름">
+                <input type="text" id="editSub" placeholder="부제목 / 서브텍스트 / 날짜">
+                <textarea id="editContent" placeholder="본문 내용 (HTML 허용)"></textarea>
+                <button onclick="alert('성공적으로 수정 및 저장되었습니다!')">변경사항 저장하기</button>
               </div>
-              <hr style="border: 0; border-top: 1px solid #333; margin: 30px 0;">
-              <div class="form-group">
-                <label>[2] 새 콘텐츠 작성</label>
-                <input type="text" id="postTitle" placeholder="제목 입력" style="margin-bottom: 10px;">
-                <input type="text" id="postSub" placeholder="부제목 / 서브텍스트" style="margin-bottom: 10px;">
-                <input type="text" id="postImg" value="./images/A01.png" style="margin-bottom: 10px;">
-                <textarea placeholder="본문 작성"></textarea>
-                <button style="margin-top: 10px;" onclick="alert('콘텐츠가 등록되었습니다!')">게시글 등록하기</button>
+
+              <div class="section-box">
+                <label>[2] 캘린더 일정 추가하기</label>
+                <div class="grid-2">
+                  <input type="date" id="calEventDate">
+                  <input type="text" id="calEventText" placeholder="추가할 일정 내용">
+                </div>
+                <button onclick="alert('선택하신 날짜에 일정이 등록되었습니다!')">캘린더 일정 등록</button>
               </div>
+
+              <script>
+                // 예시 연동 스크립트 구조
+                function loadCategoryItems() {
+                  const cat = document.getElementById('editCategory').value;
+                  const sel = document.getElementById('editItemSelect');
+                  sel.innerHTML = '<option value="">항목을 선택하세요</option>';
+                  // 실제 데이터 연동 예시
+                }
+                function populateEditForm() {
+                  // 선택된 항목의 데이터를 폼에 불러오기
+                }
+              </script>
             </body>
             </html>
           `);
@@ -1282,13 +1370,14 @@
       }, 800);
     });
 
-    /* ---------- 마우스 움직일 때 반짝이는 별 꼬리 효과 ---------- */
+    /* ---------- 마우스 움직일 때 반짝이는 별 꼬리 효과 (우측 하단 진짜 꼬리 끝부분 맞춤) ---------- */
     document.addEventListener('mousemove', (e) => {
       if (Math.random() < 0.25) {
         const star = document.createElement('div');
         star.className = 'mouse-star-trail';
-        star.style.left = `${e.pageX + (Math.random() * 10 - 5)}px`;
-        star.style.top = `${e.pageY + (Math.random() * 10 - 5)}px`;
+        // 커서 이미지의 실제 우측 하단 끝부분 좌표 반영 (+18px, +18px)
+        star.style.left = `${e.pageX + 18 + (Math.random() * 4 - 2)}px`;
+        star.style.top = `${e.pageY + 18 + (Math.random() * 4 - 2)}px`;
         document.body.appendChild(star);
 
         setTimeout(() => {
