@@ -41,7 +41,7 @@
       cursor: url('./images/A03.png') 10 10, auto;
     }
 
-    a, button, .world-card, .progress-bar-container, .list-item, .accordion-header, .cal-day {
+    a, button, .world-card, .progress-bar-container, .list-item, .accordion-header, .cal-day, .cal-btn {
       cursor: url('./images/A03.png') 10 10, pointer;
     }
 
@@ -305,11 +305,10 @@
       background: rgba(255, 255, 255, 0.5);
     }
     .list-item.active {
-      background: var(--navy);
-      color: var(--pink);
+      background: var(--navy) !important;
+      color: var(--pink) !important;
     }
 
-    /* [수정] 썸네일 자동 비율 조절 (object-fit: cover) */
     .item-thumb {
       width: 34px;
       height: 34px;
@@ -333,54 +332,141 @@
       overflow: hidden;
     }
 
-    /* ---------- MINI CALENDAR WIDGET (NOTICE 용) ---------- */
-    .sidebar-calendar-box {
-      border-bottom: 1.5px solid var(--navy);
-      background: rgba(255, 255, 255, 0.4);
-      padding: 12px;
+    /* ---------- FULL INTERACTIVE CALENDAR UI (NOTICE 전용) ---------- */
+    .calendar-container-full {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
-    .cal-header {
+    .cal-top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-family: var(--mono);
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-    .cal-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 2px;
-      text-align: center;
-      font-family: var(--mono);
-      font-size: 10px;
-    }
-    .cal-day-name {
-      font-weight: 700;
-      opacity: 0.6;
-      padding-bottom: 4px;
-    }
-    .cal-day {
-      padding: 4px 0;
-      position: relative;
-      border-radius: 2px;
-    }
-    .cal-day.event::after {
-      content: "";
-      position: absolute;
-      bottom: 1px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 3px;
-      height: 3px;
-      background: var(--navy);
-      border-radius: 50%;
-    }
-    .cal-day.today {
       background: var(--navy);
       color: var(--pink);
+      padding: 12px 16px;
+      font-family: var(--mono);
       font-weight: 700;
+    }
+    .cal-nav-btn {
+      background: none;
+      border: 1px solid var(--pink);
+      color: var(--pink);
+      padding: 4px 10px;
+      font-size: 12px;
+      transition: 0.2s;
+    }
+    .cal-nav-btn:hover {
+      background: var(--pink);
+      color: var(--navy);
+    }
+    .full-cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      text-align: center;
+    }
+    .full-cal-head {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 12px;
+      padding: 6px 0;
+      background: rgba(28, 32, 56, 0.1);
+    }
+    .full-cal-day {
+      min-height: 64px;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--line);
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 12px;
+      transition: 0.2s;
+    }
+    .full-cal-day.empty {
+      background: transparent;
+      border: none;
+    }
+    .full-cal-day:not(.empty):hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+    .full-cal-day.selected {
+      border: 2px solid var(--navy);
+      background: #fff;
+    }
+    .full-cal-day.today {
+      font-weight: bold;
+      color: #d93856;
+    }
+    .event-dots {
+      display: flex;
+      gap: 3px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .event-dot-item {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--navy);
+    }
+
+    /* Schedule Panel */
+    .schedule-panel {
+      border-top: 1.5px dashed var(--navy);
+      padding-top: 20px;
+      margin-top: 10px;
+    }
+    .schedule-panel-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .schedule-input-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .schedule-input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--navy);
+      font-size: 13px;
+      background: rgba(255,255,255,0.8);
+    }
+    .schedule-add-btn {
+      background: var(--navy);
+      color: var(--pink);
+      padding: 8px 16px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .schedule-list-ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .schedule-list-ul li {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--line);
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+    .del-schedule-btn {
+      color: #d93856;
+      font-weight: bold;
+      font-size: 11px;
     }
 
     /* ---------- SLIM FOOTER ---------- */
@@ -534,19 +620,15 @@
       <div class="split-layout">
         <div class="detail-view-box" id="world-detail">
           <div class="detail-header">
-            <h3 class="detail-title" id="world-detail-title">Empecla (엠페클라)</h3>
-            <p class="detail-subtitle" id="world-detail-sub">MAIN WORLD DATABASE</p>
+            <h3 class="detail-title" id="world-detail-title">SELECT WORLD</h3>
+            <p class="detail-subtitle" id="world-detail-sub">목록에서 세계관을 선택해 주세요.</p>
           </div>
           <div class="detail-content-body" id="world-detail-body">
-            <div style="background:#fff; height:220px; display:flex; align-items:center; justify-content:center; border:1px solid var(--navy);">
-              [ WORLD CONCEPT MAP / IMAGE ]
-            </div>
-            <p>엠페클라 세계관의 배경과 설정이 표시되는 메인 영역입니다.</p>
+            <p>우측 목록에서 항목을 클릭하면 상세 내용이 표시됩니다.</p>
           </div>
         </div>
 
         <aside class="messenger-list-sidebar">
-          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
             <span>WORLDS (1)</span>
           </div>
@@ -557,7 +639,7 @@
               <span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
-              <div class="list-item active" onclick="loadWorldDetail('empecla', this)">
+              <div class="list-item" onclick="loadWorldDetail('empecla', this)">
                 <div class="item-info">
                   <span class="item-name">Empecla (엠페클라)</span>
                 </div>
@@ -581,19 +663,15 @@
       <div class="split-layout">
         <div class="detail-view-box" id="char-detail">
           <div class="detail-header">
-            <h3 class="detail-title" id="char-detail-title">루룬 (Ruroon)</h3>
-            <p class="detail-subtitle" id="char-detail-sub">EMPECLA ARCHIVE / OBSERVER</p>
+            <h3 class="detail-title" id="char-detail-title">SELECT CHARACTER</h3>
+            <p class="detail-subtitle" id="char-detail-sub">목록에서 캐릭터를 선택해 주세요.</p>
           </div>
           <div class="detail-content-body" id="char-detail-body">
-            <div style="background:#eca8b9; height:240px; display:flex; align-items:center; justify-content:center; border:1px solid var(--navy); font-weight:bold;">
-              [ RUROON ILLUST / COVER ]
-            </div>
-            <p>캐릭터의 프로필과 스토리, 설정 원화 등이 표출되는 영역입니다.</p>
+            <p>우측 목록에서 캐릭터를 클릭하면 상세 프로필이 여기에 표시됩니다.</p>
           </div>
         </div>
 
         <aside class="messenger-list-sidebar">
-          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
             <span>CHARACTERS (3)</span>
           </div>
@@ -604,7 +682,7 @@
               <span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
-              <div class="list-item active" onclick="loadCharDetail('ruroon', this)">
+              <div class="list-item" onclick="loadCharDetail('ruroon', this)">
                 <img src="./images/A01.png" alt="Ruroon" class="item-thumb">
                 <div class="item-info">
                   <span class="item-name">루룬 (Ruroon)</span>
@@ -649,18 +727,17 @@
       </div>
 
       <div class="split-layout">
-        <div class="detail-view-box">
+        <div class="detail-view-box" id="music-detail">
           <div class="detail-header">
-            <h3 class="detail-title">Signal Theme #1</h3>
-            <p class="detail-subtitle">TRACK 01 / MAIN THEME</p>
+            <h3 class="detail-title" id="music-detail-title">SELECT MUSIC</h3>
+            <p class="detail-subtitle" id="music-detail-sub">TRACK LIST</p>
           </div>
-          <div class="detail-content-body">
-            <p>음악 가사 및 노트 영역입니다.</p>
+          <div class="detail-content-body" id="music-detail-body">
+            <p>음악을 선택하시면 가사 및 노트 정보가 나타납니다.</p>
           </div>
         </div>
 
         <aside class="messenger-list-sidebar">
-          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
             <span>TRACK LIST (1)</span>
           </div>
@@ -670,7 +747,7 @@
               <span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
-              <div class="list-item active">
+              <div class="list-item" onclick="loadMusicDetail('track_01', this)">
                 <div class="item-info">
                   <span class="item-name">01. Signal Theme #1</span>
                 </div>
@@ -694,17 +771,15 @@
       <div class="split-layout">
         <div class="detail-view-box" id="feed-detail">
           <div class="detail-header">
-            <h3 class="detail-title" id="feed-detail-title">2026.08.24 Daily Log</h3>
+            <h3 class="detail-title" id="feed-detail-title">SELECT LOG</h3>
             <p class="detail-subtitle" id="feed-detail-sub">IMAGE &amp; WORK LOG</p>
           </div>
           <div class="detail-content-body" id="feed-detail-body">
-            <img src="./images/A01.png" alt="Feed Image" class="detail-cover-img" id="feed-cover-img">
-            <p id="feed-text-content">피드에 작성된 일기나 비하인드 작업 노트 텍스트 내용이 여기에 연동됩니다.</p>
+            <p>로그를 선택해 주세요.</p>
           </div>
         </div>
 
         <aside class="messenger-list-sidebar">
-          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
             <span>LOG HISTORY (2)</span>
           </div>
@@ -714,8 +789,7 @@
               <span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
-              <!-- 이미지 태그 연결 시 object-fit: cover로 자동 맞춤 -->
-              <div class="list-item active" onclick="loadFeedDetail('log_01', this)">
+              <div class="list-item" onclick="loadFeedDetail('log_01', this)">
                 <img src="./images/A01.png" alt="Log 01" class="item-thumb">
                 <div class="item-info">
                   <span class="item-name">2026.08.24 Log</span>
@@ -733,7 +807,7 @@
       </div>
     </section>
 
-    <!-- 6. NOTICE (상단 달력 추가) -->
+    <!-- 6. NOTICE -->
     <section id="page-notice" class="page-section">
       <div class="section-head">
         <div>
@@ -744,69 +818,33 @@
       </div>
 
       <div class="split-layout">
-        <div class="detail-view-box">
+        <div class="detail-view-box" id="notice-detail">
           <div class="detail-header">
-            <h3 class="detail-title">Archive Renewal Notice</h3>
-            <p class="detail-subtitle">POSTED BY RUROON</p>
+            <h3 class="detail-title" id="notice-detail-title">NOTICE &amp; CALENDAR</h3>
+            <p class="detail-subtitle" id="notice-detail-sub">INFORMATION ARCHIVE</p>
           </div>
-          <div class="detail-content-body">
-            공지사항 본문입니다.
+          <div class="detail-content-body" id="notice-detail-body">
+            <p>오른쪽 목록에서 공지사항 또는 캘린더를 선택하세요.</p>
           </div>
         </div>
 
         <aside class="messenger-list-sidebar">
-          <!-- 이모지 삭제 -->
           <div class="sidebar-title-bar">
             <span>SCHEDULE &amp; NOTICES</span>
           </div>
 
-          <!-- [신규] 미니 달력 위젯 (목록 최상단 고정) -->
-          <div class="sidebar-calendar-box">
-            <div class="cal-header">
-              <span>AUG 2026</span>
-              <span>CALENDAR</span>
+          <!-- 공지사항 및 캘린더 아코디언 목록 -->
+          <div class="accordion-group">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>▼ CALENDAR &amp; SCHEDULE</span>
+              <span class="acc-icon">▼</span>
             </div>
-            <div class="cal-grid">
-              <div class="cal-day-name">S</div>
-              <div class="cal-day-name">M</div>
-              <div class="cal-day-name">T</div>
-              <div class="cal-day-name">W</div>
-              <div class="cal-day-name">T</div>
-              <div class="cal-day-name">F</div>
-              <div class="cal-day-name">S</div>
-
-              <!-- 날짜 (예시 세팅) -->
-              <div class="cal-day" style="grid-column-start: 7;">1</div>
-              <div class="cal-day">2</div>
-              <div class="cal-day">3</div>
-              <div class="cal-day">4</div>
-              <div class="cal-day">5</div>
-              <div class="cal-day">6</div>
-              <div class="cal-day">7</div>
-              <div class="cal-day">8</div>
-              <div class="cal-day">9</div>
-              <div class="cal-day">10</div>
-              <div class="cal-day">11</div>
-              <div class="cal-day">12</div>
-              <div class="cal-day">13</div>
-              <div class="cal-day">14</div>
-              <div class="cal-day event" title="캐릭터 생일">15</div>
-              <div class="cal-day">16</div>
-              <div class="cal-day">17</div>
-              <div class="cal-day">18</div>
-              <div class="cal-day">19</div>
-              <div class="cal-day event" title="원고 마감">20</div>
-              <div class="cal-day">21</div>
-              <div class="cal-day">22</div>
-              <div class="cal-day">23</div>
-              <div class="cal-day today">24</div>
-              <div class="cal-day">25</div>
-              <div class="cal-day">26</div>
-              <div class="cal-day">27</div>
-              <div class="cal-day">28</div>
-              <div class="cal-day event" title="책 발권일">29</div>
-              <div class="cal-day">30</div>
-              <div class="cal-day">31</div>
+            <div class="accordion-body">
+              <div class="list-item" onclick="loadNoticeDetail('calendar', this)">
+                <div class="item-info">
+                  <span class="item-name">캘린더</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -816,13 +854,14 @@
               <span class="acc-icon">▼</span>
             </div>
             <div class="accordion-body">
-              <div class="list-item active">
+              <div class="list-item" onclick="loadNoticeDetail('renewal', this)">
                 <div class="item-info">
                   <span class="item-name">Archive Renewal</span>
                 </div>
               </div>
             </div>
           </div>
+
         </aside>
       </div>
     </section>
@@ -926,6 +965,46 @@
       group.classList.toggle('collapsed');
     }
 
+    /* ---------- 공통 목록 선택(남색 배경) 토글 및 전체 초기화 함수 ---------- */
+    function handleListSelection(element, sectionSelector) {
+      const isAlreadyActive = element.classList.contains('active');
+      
+      // 해당 섹션 내의 모든 list-item에서 active 해제
+      document.querySelectorAll(`${sectionSelector} .list-item`).forEach(item => {
+        item.classList.remove('active');
+      });
+
+      if (isAlreadyActive) {
+        return false; // 이미 active 상태였으므로 선택 해제됨
+      } else {
+        element.classList.add('active');
+        return true; // 새로 선택됨
+      }
+    }
+
+    /* ---------- World Data Switcher ---------- */
+    const worldData = {
+      empecla: {
+        title: "Empecla (엠페클라)",
+        sub: "MAIN WORLD DATABASE",
+        content: `<div style="background:#fff; height:220px; display:flex; align-items:center; justify-content:center; border:1px solid var(--navy);">[ WORLD CONCEPT MAP / IMAGE ]</div><p>엠페클라 세계관의 배경과 설정이 표시되는 메인 영역입니다.</p>`
+      }
+    };
+
+    function loadWorldDetail(key, element) {
+      const isSelected = handleListSelection(element, '#page-world');
+      if (isSelected) {
+        const data = worldData[key];
+        document.getElementById('world-detail-title').innerText = data.title;
+        document.getElementById('world-detail-sub').innerText = data.sub;
+        document.getElementById('world-detail-body').innerHTML = data.content;
+      } else {
+        document.getElementById('world-detail-title').innerText = "SELECT WORLD";
+        document.getElementById('world-detail-sub').innerText = "목록에서 세계관을 선택해 주세요.";
+        document.getElementById('world-detail-body').innerHTML = "<p>우측 목록에서 항목을 클릭하면 상세 내용이 표시됩니다.</p>";
+      }
+    }
+
     /* ---------- Character Data Switcher ---------- */
     const charData = {
       ruroon: {
@@ -946,16 +1025,39 @@
     };
 
     function loadCharDetail(key, element) {
-      const data = charData[key];
-      if(!data) return;
+      const isSelected = handleListSelection(element, '#page-characters');
+      if (isSelected) {
+        const data = charData[key];
+        document.getElementById('char-detail-title').innerText = data.title;
+        document.getElementById('char-detail-sub').innerText = data.sub;
+        document.getElementById('char-detail-body').innerHTML = data.content;
+      } else {
+        document.getElementById('char-detail-title').innerText = "SELECT CHARACTER";
+        document.getElementById('char-detail-sub').innerText = "목록에서 캐릭터를 선택해 주세요.";
+        document.getElementById('char-detail-body').innerHTML = "<p>우측 목록에서 캐릭터를 클릭하면 상세 프로필이 여기에 표시됩니다.</p>";
+      }
+    }
 
-      document.getElementById('char-detail-title').innerText = data.title;
-      document.getElementById('char-detail-sub').innerText = data.sub;
-      document.getElementById('char-detail-body').innerHTML = data.content;
+    /* ---------- Music Data Switcher ---------- */
+    const musicData = {
+      track_01: {
+        title: "Signal Theme #1",
+        sub: "TRACK 01 / MAIN THEME",
+        content: `<p>Signal Theme #1의 가사와 음악 작업 노트입니다.</p>`
+      }
+    };
 
-      if(element) {
-        document.querySelectorAll('#page-characters .list-item').forEach(item => item.classList.remove('active'));
-        element.classList.add('active');
+    function loadMusicDetail(key, element) {
+      const isSelected = handleListSelection(element, '#page-music');
+      if (isSelected) {
+        const data = musicData[key];
+        document.getElementById('music-detail-title').innerText = data.title;
+        document.getElementById('music-detail-sub').innerText = data.sub;
+        document.getElementById('music-detail-body').innerHTML = data.content;
+      } else {
+        document.getElementById('music-detail-title').innerText = "SELECT MUSIC";
+        document.getElementById('music-detail-sub').innerText = "TRACK LIST";
+        document.getElementById('music-detail-body').innerHTML = "<p>음악을 선택하시면 가사 및 노트 정보가 나타납니다.</p>";
       }
     }
 
@@ -964,32 +1066,195 @@
       log_01: {
         title: "2026.08.24 Daily Log",
         sub: "IMAGE & WORK LOG",
-        imgSrc: "./images/A01.png",
-        text: "8월 24일 자 작업 기록입니다. 피드 글 작성 시 이미지가 필수 포함되어 리스트 및 상세보기 영역에 표출됩니다."
+        content: `<img src="./images/A01.png" alt="Feed Image" class="detail-cover-img"><p>8월 24일 자 작업 기록입니다. 피드 글 작성 시 이미지가 필수 포함되어 리스트 및 상세보기 영역에 표출됩니다.</p>`
       },
       log_02: {
         title: "2026.08.20 Sketch Log",
         sub: "SKETCH & IDEA",
-        imgSrc: "./images/A02.png",
-        text: "8월 20일 아이디어 스케치 기록입니다."
+        content: `<img src="./images/A02.png" alt="Feed Image" class="detail-cover-img"><p>8월 20일 아이디어 스케치 기록입니다.</p>`
       }
     };
 
     function loadFeedDetail(key, element) {
-      const data = feedData[key];
-      if(!data) return;
-
-      document.getElementById('feed-detail-title').innerText = data.title;
-      document.getElementById('feed-detail-sub').innerText = data.sub;
-      document.getElementById('feed-cover-img').src = data.imgSrc;
-      document.getElementById('feed-text-content').innerText = data.text;
-
-      if(element) {
-        document.querySelectorAll('#page-feed .list-item').forEach(item => item.classList.remove('active'));
-        element.classList.add('active');
+      const isSelected = handleListSelection(element, '#page-feed');
+      if (isSelected) {
+        const data = feedData[key];
+        document.getElementById('feed-detail-title').innerText = data.title;
+        document.getElementById('feed-detail-sub').innerText = data.sub;
+        document.getElementById('feed-detail-body').innerHTML = data.content;
+      } else {
+        document.getElementById('feed-detail-title').innerText = "SELECT LOG";
+        document.getElementById('feed-detail-sub').innerText = "IMAGE & WORK LOG";
+        document.getElementById('feed-detail-body').innerHTML = "<p>로그를 선택해 주세요.</p>";
       }
     }
 
+    /* ---------- Notice & Interactive Calendar Logic ---------- */
+    let currentCalYear = 2026;
+    let currentCalMonth = 7; // 0-based index: 7 = August
+    let selectedDateKey = "2026-08-24";
+    let eventsData = {
+      "2026-08-15": ["캐릭터 생일"],
+      "2026-08-20": ["원고 마감"],
+      "2026-08-24": ["아카이브 리뉴얼 완료"],
+      "2026-08-29": ["책 발권일"]
+    };
+
+    const noticeData = {
+      renewal: {
+        title: "Archive Renewal Notice",
+        sub: "POSTED BY RUROON",
+        content: `<p>아카이브 시스템이 정식으로 리뉴얼되었습니다. 자유롭게 둘러보세요!</p>`
+      }
+    };
+
+    function loadNoticeDetail(key, element) {
+      const isSelected = handleListSelection(element, '#page-notice');
+      
+      if (!isSelected) {
+        document.getElementById('notice-detail-title').innerText = "NOTICE & CALENDAR";
+        document.getElementById('notice-detail-sub').innerText = "INFORMATION ARCHIVE";
+        document.getElementById('notice-detail-body').innerHTML = "<p>오른쪽 목록에서 공지사항 또는 캘린더를 선택하세요.</p>";
+        return;
+      }
+
+      if (key === 'calendar') {
+        document.getElementById('notice-detail-title').innerText = "ARCHIVE CALENDAR";
+        document.getElementById('notice-detail-sub').innerText = "SCHEDULE & EVENTS";
+        renderCalendarUI();
+      } else if (noticeData[key]) {
+        const data = noticeData[key];
+        document.getElementById('notice-detail-title').innerText = data.title;
+        document.getElementById('notice-detail-sub').innerText = data.sub;
+        document.getElementById('notice-detail-body').innerHTML = data.content;
+      }
+    }
+
+    function renderCalendarUI() {
+      const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+      const container = document.getElementById('notice-detail-body');
+      
+      let html = `
+        <div class="calendar-container-full">
+          <div class="cal-top-bar">
+            <button class="cal-nav-btn" onclick="changeMonth(-1)">◀ PREV</button>
+            <span>${monthNames[currentCalMonth]} ${currentCalYear}</span>
+            <button class="cal-nav-btn" onclick="changeMonth(1)">NEXT ▶</button>
+          </div>
+          
+          <div class="full-cal-grid">
+            <div class="full-cal-head">SUN</div>
+            <div class="full-cal-head">MON</div>
+            <div class="full-cal-head">TUE</div>
+            <div class="full-cal-head">WED</div>
+            <div class="full-cal-head">THU</div>
+            <div class="full-cal-head">FRI</div>
+            <div class="full-cal-head">SAT</div>
+      `;
+
+      const firstDay = new Date(currentCalYear, currentCalMonth, 1).getDay();
+      const daysInMonth = new Date(currentCalYear, currentCalMonth + 1, 0).getDate();
+
+      // 빈 칸 생성
+      for (let i = 0; i < firstDay; i++) {
+        html += `<div class="full-cal-day empty"></div>`;
+      }
+
+      // 날짜 칸 생성
+      for (let day = 1; day <= daysInMonth; day++) {
+        const mStr = String(currentCalMonth + 1).padStart(2, '0');
+        const dStr = String(day).padStart(2, '0');
+        const dateKey = `${currentCalYear}-${mStr}-${dStr}`;
+        
+        const isSelected = (dateKey === selectedDateKey) ? 'selected' : '';
+        const isToday = (dateKey === '2026-08-24') ? 'today' : '';
+        const hasEvents = eventsData[dateKey] && eventsData[dateKey].length > 0;
+
+        let dotsHtml = '';
+        if (hasEvents) {
+          dotsHtml = '<div class="event-dots">' + eventsData[dateKey].map(() => '<span class="event-dot-item"></span>').join('') + '</div>';
+        }
+
+        html += `
+          <div class="full-cal-day ${isSelected} ${isToday}" onclick="selectCalDate('${dateKey}')">
+            <span>${day}</span>
+            ${dotsHtml}
+          </div>
+        `;
+      }
+
+      html += `</div>`; // .full-cal-grid 닫기
+
+      // 일정 관리 패널
+      const currentList = eventsData[selectedDateKey] || [];
+      let listHtml = currentList.map((item, idx) => `
+        <li>
+          <span>• ${item}</span>
+          <button class="del-schedule-btn" onclick="deleteSchedule(${idx})">삭제</button>
+        </li>
+      `).join('');
+
+      if (currentList.length === 0) {
+        listHtml = `<li style="opacity:0.6;">등록된 일정이 없습니다.</li>`;
+      }
+
+      html += `
+        <div class="schedule-panel">
+          <div class="schedule-panel-title">
+            <span>✦ ${selectedDateKey} 일정</span>
+          </div>
+          <div class="schedule-input-group">
+            <input type="text" id="schedule-input" class="schedule-input" placeholder="새 일정을 입력하세요..." onkeypress="if(event.key==='Enter') addSchedule()">
+            <button class="schedule-add-btn" onclick="addSchedule()">추가</button>
+          </div>
+          <ul class="schedule-list-ul">
+            ${listHtml}
+          </ul>
+        </div>
+      </div>`;
+
+      container.innerHTML = html;
+    }
+
+    function changeMonth(delta) {
+      currentCalMonth += delta;
+      if (currentCalMonth < 0) {
+        currentCalMonth = 11;
+        currentCalYear--;
+      } else if (currentCalMonth > 11) {
+        currentCalMonth = 0;
+        currentCalYear++;
+      }
+      renderCalendarUI();
+    }
+
+    function selectCalDate(dateKey) {
+      selectedDateKey = dateKey;
+      renderCalendarUI();
+    }
+
+    function addSchedule() {
+      const input = document.getElementById('schedule-input');
+      if (!input || !input.value.trim()) return;
+      
+      if (!eventsData[selectedDateKey]) {
+        eventsData[selectedDateKey] = [];
+      }
+      eventsData[selectedDateKey].push(input.value.trim());
+      renderCalendarUI();
+    }
+
+    function deleteSchedule(index) {
+      if (eventsData[selectedDateKey]) {
+        eventsData[selectedDateKey].splice(index, 1);
+        if (eventsData[selectedDateKey].length === 0) {
+          delete eventsData[selectedDateKey];
+        }
+      }
+      renderCalendarUI();
+    }
+
+    /* ---------- Page Switcher ---------- */
     function switchPage(pageId) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
       document.querySelectorAll('.sub-navlinks a').forEach(a => a.classList.remove('active'));
