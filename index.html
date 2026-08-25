@@ -330,19 +330,22 @@
     .cal-top-bar { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-weight: 800; font-size: 16px; letter-spacing: 0.05em; padding-bottom: 8px; }
     .cal-nav-btn { background: var(--white); border: 1.5px solid var(--navy); color: var(--navy); padding: 6px 14px; font-size: 11px; font-family: var(--mono); font-weight: bold; box-shadow: 2px 2px 0 var(--navy); transition: 0.15s; }
     .cal-nav-btn:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--navy); }
+    .inline-add-trigger { background: transparent; border: 1px solid currentColor; color: inherit; padding: 2px 6px; font-family: var(--mono); font-size: 9px; font-weight: 800; cursor: pointer; line-height: 1.2; }
+    .inline-add-trigger:hover { background: var(--navy); color: var(--pink); }
 
     .full-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); border: 1.5px solid var(--navy); background: var(--navy); gap: 1.5px; width: 100%; }
     .full-cal-head { font-family: var(--mono); font-weight: 800; font-size: 11px; padding: 10px 0; text-align: center; background: var(--pink) !important; color: var(--navy); }
-    .full-cal-day { min-height: 85px; background: #ffffff !important; padding: 8px; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 4px; font-family: var(--mono); font-size: 13px; transition: background 0.15s; overflow: hidden; }
+    .full-cal-day { height: 85px; min-height: 85px; max-height: 85px; box-sizing: border-box; background: #ffffff !important; padding: 8px; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 4px; font-family: var(--mono); font-size: 13px; transition: background 0.15s; overflow: hidden; }
     .full-cal-day.empty { background: #ffffff !important; }
     .full-cal-day:not(.empty):hover { background: #f4e3e8 !important; }
     .full-cal-day.selected { background: #f1cbd5 !important; }
     .full-cal-day.today { font-weight: bold; color: var(--navy) !important; }
     .day-num { font-weight: 700; margin-bottom: 4px; }
 
-    .event-inline-list { display: flex; flex-direction: column; gap: 3px; width: 100%; overflow: hidden; }
-    .event-inline-item { display: flex; align-items: center; gap: 5px; font-size: 10px; font-family: var(--sans); background: rgba(28, 32, 56, 0.06); padding: 3px 6px; border-radius: 3px; color: var(--navy); width: 100%; box-sizing: border-box; overflow: hidden; }
+    .event-inline-list { display: flex; flex-direction: column; gap: 3px; width: 100%; max-height: 47px; overflow: hidden; }
+    .event-inline-item { display: flex; align-items: center; gap: 5px; height: 17px; min-height: 17px; font-size: 10px; font-family: var(--sans); background: rgba(28, 32, 56, 0.06); padding: 3px 6px; border-radius: 3px; color: var(--navy); width: 100%; box-sizing: border-box; overflow: hidden; }
     .event-inline-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; display: block; }
+    .event-more-count { font-size: 9px; font-family: var(--mono); font-weight: 800; opacity: .72; padding: 1px 4px; white-space: nowrap; }
     .event-dot-icon { width: 5px; height: 5px; border-radius: 50%; background: var(--navy); flex-shrink: 0; }
 
     .schedule-panel-read { border-top: 1.5px dashed var(--navy); padding-top: 16px; margin-top: 8px; }
@@ -984,7 +987,12 @@
       let html = `
         <div class="list-item" id="item-notice-calendar" onclick="selectNoticeItem('calendar', this)">
           <div class="item-info">
-            <span class="item-name">CALENDAR</span>
+            <span class="item-name" style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <span>CALENDAR</span>
+              <span class="admin-only">
+                <button class="inline-add-trigger" onclick="event.stopPropagation(); openCalendarAddModal()" title="일정 추가">+ ADD</button>
+              </span>
+            </span>
             <span class="item-subtext">TIME RECORD</span>
           </div>
         </div>
@@ -1824,6 +1832,39 @@
       renderNoticeSidebar();
     }
 
+    /* ---------- PERSONAL CALENDAR EVENTS ---------- */
+    function openCalendarAddModal() {
+      if (!isAdminLoggedIn) { alert('관리자 로그인 후 사용할 수 있습니다.'); return; }
+      const defaultDate = selectedDateKey || getTodayKey();
+      const container = document.getElementById('admin-edit-container');
+      container.innerHTML = `
+        <div class="modal-title">ADD CALENDAR EVENT</div>
+        <label class="modal-label">날짜</label>
+        <input type="date" id="calendar-add-date" class="modal-input" value="${defaultDate}">
+        <label class="modal-label">일정</label>
+        <input type="text" id="calendar-add-title" class="modal-input" placeholder="예: OPEN / REST / 개인 일정">
+        <div class="upload-help">캐릭터 생일과 별개로 표시되는 개인 일정입니다. 같은 날짜에 여러 개를 추가할 수 있습니다.</div>
+        <div class="modal-btn-group">
+          <button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button>
+          <button class="modal-btn modal-btn-save" onclick="saveCalendarEvent()">SAVE</button>
+        </div>`;
+      document.getElementById('modal-admin-edit').classList.add('show');
+      setTimeout(() => document.getElementById('calendar-add-title')?.focus(), 80);
+    }
+
+    function saveCalendarEvent() {
+      const date = document.getElementById('calendar-add-date')?.value || '';
+      const title = document.getElementById('calendar-add-title')?.value.trim() || '';
+      if (!date) { alert('날짜를 선택해 주세요.'); return; }
+      if (!title) { alert('일정 이름을 입력해 주세요.'); return; }
+      if (!eventsData[date]) eventsData[date] = [];
+      eventsData[date].push(title);
+      persistArchiveData();
+      selectedDateKey = date;
+      closeAdminEditModal();
+      renderCalendarUI();
+    }
+
     /* ---------- CALENDAR UI ---------- */
     const nowSystemDate = new Date();
     let currentCalYear = nowSystemDate.getFullYear();
@@ -1867,7 +1908,9 @@
         const manualEvents=(eventsData[dateKey]||[]).map(text=>({text,birthday:false}));
         const allEvents=[...birthdayEvents,...manualEvents];
         const isSelected=dateKey===selectedDateKey?'selected':'', isToday=dateKey===todayKeyStr?'today':'';
-        const eventsHtml=allEvents.length?`<div class="event-inline-list">${allEvents.map(evt=>`<div class="event-inline-item"><span class="event-dot-icon"></span><span class="event-inline-text">${evt.text}</span></div>`).join('')}</div>`:'';
+        const visibleEvents=allEvents.slice(0,2);
+        const hiddenCount=Math.max(0,allEvents.length-visibleEvents.length);
+        const eventsHtml=allEvents.length?`<div class="event-inline-list">${visibleEvents.map(evt=>`<div class="event-inline-item"><span class="event-dot-icon"></span><span class="event-inline-text">${evt.text}</span></div>`).join('')}${hiddenCount?`<div class="event-more-count">+ ${hiddenCount}건</div>`:''}</div>`:'';
         html+=`<div class="full-cal-day ${isSelected} ${isToday}" onclick="selectCalDate('${dateKey}')"><span class="day-num">${day}</span>${eventsHtml}</div>`;
       }
       const remaining=(7-((firstDay+daysInMonth)%7))%7; for(let i=0;i<remaining;i++) html+='<div class="full-cal-day empty"></div>';
@@ -1894,7 +1937,10 @@
 
     function deleteCalendarEvent(dateKey, idx) {
       if (confirm('해당 일정을 삭제하시겠습니까?')) {
+        if (!eventsData[dateKey]) return;
         eventsData[dateKey].splice(idx, 1);
+        if (!eventsData[dateKey].length) delete eventsData[dateKey];
+        persistArchiveData();
         renderCalendarUI();
       }
     }
