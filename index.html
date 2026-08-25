@@ -264,17 +264,13 @@
     .gal01-scroll-wrapper::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 3px; }
 
     .gal-thumb-item {
-      position: relative; width: 90px; height: 90px; flex-shrink: 0; border: 1.5px solid var(--navy); background: #fff; overflow: hidden; transition: transform 0.15s;
+      position: relative; width: 135px; height: 135px; flex: 0 0 135px; border: none; background: transparent; overflow: hidden; transition: transform 0.15s;
     }
     .gal-thumb-item:hover { transform: translateY(-2px); }
     .gal-thumb-img { width: 100%; height: 100%; object-fit: cover; }
 
     /* RED SQUARE LINK SVG BADGE */
-    .link-svg-badge {
-      position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; background: transparent; border: none;
-      display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5; transition: transform 0.1s;
-      padding: 0;
-    }
+    .link-svg-badge { display:none; }
     .link-svg-badge:hover { transform: scale(1.15); }
     .link-svg-badge svg { width: 15px; height: 15px; stroke: var(--navy); fill: none; stroke-width: 2.4; filter: drop-shadow(0 1px 0 rgba(255,255,255,.65)); }
 
@@ -282,7 +278,9 @@
     .gal02-accordion-item { border: 1.5px solid var(--navy); background: #fff; margin-bottom: 10px; }
     .gal02-acc-header { background: rgba(28, 32, 56, 0.06); padding: 10px 12px; font-weight: 700; font-size: 13px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
     .gal02-acc-desc { font-size: 11px; opacity: 0.75; padding: 6px 12px; border-bottom: 1px dashed rgba(28, 32, 56, 0.2); background: rgba(255,255,255,0.8); }
-    .gal02-acc-body { padding: 12px; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; }
+    .gal02-acc-body { padding: 6px 2px 12px 2px; display: flex; gap: 10px; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--navy) transparent; cursor: grab; }
+    .gal02-acc-body::-webkit-scrollbar { height: 6px; }
+    .gal02-acc-body::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 3px; }
     .gal02-accordion-item.collapsed .gal02-acc-body { display: none; }
 
     /* WORLD CHARACTER CARDS GRID */
@@ -543,7 +541,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>WORLDS</span>
-            <span class="admin-only"><button onclick="openAddModal('world')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('world')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('world')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="world-sidebar-list"></div>
         </aside>
@@ -605,7 +603,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>TRACK LIST</span>
-            <span class="admin-only"><button onclick="openAddModal('music')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('music')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('music')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="music-sidebar-list"></div>
         </aside>
@@ -636,7 +634,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>LOG HISTORY</span>
-            <span class="admin-only"><button onclick="openAddModal('feed')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('feed')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('feed')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="feed-sidebar-list"></div>
         </aside>
@@ -667,7 +665,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>SCHEDULE &amp; NOTICES</span>
-            <span class="admin-only"><button onclick="openAddModal('notice')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('notice')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('notice')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="notice-sidebar-list"></div>
         </aside>
@@ -716,7 +714,9 @@
     let categoryGroups = {
       world: ["WORLD DATABASE"],
       characters: ["EMPECLA", "SUB WORLD"],
-      music: ["ALBUM 01"]
+      music: ["ALBUM 01"],
+      feed: ["ALL LOGS"],
+      notice: ["ANNOUNCEMENTS"]
     };
     let characterOrder = [];
 
@@ -777,10 +777,10 @@
         { id: 'track_01', group: 'ALBUM 01', title: '01. Signal Theme #1', sub: 'TRACK 01 / MAIN THEME', content: '<p>Signal Theme #1의 가사 및 정보입니다.</p>' }
       ],
       feed: [
-        { id: 'feed_1', date: '2026-08-24', title: '2026.08.24 Daily Log', img: './images/A01.png', content: '<img src="./images/A01.png" style="width:100%; max-height:300px; object-fit:cover; border:1.5px solid var(--navy);"><p style="margin-top:10px;">최신 기록입니다.</p>' }
+        { id: 'feed_1', group: 'ALL LOGS', date: '2026-08-24', title: '2026.08.24 Daily Log', img: './images/A01.png', content: '<img src="./images/A01.png" style="width:100%; max-height:300px; object-fit:cover; border:1.5px solid var(--navy);"><p style="margin-top:10px;">최신 기록입니다.</p>' }
       ],
       notice: [
-        { id: 'renewal', date: '2026-08-24', title: 'Archive Renewal', pinned: true, content: '<p>아카이브 시스템이 리뉴얼되었습니다!</p>' }
+        { id: 'renewal', group: 'ANNOUNCEMENTS', date: '2026-08-24', title: 'Archive Renewal', pinned: true, content: '<p>아카이브 시스템이 리뉴얼되었습니다!</p>' }
       ]
     };
 
@@ -849,95 +849,29 @@
     }
 
     function renderMusicSidebar() {
-      const container = document.getElementById('music-sidebar-list');
-      let html = '';
-      categoryGroups.music.forEach(groupName => {
-        const items = database.music.filter(item => item.group === groupName);
-        html += `
-          <div class="accordion-group">
-            <div class="accordion-header" onclick="toggleAccordion(this)">
-              <span>✦ ${groupName}</span><span class="acc-icon">▼</span>
-            </div>
-            <div class="accordion-body">
-              ${items.map(item => `
-                <div class="list-item" id="item-music-${item.id}" onclick="selectMusicItem('${item.id}', this)">
-                  <div class="item-info">
-                    <span class="item-name">
-                      <span>${item.title}</span>
-                      ${getAdminSvgMarksHtml('music', item.id)}
-                    </span>
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        `;
-      });
-      container.innerHTML = html;
+      const container=document.getElementById('music-sidebar-list'); let html='';
+      [...new Set([...categoryGroups.music,...database.music.map(x=>x.group).filter(Boolean)])].forEach(groupName=>{
+        const items=database.music.filter(x=>x.group===groupName);
+        html+=`<div class="accordion-group"><div class="accordion-header" onclick="toggleAccordion(this)"><span>✦ ${groupName}</span><span class="acc-icon">▼</span></div><div class="accordion-body">${items.map(item=>`<div class="list-item" id="item-music-${item.id}" onclick="selectMusicItem('${item.id}', this)"><div class="item-info"><span class="item-name"><span>${item.title}</span>${getAdminSvgMarksHtml('music',item.id)}</span></div></div>`).join('')}</div></div>`;
+      }); container.innerHTML=html;
     }
 
     function renderFeedSidebar() {
-      const container = document.getElementById('feed-sidebar-list');
-      const sortedFeed = [...database.feed].sort((a, b) => new Date(b.date) - new Date(a.date));
-      let html = `
-        <div class="accordion-group">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>✦ ALL LOGS</span><span class="acc-icon">▼</span>
-          </div>
-          <div class="accordion-body">
-            ${sortedFeed.map(item => `
-              <div class="list-item" id="item-feed-${item.id}" onclick="selectFeedItem('${item.id}', this)">
-                <img src="${item.img || './images/A01.png'}" class="item-thumb">
-                <div class="item-info">
-                  <span class="item-name">
-                    <span>${item.title}</span>
-                    ${getAdminSvgMarksHtml('feed', item.id)}
-                  </span>
-                  <span class="item-subtext">${item.date}</span>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-      container.innerHTML = html;
+      const container=document.getElementById('feed-sidebar-list'); let html='';
+      const sorted=[...database.feed].sort((a,b)=>new Date(b.date)-new Date(a.date));
+      [...new Set([...categoryGroups.feed,...sorted.map(x=>x.group).filter(Boolean)])].forEach(groupName=>{
+        const items=sorted.filter(x=>(x.group||categoryGroups.feed[0])===groupName);
+        html+=`<div class="accordion-group"><div class="accordion-header" onclick="toggleAccordion(this)"><span>✦ ${groupName}</span><span class="acc-icon">▼</span></div><div class="accordion-body">${items.map(item=>`<div class="list-item" id="item-feed-${item.id}" onclick="selectFeedItem('${item.id}', this)"><img src="${item.img||'./images/A01.png'}" class="item-thumb"><div class="item-info"><span class="item-name"><span>${item.title}</span>${getAdminSvgMarksHtml('feed',item.id)}</span><span class="item-subtext">${item.date}</span></div></div>`).join('')}</div></div>`;
+      }); container.innerHTML=html;
     }
 
     function renderNoticeSidebar() {
-      const container = document.getElementById('notice-sidebar-list');
-      const sortedNotice = [...database.notice].sort((a, b) => {
-        if (a.pinned !== b.pinned) return b.pinned ? 1 : -1;
-        return new Date(b.date) - new Date(a.date);
-      });
-
-      let html = `
-        <div class="list-item" id="item-notice-calendar" onclick="selectNoticeItem('calendar', this)">
-          <div class="item-info">
-            <span class="item-name">CALENDAR</span>
-            <span class="item-subtext">TIME RECORD</span>
-          </div>
-        </div>
-
-        <div class="accordion-group">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>✦ ANNOUNCEMENTS</span><span class="acc-icon">▼</span>
-          </div>
-          <div class="accordion-body">
-            ${sortedNotice.map(item => `
-              <div class="list-item" id="item-notice-${item.id}" onclick="selectNoticeItem('${item.id}', this)">
-                <div class="item-info">
-                  <span class="item-name">
-                    <span>${item.pinned ? `<span class="pin-badge">FIX</span>` : ''}${item.title}</span>
-                    ${getAdminSvgMarksHtml('notice', item.id)}
-                  </span>
-                  <span class="item-subtext">${item.date}</span>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-      container.innerHTML = html;
+      const container=document.getElementById('notice-sidebar-list'); let html=`<div class="list-item" id="item-notice-calendar" onclick="selectNoticeItem('calendar', this)"><div class="item-info"><span class="item-name">CALENDAR</span><span class="item-subtext">TIME RECORD</span></div></div>`;
+      const sorted=[...database.notice].sort((a,b)=>{if(a.pinned!==b.pinned)return b.pinned?1:-1;return new Date(b.date)-new Date(a.date);});
+      [...new Set([...categoryGroups.notice,...sorted.map(x=>x.group).filter(Boolean)])].forEach(groupName=>{
+        const items=sorted.filter(x=>(x.group||categoryGroups.notice[0])===groupName);
+        html+=`<div class="accordion-group"><div class="accordion-header" onclick="toggleAccordion(this)"><span>✦ ${groupName}</span><span class="acc-icon">▼</span></div><div class="accordion-body">${items.map(item=>`<div class="list-item" id="item-notice-${item.id}" onclick="selectNoticeItem('${item.id}', this)"><div class="item-info"><span class="item-name"><span>${item.pinned?`<span class="pin-badge">FIX</span>`:''}${item.title}</span>${getAdminSvgMarksHtml('notice',item.id)}</span><span class="item-subtext">${item.date}</span></div></div>`).join('')}</div></div>`;
+      }); container.innerHTML=html;
     }
 
     /* ---------- URL & SELECTION SYSTEM ---------- */
@@ -1227,7 +1161,10 @@
           <label class="modal-label">세계관 설명</label><textarea id="edit-desc" class="modal-textarea" style="min-height:180px;">${item.desc||''}</textarea>
           <label class="modal-label">등장 캐릭터 <span style="font-weight:400;opacity:.7;">(클릭으로 선택 · 드래그로 순서 변경)</span></label>
           <div id="world-char-select-grid" class="char-select-grid" style="max-height:300px;">${[...database.characters].sort((a,b)=>{const ai=selectedCharIds.indexOf(a.id),bi=selectedCharIds.indexOf(b.id);return (ai<0?9999:ai)-(bi<0?9999:bi);}).map(c=>`<div class="char-select-card ${selectedCharIds.includes(c.id)?'selected':''}" draggable="true" data-cid="${c.id}" onclick="this.classList.toggle('selected')" ondragstart="worldCharDragStart(event)" ondragover="worldCharDragOver(event)" ondrop="worldCharDrop(event)" ondragend="worldCharDragEnd(event)"><span style="display:block;cursor:grab;">☷</span>${c.name}</div>`).join('')}</div>`;
-      }else if(section==='feed'){
+      }else if(section==='music'){
+         const groups=[...new Set([...categoryGroups.music,...database.music.map(m=>m.group).filter(Boolean)])];
+         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}"><label class="modal-label">분류</label><input type="text" id="edit-group" class="modal-input" list="music-group-options" value="${item.group||groups[0]||'ALBUM 01'}"><datalist id="music-group-options">${groups.map(g=>`<option value="${g}">`).join('')}</datalist><label class="modal-label">서브 / 날짜</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||item.date||''}"><label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea">${item.content||''}</textarea>`;
+       }else if(section==='feed'){
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
           <label class="modal-label">날짜</label><input type="date" id="edit-date" class="modal-input" value="${item.date||''}">
           <label class="modal-label">대표 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*">
@@ -1264,6 +1201,48 @@
       grid.insertBefore(worldCharDragEl, after ? target.nextSibling : target);
     }
     function worldCharDragEnd(e){ e.currentTarget.classList.remove('dragging'); worldCharDragEl=null; }
+
+    function openListManager(section){
+      if(section==='characters'){ openCharacterListManager(); return; }
+      const container=document.getElementById('admin-edit-container');
+      const defaultGroup=section==='world'?'WORLD DATABASE':section==='music'?'ALBUM 01':section==='feed'?'ALL LOGS':'ANNOUNCEMENTS';
+      if(!categoryGroups[section]) categoryGroups[section]=[defaultGroup];
+      const groups=[...categoryGroups[section]];
+      const items=[...(database[section]||[])];
+      items.forEach(x=>{ if(!x.group) x.group=groups[0]||defaultGroup; });
+      container.innerHTML=`<div class="modal-title">EDIT ${section.toUpperCase()} LIST</div>
+        <div class="manager-section-title">목록 분류 이름 / 순서</div>
+        <div id="generic-group-editor" class="admin-list-manager">${groups.map((g,i)=>`
+          <div class="admin-manager-group-row" data-index="${i}">
+            <input class="modal-input generic-group-name" value="${g}">
+            <button type="button" class="manager-small-btn" onclick="moveGenericGroup(this,-1)">▲</button>
+            <button type="button" class="manager-small-btn" onclick="moveGenericGroup(this,1)">▼</button>
+            <button type="button" class="manager-small-btn" onclick="removeGenericGroup(this)">삭제</button>
+          </div>`).join('')}</div>
+        <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addGenericGroupEditor()">+ GROUP</button>
+        <div class="manager-section-title">목록 분류 / 표시 순서</div>
+        <div id="generic-item-order-editor" class="admin-list-manager">${items.map(x=>`
+          <div class="admin-manager-char-row generic-item-row" draggable="true" data-id="${x.id}" ondragstart="genericOrderDragStart(event)" ondragover="genericOrderDragOver(event)" ondrop="genericOrderDrop(event)" ondragend="genericOrderDragEnd(event)">
+            <span class="drag-handle">☷</span><span style="min-width:140px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${x.title||x.name||x.id}</span>
+            <select class="generic-item-group">${groups.map(g=>`<option value="${g}" ${x.group===g?'selected':''}>${g}</option>`).join('')}</select>
+          </div>`).join('')}</div>
+        <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveGenericListManager('${section}')">SAVE LIST</button></div>`;
+      document.getElementById('modal-admin-edit').classList.add('show');
+    }
+    function addGenericGroupEditor(){ const box=document.getElementById('generic-group-editor'); if(!box)return; const div=document.createElement('div'); div.className='admin-manager-group-row'; div.innerHTML='<input class="modal-input generic-group-name" placeholder="새 분류 이름"><button type="button" class="manager-small-btn" onclick="moveGenericGroup(this,-1)">▲</button><button type="button" class="manager-small-btn" onclick="moveGenericGroup(this,1)">▼</button><button type="button" class="manager-small-btn" onclick="removeGenericGroup(this)">삭제</button>'; box.appendChild(div); }
+    function moveGenericGroup(btn,dir){ const row=btn.parentElement,box=row.parentElement,rows=[...box.children],idx=rows.indexOf(row),next=idx+dir;if(next<0||next>=rows.length)return;if(dir<0)box.insertBefore(row,rows[next]);else box.insertBefore(rows[next],row); }
+    function removeGenericGroup(btn){ const box=btn.parentElement.parentElement;if(box.children.length<=1){alert('분류는 최소 1개가 필요합니다.');return;}btn.parentElement.remove(); }
+    let genericOrderDragEl=null;
+    function genericOrderDragStart(e){genericOrderDragEl=e.currentTarget;e.currentTarget.classList.add('dragging');e.dataTransfer.effectAllowed='move';}
+    function genericOrderDragOver(e){e.preventDefault();e.dataTransfer.dropEffect='move';}
+    function genericOrderDrop(e){e.preventDefault();const target=e.currentTarget;if(!genericOrderDragEl||target===genericOrderDragEl)return;const box=target.parentElement,rect=target.getBoundingClientRect();box.insertBefore(genericOrderDragEl,e.clientY>rect.top+rect.height/2?target.nextSibling:target);}
+    function genericOrderDragEnd(e){e.currentTarget.classList.remove('dragging');genericOrderDragEl=null;}
+    function saveGenericListManager(section){
+      const names=[...document.querySelectorAll('#generic-group-editor .generic-group-name')].map(i=>i.value.trim()).filter(Boolean); if(!names.length){alert('분류를 최소 1개 입력해 주세요.');return;}
+      const rows=[...document.querySelectorAll('#generic-item-order-editor .generic-item-row')]; const db=database[section]||[];
+      rows.forEach(r=>{const item=db.find(x=>x.id===r.dataset.id);if(item)item.group=r.querySelector('.generic-item-group').value;});
+      db.forEach(item=>{if(!names.includes(item.group))item.group=names[0];}); categoryGroups[section]=names; persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
+    }
 
     function openCharacterListManager(){
       const container=document.getElementById('admin-edit-container');
@@ -1337,7 +1316,7 @@
       }else if(section==='world'){
         item.title=document.getElementById('edit-title').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'WORLD DATABASE'; item.sub=document.getElementById('edit-sub').value.trim(); item.desc=document.getElementById('edit-desc').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await readFileAsDataURL(imgFile); item.charIds=[...document.querySelectorAll('#world-char-select-grid .char-select-card.selected')].map(el=>el.dataset.cid);
       }else if(section==='feed'){
-        item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.content=document.getElementById('edit-content').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await readFileAsDataURL(imgFile); item.content=item.content || '';
+        item.title=document.getElementById('edit-title').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'ALL LOGS'; item.date=document.getElementById('edit-date').value; item.content=document.getElementById('edit-content').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await readFileAsDataURL(imgFile); item.content=item.content || '';
       }else if(section==='notice'){
         item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.pinned=document.getElementById('edit-pinned').checked; item.content=document.getElementById('edit-content').value;
       }else{ item.title=document.getElementById('edit-title').value; item.sub=document.getElementById('edit-sub').value; item.content=document.getElementById('edit-content').value; }
