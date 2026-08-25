@@ -525,7 +525,7 @@
           <button class="admin-trigger-btn" onclick="openAdminLogin()" title="Admin Login">
             <img src="./images/A04.png" alt="Admin Access" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231C2038\'><path d=\'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z\'/></svg>'">
           </button>
-          <button class="admin-only manager-small-btn" onclick="openUploadSettings()" style="margin-left:8px;">UPLOAD SETTINGS</button>
+          <button class="admin-only manager-small-btn" onclick="openUploadSettings()" style="margin-left:8px;">GITHUB UPLOAD</button>
         </div>
       </div>
     </section>
@@ -1440,44 +1440,120 @@
 
     function addGallery02AdminGroup(){ const box=document.getElementById('gallery02-editor'); if(!box)return; const i=box.children.length; const div=document.createElement('div'); div.className='gallery02-admin-group'; div.dataset.index=i; div.innerHTML='<input class="modal-input g02-title" placeholder="갤러리 제목"><textarea class="modal-textarea g02-desc" placeholder="설명"></textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">파일을 선택하면 저장 시 GitHub에 실제 파일로 업로드됩니다.</div>'; box.appendChild(div); }
     function stripImageHtml(html){ return String(html||'').replace(/<img[^>]*>/gi,'').replace(/<[^>]+>/g,'').trim(); }
-    const GITHUB_UPLOAD_ENDPOINT = ''; /* 기본값. 비워두면 관리자 설정값을 사용합니다. */
-    const GITHUB_UPLOAD_ENDPOINT_KEY = 'ruroon_github_upload_endpoint';
-    function getGitHubUploadEndpoint(){ return localStorage.getItem(GITHUB_UPLOAD_ENDPOINT_KEY) || GITHUB_UPLOAD_ENDPOINT; }
+    /* ---------- DIRECT GITHUB UPLOAD (NO WORKER) ---------- */
+    /*
+       The site is hosted on GitHub Pages, so uploads can go directly to GitHub's
+       REST API. The token is kept only in sessionStorage, never in the archive
+       data/localStorage, and is cleared when the browser tab/session ends.
+       Repository: ruroong/ruroon._.g, branch: main
+    */
+    const GITHUB_OWNER = 'ruroong';
+    const GITHUB_REPO = 'ruroon._.g';
+    const GITHUB_BRANCH = 'main';
+    const GITHUB_TOKEN_KEY = 'ruroon_github_token_session';
+    const GITHUB_API_BASE = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`;
     const GITHUB_UPLOAD_TIMEOUT = 120000;
 
-    async function uploadFileToGitHub(file, folder){
-      if(!file) return '';
-      const endpoint=getGitHubUploadEndpoint();
-      if(!endpoint){
-        throw new Error('GitHub 업로드 서버 주소가 설정되지 않았습니다. HTML의 GITHUB_UPLOAD_ENDPOINT에 배포한 Worker URL을 넣어주세요.');
-      }
-      const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-      const path=`${folder}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safeName}`;
+    function getGitHubToken(){
+      return sessionStorage.getItem(GITHUB_TOKEN_KEY) || '';
+    }
+
+    function clearGitHubToken(){
+      sessionStorage.removeItem(GITHUB_TOKEN_KEY);
+    }
+
+    function askForGitHubToken(force=false){
+      if(!force && getGitHubToken()) return getGitHubToken();
+      const token=prompt('GitHub Fine-grained Personal Access Token을 입력하세요.\n\n토큰은 이 브라우저 세션에만 임시 저장되며 사이트 데이터(localStorage)에는 저장하지 않습니다.\n\n※ 토큰 자체를 사이트 코드에 넣지 않습니다.');
+      if(token===null) return '';
+      const value=token.trim();
+      if(!value) return '';
+      sessionStorage.setItem(GITHUB_TOKEN_KEY,value);
+      return value;
+    }
+
+    async function githubApi(path, options={}){
+      const token=getGitHubToken() || askForGitHubToken();
+      if(!token) throw new Error('GitHub 토큰이 설정되지 않았습니다.');
       const controller=new AbortController();
       const timer=setTimeout(()=>controller.abort(),GITHUB_UPLOAD_TIMEOUT);
       try{
-        const fd=new FormData();
-        fd.append('file',file);
-        fd.append('path',path);
-        const res=await fetch(endpoint,{method:'POST',body:fd,signal:controller.signal});
+        const res=await fetch(`${GITHUB_API_BASE}${path}`,{
+          ...options,
+          signal:controller.signal,
+          headers:{
+            'Accept':'application/vnd.github+json',
+            'Authorization':`Bearer ${token}`,
+            'Content-Type':'application/json',
+            ...(options.headers||{})
+          }
+        });
         const data=await res.json().catch(()=>({}));
-        if(!res.ok || !data.url) throw new Error(data.error||`업로드 실패 (${res.status})`);
-        return data.url;
+        if(!res.ok){
+          if(res.status===401 || res.status===403) clearGitHubToken();
+          throw new Error(data.message || `GitHub API 오류 (${res.status})`);
+        }
+        return data;
       }finally{ clearTimeout(timer); }
+    }
+
+    function fileToBase64(file){
+      return new Promise((resolve,reject)=>{
+        const reader=new FileReader();
+        reader.onload=()=>{
+          try{
+            const result=String(reader.result||'');
+            const comma=result.indexOf(',');
+            resolve(comma>=0 ? result.slice(comma+1) : result);
+          }catch(e){ reject(e); }
+        };
+        reader.onerror=()=>reject(reader.error||new Error('파일을 읽을 수 없습니다.'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function makeGitHubFilePath(file, folder){
+      const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+      return `${folder}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safeName}`;
+    }
+
+    function getGitHubPagesUrl(path){
+      return `https://${GITHUB_OWNER}.github.io/${GITHUB_REPO}/${path.split('/').map(encodeURIComponent).join('/')}`;
+    }
+
+    async function uploadFileToGitHub(file, folder){
+      if(!file) return '';
+      if(file.size > 100 * 1024 * 1024){
+        throw new Error(`파일이 너무 큽니다: ${file.name}\nGitHub API는 이 방식으로 100MB 초과 파일을 지원하지 않습니다.`);
+      }
+      const path=makeGitHubFilePath(file,folder);
+      const content=await fileToBase64(file);
+      const data=await githubApi(`/contents/${path.split('/').map(encodeURIComponent).join('/')}`,{
+        method:'PUT',
+        body:JSON.stringify({
+          message:`Upload ${path}`,
+          content,
+          branch:GITHUB_BRANCH
+        })
+      });
+      return getGitHubPagesUrl(path);
     }
 
     async function uploadManyFilesToGitHub(files, folder){
       const list=[...files];
       const results=[];
-      for(const file of list) results.push(await uploadFileToGitHub(file,folder));
+      for(let i=0;i<list.length;i++){
+        const file=list[i];
+        if(!getGitHubToken()) askForGitHubToken();
+        if(!getGitHubToken()) throw new Error('업로드가 취소되었습니다.');
+        results.push(await uploadFileToGitHub(file,folder));
+      }
       return results;
     }
 
+    /* 기존 저장 로직에서 호출되므로 유지. 이제 Base64를 DB에 저장하지 않고 GitHub URL을 반환한다. */
     function readFileAsDataURL(file){
-      return uploadFileToGitHub(file,'uploads').catch(err=>{
-        console.error(err);
-        throw err;
-      });
+      return uploadFileToGitHub(file,'images/uploads');
     }
 
     function closeAdminEditModal() {
@@ -1532,13 +1608,27 @@
     /* ---------- AUTH SYSTEM ---------- */
     const SECRET_PASS = "Loversleporineladymart";
 
-    function openUploadSettings(){
+    async function openUploadSettings(){
       if(!isAdminLoggedIn){ alert('관리자 로그인 후 사용할 수 있습니다.'); return; }
-      const current=getGitHubUploadEndpoint();
-      const value=prompt('GitHub 업로드 Worker 주소를 입력하세요.\n예: https://your-worker.example.workers.dev/upload',current);
-      if(value===null)return;
-      localStorage.setItem(GITHUB_UPLOAD_ENDPOINT_KEY,value.trim());
-      alert(value.trim()?'업로드 서버 주소를 저장했습니다.':'업로드 서버 주소를 비웠습니다.');
+      const has=!!getGitHubToken();
+      const action=prompt(
+        `GitHub 업로드 설정\n\n현재 상태: ${has?'연결됨 (현재 브라우저 세션)':'연결 안 됨'}\n\n1 = GitHub 토큰 입력/교체\n2 = 연결 테스트\n3 = 토큰 지우기\n\n번호를 입력하세요.`,
+        has?'2':'1'
+      );
+      if(action==='1'){
+        const token=askForGitHubToken(true);
+        if(token) alert('GitHub 토큰을 현재 브라우저 세션에 저장했습니다. 이제 파일을 선택하고 SAVE하면 GitHub에 업로드됩니다.');
+      }else if(action==='2'){
+        try{
+          await githubApi('');
+          alert(`GitHub 연결 성공!\n\n저장소: ${GITHUB_OWNER}/${GITHUB_REPO}\n브랜치: ${GITHUB_BRANCH}\n\n이제 관리자에서 이미지/음원을 선택하고 SAVE하면 자동 업로드됩니다.`);
+        }catch(err){
+          alert(`GitHub 연결 실패\n\n${err.message}`);
+        }
+      }else if(action==='3'){
+        clearGitHubToken();
+        alert('GitHub 토큰을 이 브라우저 세션에서 삭제했습니다.');
+      }
     }
 
     function openAdminLogin() {
