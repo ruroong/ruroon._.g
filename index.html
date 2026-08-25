@@ -427,7 +427,8 @@
     .footer-content { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; opacity: 0.9; }
     .top-btn { background: none; border: none; color: var(--pink); font-family: var(--mono); font-size: 10px; }
 
-    #yt-player-container { position: fixed; width: 2px; height: 2px; left: -10px; bottom: -10px; opacity: 0.01; pointer-events: none; overflow:hidden; }
+    #main-bgm-container { position:fixed; width:1px; height:1px; left:-10px; bottom:-10px; opacity:0; pointer-events:none; overflow:hidden; }
+    #main-bgm { width:1px; height:1px; }
 
     @media (max-width: 820px) {
       .split-layout { grid-template-columns: 1fr; }
@@ -449,7 +450,7 @@
 
 <body>
 
-  <div id="yt-player-container"><div id="yt-player"></div></div>
+  <div id="main-bgm-container" aria-hidden="true"><audio id="main-bgm" preload="auto" loop></audio></div>
 
   <!-- [MODAL] LOGIN MODAL -->
   <div class="modal-backdrop" id="modal-login">
@@ -565,9 +566,9 @@
             <div class="progress-bar-fill" id="progress-fill"><div class="progress-thumb"></div></div>
           </div>
           <div class="player-controls">
-            <button class="ctrl-btn" onclick="restartTrack()"><svg class="player-svg-icon" viewBox="0 0 24 24"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg></button>
+            <button class="ctrl-btn" onclick="prevBgm()"><svg class="player-svg-icon" viewBox="0 0 24 24"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg></button>
             <button class="ctrl-btn play-main" id="play-btn" onclick="toggleBgm()"><svg class="player-svg-icon" style="width:18px; height:18px;" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
-            <button class="ctrl-btn" onclick="restartTrack()"><svg class="player-svg-icon" viewBox="0 0 24 24"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg></button>
+            <button class="ctrl-btn" onclick="nextBgm()"><svg class="player-svg-icon" viewBox="0 0 24 24"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg></button>
           </div>
         </div>
 
@@ -745,7 +746,6 @@
     </div>
   </footer>
 
-  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
     /* ---------- GLOBAL STATE ---------- */
     let isAdminLoggedIn = false;
@@ -770,8 +770,8 @@
     }
 
     const ARCHIVE_STORAGE_KEY='ruroon_archive_v4';
-    function persistArchiveData(){ try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify({database,categoryGroups,characterOrder,eventsData: (typeof eventsData!=='undefined'?eventsData:{}),noticeLinks})); }catch(e){ console.warn('archive storage failed',e); } }
-    function loadArchiveData(){ try{ const raw=localStorage.getItem(ARCHIVE_STORAGE_KEY); if(!raw)return; const saved=JSON.parse(raw); if(saved.database){ Object.keys(database).forEach(k=>{ if(saved.database[k]){ database[k].splice(0,database[k].length,...saved.database[k]); } }); } if(saved.categoryGroups) categoryGroups=saved.categoryGroups; if(Array.isArray(saved.characterOrder)) characterOrder=saved.characterOrder; if(saved.eventsData && typeof eventsData!=='undefined') eventsData=saved.eventsData; if(saved.noticeLinks) noticeLinks=saved.noticeLinks; }catch(e){ console.warn('archive storage load failed',e); } }
+    function persistArchiveData(){ try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify({database,categoryGroups,characterOrder,mainBgmIds,eventsData: (typeof eventsData!=='undefined'?eventsData:{}),noticeLinks})); }catch(e){ console.warn('archive storage failed',e); } }
+    function loadArchiveData(){ try{ const raw=localStorage.getItem(ARCHIVE_STORAGE_KEY); if(!raw)return; const saved=JSON.parse(raw); if(saved.database){ Object.keys(database).forEach(k=>{ if(saved.database[k]){ database[k].splice(0,database[k].length,...saved.database[k]); } }); } if(saved.categoryGroups) categoryGroups=saved.categoryGroups; if(Array.isArray(saved.characterOrder)) characterOrder=saved.characterOrder; if(Array.isArray(saved.mainBgmIds)) mainBgmIds=saved.mainBgmIds; if(saved.eventsData && typeof eventsData!=='undefined') eventsData=saved.eventsData; if(saved.noticeLinks) noticeLinks=saved.noticeLinks; }catch(e){ console.warn('archive storage load failed',e); } }
 
     /* ---------- DATA STORES ---------- */
     let categoryGroups = {
@@ -858,7 +858,11 @@
       ]
     };
 
+    // 메인 페이지 BGM으로 사용할 MUSIC 항목 ID 목록
+    let mainBgmIds = ['track_01'];
+
     loadArchiveData();
+    if (!Array.isArray(mainBgmIds)) mainBgmIds = ['track_01'];
     if(!characterOrder.length) characterOrder=database.characters.map(c=>c.id);
     database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
 
@@ -1077,15 +1081,35 @@
       return true;
     }
 
+    /* ---------- MAIN BGM MANAGEMENT ---------- */
+    function isMainBgm(id){ return Array.isArray(mainBgmIds) && mainBgmIds.includes(id); }
+    function getMainBgmTracks(){
+      const ids = Array.isArray(mainBgmIds) ? mainBgmIds : [];
+      return ids.map(id => database.music.find(m => m.id === id)).filter(m => m && m.audio);
+    }
+    function getMainBgmOptionsHtml(selectedId){
+      return database.music.map(m => `<option value=\"${m.id}\" ${m.id===selectedId?'selected':''}>${m.title}</option>`).join('');
+    }
+
     /* ---------- SELECT ITEM HANDLERS ---------- */
     function getMusicOptionsHtml(selectedId='') {
-      return `<option value="">연결하지 않음</option>` + database.music.map(m => `<option value="${m.id}" ${m.id===selectedId?'selected':''}>${m.title}</option>`).join('');
+      const groups = {};
+      database.music.forEach(m => { const g = m.group || 'MUSIC'; (groups[g] ||= []).push(m); });
+      const groupHtml = Object.entries(groups).map(([group, items]) =>
+        `<optgroup label="${group}">${items.map(m => `<option value="${m.id}" ${m.id===selectedId?'selected':''}>${m.title}</option>`).join('')}</optgroup>`
+      ).join('');
+      return `<option value="">연결하지 않음</option>${groupHtml}`;
+    }
+
+    function getMusicLinkFieldHtml(selectedId='') {
+      return `<select id="edit-music-id" class="modal-input music-link-select">${getMusicOptionsHtml(selectedId)}</select>
+        <div class="upload-help">MUSIC 탭에 등록된 곡만 연결합니다. 여기서는 음원 파일을 업로드하지 않습니다.</div>`;
     }
 
     function getLinkedMusicPlayerHtml(item) {
       const music = item && item.musicId ? database.music.find(m => m.id === item.musicId) : null;
       if (!music || !music.audio) return '';
-      return `<div class="music-inline-player"><audio controls preload="metadata" src="${music.audio}"></audio></div>`;
+      return `<div class="music-inline-player"><audio controls controlsList="nodownload" disableRemotePlayback preload="metadata" src="${music.audio}"></audio></div>`;
     }
 
     function selectWorldItem(id, el) {
@@ -1195,7 +1219,7 @@
           activeItemIds.music = id;
           document.getElementById('music-detail-title').innerText = item.title;
           document.getElementById('music-detail-sub').innerText = item.sub;
-          document.getElementById('music-detail-body').innerHTML = `${item.content||''}${item.audio ? `<div class="music-inline-player"><audio controls preload="metadata" src="${item.audio}"></audio></div>` : ''}${item.finalContent ? `<div class="music-final-content">${item.finalContent}</div>` : ''}`;
+          document.getElementById('music-detail-body').innerHTML = `${item.content||''}${item.audio ? `<div class="music-inline-player"><audio controls controlsList="nodownload" disableRemotePlayback preload="metadata" src="${item.audio}"></audio></div>` : ''}${item.finalContent ? `<div class="music-final-content">${item.finalContent}</div>` : ''}`;
           document.getElementById('music-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('music', id);
         }
       }
@@ -1384,7 +1408,7 @@
           <label class="modal-label">KNOWN AS</label><input type="text" id="edit-alias" class="modal-input" value="${item.alias||'ALIAS'}">
           <label class="modal-label">생일 (YYYY-MM-DD)</label><input type="date" id="edit-bday" class="modal-input" value="${item.birthday||''}">
           <label class="modal-label">PROMPT</label><textarea id="edit-tags" class="modal-textarea" style="min-height:160px;">${item.tags||''}</textarea>
-          <label class="modal-label">전용 음악</label><select id="edit-music-id" class="modal-input">${getMusicOptionsHtml(item.musicId||'')}</select><div class="upload-help">MUSIC에 등록된 음원 중 하나를 연결합니다. 연결된 음원에 실제 파일이 없으면 프로필에는 플레이어가 표시되지 않습니다.</div>
+          <label class="modal-label">전용 음악</label>${getMusicLinkFieldHtml(item.musicId||'')}
           <label class="modal-label">프로필 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">선택한 파일은 GitHub 업로드 서버를 통해 images/characters 폴더에 저장되고, 사이트에는 URL만 기록됩니다.</div>
           <label class="modal-label">OFFICIAL GALLERY 이미지</label><input type="file" id="edit-gal01-files" class="modal-file" accept="image/*" multiple><div class="upload-help">여러 장 선택 가능. GitHub의 images/characters/.../gallery 폴더에 실제 파일로 업로드됩니다.</div>
           <label class="modal-label">공통 작품 링크</label>
@@ -1401,7 +1425,7 @@
           <label class="modal-label">분류</label><input type="text" id="edit-group" class="modal-input" list="world-group-options" value="${item.group||groups[0]||''}"><datalist id="world-group-options">${groups.map(g=>`<option value="${g}">`).join('')}</datalist>
           <label class="modal-label">서브 타이틀</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||''}">
           <label class="modal-label">세계관 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">GitHub 업로드 서버를 통해 images/world 폴더에 저장됩니다.</div>
-          <label class="modal-label">전용 음악</label><select id="edit-music-id" class="modal-input">${getMusicOptionsHtml(item.musicId||'')}</select><div class="upload-help">MUSIC에 등록된 음원 중 하나를 연결합니다. 연결된 음원에 실제 파일이 없으면 세계관에는 플레이어가 표시되지 않습니다.</div>
+          <label class="modal-label">전용 음악</label>${getMusicLinkFieldHtml(item.musicId||'')}
           <label class="modal-label">세계관 설명</label><textarea id="edit-desc" class="modal-textarea" style="min-height:180px;">${item.desc||''}</textarea>
           <label class="modal-label">등장 캐릭터 <span style="font-weight:400;opacity:.7;">(클릭으로 선택 · 드래그로 순서 변경)</span></label>
           <div id="world-char-select-grid" class="char-select-grid world-char-select-scroll">${[...database.characters].sort((a,b)=>{const ai=selectedCharIds.indexOf(a.id),bi=selectedCharIds.indexOf(b.id);return (ai<0?9999:ai)-(bi<0?9999:bi);}).map(c=>`<div class="char-select-card ${selectedCharIds.includes(c.id)?'selected':''}" draggable="true" data-cid="${c.id}" onclick="this.classList.toggle('selected')" ondragstart="worldCharDragStart(event)" ondragover="worldCharDragOver(event)" ondrop="worldCharDrop(event)" ondragend="worldCharDragEnd(event)"><span style="display:block;cursor:grab;">☷</span>${c.name}</div>`).join('')}</div></div>`;
@@ -1410,6 +1434,7 @@
           <label class="modal-label">서브</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||''}">
           <label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea" style="min-height:220px;">${item.content||''}</textarea>
           <label class="modal-label">음원 파일</label><input type="file" id="edit-audio-file" class="modal-file" accept="audio/*"><div class="upload-help">MP3, WAV 등은 GitHub의 music 폴더에 실제 파일로 업로드되고 URL만 저장됩니다.</div>
+          <label class="modal-label checkbox-line"><input type="checkbox" id="edit-main-bgm" ${isMainBgm(item.id)?'checked':''}> <span>메인 페이지 BGM으로 사용</span></label><div class="upload-help">체크하면 메인 페이지에서 이 MUSIC의 실제 음원을 재생합니다. 여러 곡을 체크하면 순서대로 재생됩니다.</div>
           <label class="modal-label">마지막 내용 (선택)</label><textarea id="edit-final-content" class="modal-textarea" placeholder="음악 플레이어 아래에 표시할 추가 내용을 입력하세요. 비워두면 표시되지 않습니다.">${item.finalContent||''}</textarea>`;
       }else if(section==='feed'){
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
@@ -1732,6 +1757,9 @@
         item.finalContent=document.getElementById('edit-final-content').value;
         const audioFile=document.getElementById('edit-audio-file').files[0];
         if(audioFile) item.audio=await uploadFileToGitHub(audioFile, 'music');
+        const mainBgmChecked=document.getElementById('edit-main-bgm').checked;
+        mainBgmIds=Array.isArray(mainBgmIds)?mainBgmIds.filter(x=>x!==item.id):[];
+        if(mainBgmChecked) mainBgmIds.push(item.id);
       }else if(section==='feed'){
         item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.content=document.getElementById('edit-content').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/feed/${item.id}`); item.content=item.content || '';
       }else if(section==='notice'){
@@ -1742,6 +1770,7 @@
       categoryGroups.music=[...new Set([...categoryGroups.music,...database.music.map(x=>x.group).filter(Boolean)])];
       characterOrder=(characterOrder.length?characterOrder:database.characters.map(c=>c.id)).filter(id=>database.characters.some(c=>c.id===id)); database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
       persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
+      if(section==='music' && playerReady) { const currentTracks=getPlayableMainBgmTracks(); if(!currentTracks.length){ player.pause(); player.removeAttribute('src'); player.load(); } else { const currentId=currentTracks[Math.min(mainBgmIndex,currentTracks.length-1)]?.id; const target=currentTracks.findIndex(t=>t.id===currentId); if(target>=0) loadMainBgmTrack(target, !player.paused); else loadMainBgmTrack(0, false); } }
       setTimeout(()=>{
         if(section==='characters' && activeItemIds.characters){ const el=document.getElementById('item-characters-'+activeItemIds.characters); if(el)selectCharItem(activeItemIds.characters,el); }
         if(section==='world' && activeItemIds.world){ const el=document.getElementById('item-world-'+activeItemIds.world); if(el)selectWorldItem(activeItemIds.world,el); }
@@ -1760,6 +1789,7 @@
         const idx = database[section].findIndex(i => i.id === id);
         if (idx !== -1) {
           database[section].splice(idx, 1);
+          if(section==='music') mainBgmIds=(mainBgmIds||[]).filter(x=>x!==id);
           if(section==='characters') characterOrder=characterOrder.filter(x=>x!==id);
           persistArchiveData();
           renderAllSidebars();
@@ -1995,50 +2025,110 @@
       setTimeout(() => star.remove(), 700);
     });
 
-    /* ---------- BGM PLAYER ---------- */
-    let player, isPlaying = false, progressTimer = null, playerReady = false;
-    const BGM_VIDEO_ID = '67QfTqSLSoI';
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('yt-player', {
-        height: '2', width: '2', videoId: BGM_VIDEO_ID,
-        playerVars: { autoplay: 0, controls: 0, loop: 1, playlist: BGM_VIDEO_ID, playsinline: 1, rel: 0 },
-        events: { onReady: function(){ playerReady=true; }, onStateChange: onPlayerStateChange, onError: function(e){ console.warn('BGM YouTube error:',e.data); } }
-      });
+    /* ---------- LOCAL BGM PLAYER ---------- */
+    let player = null, isPlaying = false, progressTimer = null, playerReady = false;
+    let mainBgmIndex = 0;
+
+    function getPlayableMainBgmTracks(){
+      return getMainBgmTracks();
     }
-    function toggleBgm() {
-      if(!player || !playerReady) { alert('음악 플레이어를 불러오는 중입니다. 잠시 후 다시 눌러주세요.'); return; }
-      if(isPlaying) player.pauseVideo(); else player.playVideo();
+
+    function loadMainBgmTrack(index, autoplay=false){
+      const tracks = getPlayableMainBgmTracks();
+      if(!player || !tracks.length) return;
+      if(index < 0) index = tracks.length - 1;
+      if(index >= tracks.length) index = 0;
+      mainBgmIndex = index;
+      const track = tracks[mainBgmIndex];
+      player.src = track.audio;
+      player.volume = 0.30;
+      player.loop = tracks.length === 1;
+      player.load();
+      if(autoplay) player.play().catch(err => console.warn('BGM playback failed:', err));
     }
-    function restartTrack() { if(!player || !playerReady) return; player.seekTo(0,true); if(!isPlaying) player.playVideo(); }
-    function updateProgressBar() {
-      if (!player || !isPlaying) return;
-      const currentTime = player.getCurrentTime();
-      const duration = player.getDuration();
-      if (duration > 0) document.getElementById('progress-fill').style.width = ((currentTime / duration) * 100) + '%';
-    }
-    function seekTrack(event) {
+
+    function initBgmPlayer() {
+      player = document.getElementById('main-bgm');
       if (!player) return;
-      const container = document.getElementById('progress-container');
-      const rect = container.getBoundingClientRect();
-      const percent = (event.clientX - rect.left) / rect.width;
-      const duration = player.getDuration();
-      if (duration > 0) { player.seekTo(duration * percent); document.getElementById('progress-fill').style.width = (percent * 100) + '%'; }
+      player.volume = 0.30;
+      playerReady = true;
+      player.addEventListener('play', onLocalBgmPlay);
+      player.addEventListener('pause', onLocalBgmPause);
+      player.addEventListener('ended', onLocalBgmEnded);
+      player.addEventListener('error', function(){ console.warn('Main BGM load failed. Check the MUSIC item has an uploaded audio file.'); });
+      loadMainBgmTrack(0, false);
     }
-    function onPlayerStateChange(event) {
-      const playBtn = document.getElementById('play-btn');
-      const soundWave = document.getElementById('sound-wave');
-      if (event.data === YT.PlayerState.PLAYING) {
-        isPlaying = true;
-        playBtn.innerHTML = '<svg class="player-svg-icon" style="width:18px; height:18px;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
-        soundWave.classList.add('playing');
-        if (!progressTimer) progressTimer = setInterval(updateProgressBar, 500);
-      } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-        isPlaying = false;
-        playBtn.innerHTML = '<svg class="player-svg-icon" style="width:18px; height:18px;" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
-        soundWave.classList.remove('playing');
-        if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
+
+    function toggleBgm() {
+      if (!player || !playerReady) initBgmPlayer();
+      if (!player) return;
+      if (!player.src) loadMainBgmTrack(mainBgmIndex, false);
+      if (player.paused) player.play().catch(err => console.warn('BGM playback failed:', err));
+      else player.pause();
+    }
+
+    function restartTrack() {
+      if (!player || !playerReady) return;
+      player.currentTime = 0;
+      player.play().catch(()=>{});
+    }
+
+    function prevBgm(){
+      if (!player || !playerReady) initBgmPlayer();
+      const tracks=getPlayableMainBgmTracks();
+      if(!tracks.length || !player) return;
+      loadMainBgmTrack(mainBgmIndex-1, true);
+    }
+
+    function nextBgm(){
+      if (!player || !playerReady) initBgmPlayer();
+      const tracks=getPlayableMainBgmTracks();
+      if(!tracks.length || !player) return;
+      loadMainBgmTrack(mainBgmIndex+1, true);
+    }
+
+    function onLocalBgmEnded(){
+      const tracks=getPlayableMainBgmTracks();
+      if(tracks.length>1) loadMainBgmTrack(mainBgmIndex+1, true);
+      else onLocalBgmPause();
+    }
+
+    function updateProgressBar() {
+      if (!player || player.paused) return;
+      const duration = player.duration;
+      if (Number.isFinite(duration) && duration > 0) {
+        document.getElementById('progress-fill').style.width = ((player.currentTime / duration) * 100) + '%';
       }
     }
+
+    function seekTrack(event) {
+      if (!player || !Number.isFinite(player.duration) || player.duration <= 0) return;
+      const container = document.getElementById('progress-container');
+      const rect = container.getBoundingClientRect();
+      const percent = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+      player.currentTime = player.duration * percent;
+      document.getElementById('progress-fill').style.width = (percent * 100) + '%';
+    }
+
+    function onLocalBgmPlay() {
+      const playBtn = document.getElementById('play-btn');
+      const soundWave = document.getElementById('sound-wave');
+      isPlaying = true;
+      if (playBtn) playBtn.innerHTML = '<svg class="player-svg-icon" style="width:18px; height:18px;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+      if (soundWave) soundWave.classList.add('playing');
+      if (!progressTimer) progressTimer = setInterval(updateProgressBar, 500);
+    }
+
+    function onLocalBgmPause() {
+      const playBtn = document.getElementById('play-btn');
+      const soundWave = document.getElementById('sound-wave');
+      isPlaying = false;
+      if (playBtn) playBtn.innerHTML = '<svg class="player-svg-icon" style="width:18px; height:18px;" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+      if (soundWave) soundWave.classList.remove('playing');
+      if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
+    }
+
+    document.addEventListener('DOMContentLoaded', initBgmPlayer);
 
     /* INIT */
     window.onload = function() {
