@@ -238,8 +238,8 @@
     /* CHARACTER PROFILE STRUCTURE */
     .char-profile-container { display: flex; flex-direction: column; gap: 20px; }
     .char-main-top { display: flex; flex-direction: column; gap: 16px; }
-    .char-main-img-box { width: 100%; max-width: 100%; aspect-ratio: 1 / 1; height: auto; border: 1.5px solid var(--navy); background: var(--white); overflow: hidden; position: relative; }
-    .char-main-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    .char-main-img-box { width: 100%; height: min(72vh, 720px); border: 1.5px solid var(--navy); background: var(--white); overflow: hidden; position: relative; }
+    .char-main-img { width: 100%; height: 100%; object-fit: cover; display: block; }
     
     .char-meta-table { display: flex; flex-direction: column; gap: 8px; font-size: 13px; justify-content: center; }
     .char-meta-row { display: flex; border-bottom: 1px dashed rgba(28, 32, 56, 0.2); padding-bottom: 6px; align-items: center; }
@@ -258,16 +258,16 @@
     .gallery-section-title { font-family: var(--mono); font-size: 12px; font-weight: 800; border-bottom: 1.5px solid var(--navy); padding-bottom: 4px; margin-top: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
     
     .gal01-scroll-wrapper {
-      display: flex; flex-wrap: nowrap; width: 100%; max-width: 100%; min-width: 0; gap: 10px; overflow-x: auto; overflow-y: hidden; padding: 6px 2px 12px 2px; scrollbar-width: thin; scrollbar-color: var(--navy) transparent; cursor: grab;
+      display: flex; gap: 10px; overflow-x: auto; padding: 6px 2px 12px 2px; scrollbar-width: thin; scrollbar-color: var(--navy) transparent; cursor: grab;
     }
     .gal01-scroll-wrapper::-webkit-scrollbar { height: 6px; }
     .gal01-scroll-wrapper::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 3px; }
 
     .gal-thumb-item {
-      position: relative; z-index: 21; width: 135px; height: 135px; flex: 0 0 135px; border: none; background: #fff; overflow: hidden; transition: transform 0.15s;
+      position: relative; width: 90px; height: 90px; flex-shrink: 0; border: 1.5px solid var(--navy); background: #fff; overflow: hidden; transition: transform 0.15s;
     }
     .gal-thumb-item:hover { transform: translateY(-2px); }
-    .gal-thumb-img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 1 !important; filter: none !important; position: relative; z-index: 21; }
+    .gal-thumb-img { width: 100%; height: 100%; object-fit: cover; }
 
     /* RED SQUARE LINK SVG BADGE */
     .link-svg-badge {
@@ -279,11 +279,10 @@
     .link-svg-badge svg { width: 15px; height: 15px; stroke: var(--navy); fill: none; stroke-width: 2.4; filter: drop-shadow(0 1px 0 rgba(255,255,255,.65)); }
 
     /* GALLERY 02 (LIST TYPE WITH ACCORDION) */
-    .gal02-section { padding-left: 0; }
     .gal02-accordion-item { border: 1.5px solid var(--navy); background: #fff; margin-bottom: 10px; }
     .gal02-acc-header { background: rgba(28, 32, 56, 0.06); padding: 10px 12px; font-weight: 700; font-size: 13px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
     .gal02-acc-desc { font-size: 11px; opacity: 0.75; padding: 6px 12px; border-bottom: 1px dashed rgba(28, 32, 56, 0.2); background: rgba(255,255,255,0.8); }
-    .gal02-acc-body { padding: 12px 12px 12px 12px; display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 10px; scrollbar-width: thin; scrollbar-color: var(--navy) transparent; }
+    .gal02-acc-body { padding: 12px; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; }
     .gal02-accordion-item.collapsed .gal02-acc-body { display: none; }
 
     /* WORLD CHARACTER CARDS GRID */
@@ -393,7 +392,17 @@
       .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
       .full-cal-day { min-height: 60px; padding: 4px; }
     }
-  </style>
+  
+    .links-page-group { margin: 0 0 22px; }
+    .links-page-category { font-family: var(--mono); font-size: 11px; font-weight: 800; letter-spacing: .08em; color: var(--navy); margin-bottom: 9px; text-transform: uppercase; }
+    .links-page-buttons { display:flex; flex-wrap:wrap; gap:8px; }
+    .links-page-button { display:flex; align-items:center; justify-content:space-between; gap:16px; min-width:180px; padding:10px 12px; border:1.5px solid var(--navy); background:#fff; color:var(--navy); text-decoration:none; font-family:var(--mono); font-size:11px; font-weight:800; box-shadow:2px 2px 0 var(--navy); transition:.15s ease; }
+    .links-page-button:hover { transform:translate(2px,2px); box-shadow:none; background:var(--pink); }
+    .links-page-button span { font-size:14px; }
+    .links-page-content { margin-bottom:22px; line-height:1.65; font-size:14px; }
+    .link-editor-row { display:grid; grid-template-columns:120px 1fr 1.4fr auto; gap:8px; align-items:center; margin-bottom:8px; }
+    @media (max-width:700px){ .link-editor-row { grid-template-columns:1fr; } .links-page-button { width:100%; } }
+</style>
 </head>
 
 <body>
@@ -544,7 +553,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>WORLDS</span>
-            <span class="admin-only"><button onclick="openAddModal('world')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('world')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('world')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="world-sidebar-list"></div>
         </aside>
@@ -606,7 +615,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>TRACK LIST</span>
-            <span class="admin-only"><button onclick="openAddModal('music')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('music')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('music')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="music-sidebar-list"></div>
         </aside>
@@ -637,7 +646,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>LOG HISTORY</span>
-            <span class="admin-only"><button onclick="openAddModal('feed')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('feed')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('feed')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="feed-sidebar-list"></div>
         </aside>
@@ -661,14 +670,14 @@
             <p class="detail-subtitle" id="notice-detail-sub">INFORMATION ARCHIVE</p>
           </div>
           <div class="detail-content-body" id="notice-detail-body">
-            <p>오른쪽 목록에서 공지사항 또는 캘린더를 선택하세요.</p>
+            <p>오른쪽 목록에서 공지사항, 캘린더 또는 링크 페이지를 선택하세요.</p>
           </div>
         </div>
 
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>SCHEDULE &amp; NOTICES</span>
-            <span class="admin-only"><button onclick="openAddModal('notice')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('notice')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('notice')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="notice-sidebar-list"></div>
         </aside>
@@ -782,6 +791,9 @@
       ],
       notice: [
         { id: 'renewal', date: '2026-08-24', title: 'Archive Renewal', pinned: true, content: '<p>아카이브 시스템이 리뉴얼되었습니다!</p>' }
+      ],
+      links: [
+        { id: 'links_page', title: 'LINKS & CONTACT', sub: 'CONTACT / LINKS / ETC', content: '', links: [] }
       ]
     };
 
@@ -918,6 +930,12 @@
             <span class="item-subtext">TIME RECORD</span>
           </div>
         </div>
+        <div class="list-item" id="item-notice-links" onclick="selectNoticeItem('links', this)">
+          <div class="item-info">
+            <span class="item-name">LINKS &amp; CONTACT ${getAdminSvgMarksHtml('links', 'links_page')}</span>
+            <span class="item-subtext">CONTACT / LINKS / ETC</span>
+          </div>
+        </div>
 
         <div class="accordion-group">
           <div class="accordion-header" onclick="toggleAccordion(this)">
@@ -1047,13 +1065,13 @@
 
       let gal02Html = '';
       if (item.gallery02 && item.gallery02.length) {
-        gal02Html = `<div class="gal02-section"><div class="gallery-section-title" style="margin-top:16px;"><span>ARCHIVE GALLERY</span></div><div>
+        gal02Html = `<div class="gallery-section-title" style="margin-top:16px;"><span>ARCHIVE GALLERY</span></div><div>
           ${item.gallery02.map((group, gIdx) => `<div class="gal02-accordion-item">
             <div class="gal02-acc-header" onclick="this.parentElement.classList.toggle('collapsed')"><span>✦ ${group.title || 'ARCHIVE'}</span><span>▼</span></div>
             ${group.desc ? `<div class="gal02-acc-desc">${group.desc}</div>` : ''}
             <div class="gal02-acc-body">${(group.images || []).map((imgObj,iIdx) => { const a=typeof imgObj==='string'?{img:imgObj,links:[]}:imgObj; return `<div class="gal-thumb-item" onclick="openLightboxFromData('gal02', ${gIdx}, ${iIdx})"><img src="${a.img}" class="gal-thumb-img"></div>`; }).join('')}</div>
           </div>`).join('')}
-        </div></div>`;
+        </div>`;
       }
 
       const hasCharacterLinks = Array.isArray(item.links) && item.links.some(l => l && l.url);
@@ -1117,6 +1135,18 @@
         document.getElementById('notice-detail-sub').innerText = "TIME RECORD";
         document.getElementById('notice-detail-admin-marks').innerHTML = '';
         renderCalendarUI();
+      } else if (id === 'links') {
+        const page = database.links && database.links[0];
+        if (!page) return;
+        activeItemIds.notice = null;
+        document.getElementById('notice-detail-title').innerText = page.title || 'LINKS & CONTACT';
+        document.getElementById('notice-detail-sub').innerText = page.sub || 'CONTACT / LINKS / ETC';
+        document.getElementById('notice-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('links', page.id);
+        const links = Array.isArray(page.links) ? page.links.filter(l => l && l.url) : [];
+        const groups = [];
+        links.forEach(l => { const key = l.category || 'LINK'; let g = groups.find(x => x.name === key); if (!g) { g = {name:key, items:[]}; groups.push(g); } g.items.push(l); });
+        const linksHtml = groups.map(g => `<div class="links-page-group"><div class="links-page-category">${g.name}</div><div class="links-page-buttons">${g.items.map(l => `<a class="links-page-button" href="${l.url}" target="_blank" rel="noopener noreferrer">${l.title || l.url}<span>↗</span></a>`).join('')}</div></div>`).join('');
+        document.getElementById('notice-detail-body').innerHTML = `${page.content ? `<div class="links-page-content">${page.content}</div>` : ''}${linksHtml || '<p style="opacity:.6;">등록된 링크가 없습니다.</p>'}`;
       } else {
         const item = database.notice.find(n => n.id === id);
         if (item) {
@@ -1227,7 +1257,7 @@
           <label class="modal-label">세계관 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*">
           <label class="modal-label">세계관 설명</label><textarea id="edit-desc" class="modal-textarea" style="min-height:180px;">${item.desc||''}</textarea>
           <label class="modal-label">등장 캐릭터 <span style="font-weight:400;opacity:.7;">(클릭으로 선택 · 드래그로 순서 변경)</span></label>
-          <div id="world-char-select-grid" class="char-select-grid" style="max-height:300px;">${[...database.characters].sort((a,b)=>{const ai=selectedCharIds.indexOf(a.id),bi=selectedCharIds.indexOf(b.id);return (ai<0?9999:ai)-(bi<0?9999:bi);}).map(c=>`<div class="char-select-card ${selectedCharIds.includes(c.id)?'selected':''}" draggable="true" data-cid="${c.id}" onclick="this.classList.toggle('selected')" ondragstart="worldCharDragStart(event)" ondragover="worldCharDragOver(event)" ondrop="worldCharDrop(event)" ondragend="worldCharDragEnd(event)"><span style="display:block;cursor:grab;">☷</span>${c.name}</div>`).join('')}</div></div>`;
+          <div id="world-char-select-grid" class="char-select-grid" style="max-height:300px;">${[...database.characters].sort((a,b)=>{const ai=selectedCharIds.indexOf(a.id),bi=selectedCharIds.indexOf(b.id);return (ai<0?9999:ai)-(bi<0?9999:bi);}).map(c=>`<div class="char-select-card ${selectedCharIds.includes(c.id)?'selected':''}" draggable="true" data-cid="${c.id}" onclick="this.classList.toggle('selected')" ondragstart="worldCharDragStart(event)" ondragover="worldCharDragOver(event)" ondrop="worldCharDrop(event)" ondragend="worldCharDragEnd(event)"><span style="display:block;cursor:grab;">☷</span>${c.name}</div>`).join('')}</div>`;
       }else if(section==='feed'){
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
           <label class="modal-label">날짜</label><input type="date" id="edit-date" class="modal-input" value="${item.date||''}">
@@ -1238,12 +1268,21 @@
           <label class="modal-label">날짜</label><input type="date" id="edit-date" class="modal-input" value="${item.date||''}">
           <label class="modal-label checkbox-line"><input type="checkbox" id="edit-pinned" ${item.pinned?'checked':''}> <span>고정하기</span></label>
           <label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea" style="min-height:220px;">${item.content||''}</textarea>`;
+      }else if(section==='links'){
+        const page=item;
+        fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-links-title" class="modal-input" value="${page.title||''}">
+          <label class="modal-label">소제목</label><input type="text" id="edit-links-sub" class="modal-input" value="${page.sub||''}">
+          <label class="modal-label">글 <span style="font-weight:400;opacity:.7;">(비워두면 표시되지 않습니다.)</span></label><textarea id="edit-links-content" class="modal-textarea" style="min-height:160px;">${page.content||''}</textarea>
+          <label class="modal-label">분류 / 링크</label><div id="contact-links-editor">${(page.links||[]).map(l=>`<div class="admin-manager-row link-editor-row"><input class="modal-input contact-link-category" placeholder="분류" value="${l.category||''}"><input class="modal-input contact-link-title" placeholder="링크 이름" value="${l.title||''}"><input class="modal-input contact-link-url" placeholder="https://..." value="${l.url||''}"><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button></div>`).join('')}</div>
+          <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addContactLinkEditor()">+ LINK</button>`;
       }else{
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||item.name||''}"><label class="modal-label">서브 / 날짜</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||item.date||''}"><label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea">${item.content||''}</textarea>`;
       }
       container.innerHTML=`<div class="modal-title">${isNew?'ADD NEW ITEM':'EDIT ITEM'}</div>${fieldsHtml}<div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveAdminEdit('${section}','${item.id}',${isNew})">SAVE</button></div>`;
       document.getElementById('modal-admin-edit').classList.add('show');
     }
+
+    function addContactLinkEditor(){ const box=document.getElementById('contact-links-editor'); if(!box)return; const row=document.createElement('div'); row.className='admin-manager-row link-editor-row'; row.innerHTML='<input class="modal-input contact-link-category" placeholder="분류"><input class="modal-input contact-link-title" placeholder="링크 이름"><input class="modal-input contact-link-url" placeholder="https://..."><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button>'; box.appendChild(row); }
 
     function addCharacterLinkEditor(){
       const box=document.getElementById('character-links-editor'); if(!box)return;
@@ -1265,6 +1304,25 @@
       grid.insertBefore(worldCharDragEl, after ? target.nextSibling : target);
     }
     function worldCharDragEnd(e){ e.currentTarget.classList.remove('dragging'); worldCharDragEl=null; }
+
+
+    function openListManager(section){
+      if(section==='characters'){ openCharacterListManager(); return; }
+      const container=document.getElementById('admin-edit-container');
+      const labels={world:'WORLDS',music:'MUSIC',feed:'FEED',notice:'NOTICE'};
+      if(section==='world' || section==='music'){
+        const groups=[...new Set([...(categoryGroups[section]||[]), ...database[section].map(x=>x.group).filter(Boolean)])];
+        const rows=database[section].map(item=>`<div class="admin-manager-row generic-item-row"><span style="flex:1;font-weight:700;">${item.title||item.name||item.id}</span><select class="generic-item-group" data-id="${item.id}">${groups.map(g=>`<option value="${g}" ${item.group===g?'selected':''}>${g}</option>`).join('')}</select><button type="button" class="manager-small-btn" onclick="openEditModal('${section}','${item.id}')">EDIT</button></div>`).join('');
+        container.innerHTML=`<div class="modal-title">EDIT ${labels[section]} LIST</div><div class="manager-section-title">분류</div><div id="generic-group-editor" class="admin-list-manager">${groups.map(g=>`<div class="admin-manager-group-row"><input class="modal-input generic-group-name" value="${g}"><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button></div>`).join('')}</div><button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addGenericGroupEditor()">+ GROUP</button><div class="manager-section-title">항목 분류</div><div class="admin-list-manager">${rows || '<p style="opacity:.6;">등록된 항목이 없습니다.</p>'}</div><div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveGenericListManager('${section}')">SAVE LIST</button></div>`;
+      }else{
+        const items=database[section]||[];
+        const rows=items.map(item=>`<div class="admin-manager-row generic-item-row"><span style="flex:1;font-weight:700;">${item.title||item.name||item.id}</span><span style="font-size:11px;opacity:.65;">${item.date||''}</span><button type="button" class="manager-small-btn" onclick="openEditModal('${section}','${item.id}');">EDIT</button><button type="button" class="manager-small-btn" onclick="deleteExistingItem('${section}','${item.id}');openListManager('${section}')">DELETE</button></div>`).join('');
+        container.innerHTML=`<div class="modal-title">EDIT ${labels[section]} LIST</div><div class="manager-section-title">등록된 항목</div><div class="admin-list-manager">${rows || '<p style="opacity:.6;">등록된 항목이 없습니다.</p>'}</div><div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button></div>`;
+      }
+      document.getElementById('modal-admin-edit').classList.add('show');
+    }
+    function addGenericGroupEditor(){ const box=document.getElementById('generic-group-editor'); if(!box)return; const div=document.createElement('div'); div.className='admin-manager-group-row'; div.innerHTML='<input class="modal-input generic-group-name" placeholder="새 분류 이름"><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button>'; box.appendChild(div); }
+    function saveGenericListManager(section){ const names=[...document.querySelectorAll('#generic-group-editor .generic-group-name')].map(i=>i.value.trim()).filter(Boolean); if(!names.length){alert('분류를 최소 1개 입력해 주세요.');return;} document.querySelectorAll('.generic-item-group').forEach(sel=>{const item=database[section].find(x=>x.id===sel.dataset.id); if(item)item.group=sel.value;}); categoryGroups[section]=names; database[section].forEach(item=>{if(!names.includes(item.group))item.group=names[0];}); persistArchiveData(); closeAdminEditModal(); renderAllSidebars(); }
 
     function openCharacterListManager(){
       const container=document.getElementById('admin-edit-container');
@@ -1341,6 +1399,8 @@
         item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.content=document.getElementById('edit-content').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await readFileAsDataURL(imgFile); item.content=item.content || '';
       }else if(section==='notice'){
         item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.pinned=document.getElementById('edit-pinned').checked; item.content=document.getElementById('edit-content').value;
+      }else if(section==='links'){
+        item.title=document.getElementById('edit-links-title').value.trim() || 'LINKS & CONTACT'; item.sub=document.getElementById('edit-links-sub').value.trim(); item.content=document.getElementById('edit-links-content').value; item.links=[...document.querySelectorAll('#contact-links-editor .link-editor-row')].map(row=>({category:row.querySelector('.contact-link-category').value.trim(),title:row.querySelector('.contact-link-title').value.trim(),url:row.querySelector('.contact-link-url').value.trim()})).filter(l=>l.category||l.title||l.url);
       }else{ item.title=document.getElementById('edit-title').value; item.sub=document.getElementById('edit-sub').value; item.content=document.getElementById('edit-content').value; }
       categoryGroups.world=[...new Set([...categoryGroups.world,...database.world.map(x=>x.group).filter(Boolean)])];
       categoryGroups.characters=[...new Set([...categoryGroups.characters,...database.characters.map(x=>x.group).filter(Boolean)])];
@@ -1349,6 +1409,7 @@
     }
 
     function deleteExistingItem(section, id) {
+      if(section==='links'){ alert('이 페이지는 삭제할 수 없습니다. 편집만 가능합니다.'); return; }
       if (confirm('해당 항목을 정말 삭제하시겠습니까?')) {
         const idx = database[section].findIndex(i => i.id === id);
         if (idx !== -1) {
