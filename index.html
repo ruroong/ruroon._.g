@@ -257,7 +257,7 @@
     /* GALLERY 01 & 02 — fixed-width horizontal galleries */
     .gallery-section-title { font-family: var(--mono); font-size: 12px; font-weight: 800; border-bottom: 1.5px solid var(--navy); padding-bottom: 4px; margin-top: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
     .gal01-scroll-wrapper, .gal02-scroll-wrapper {
-      width:100%; max-width:100%; min-width:0; box-sizing:border-box;
+      width:100%; max-width:100%; min-width:0; max-inline-size:100%; box-sizing:border-box;
       display:flex; flex-wrap:nowrap; gap:10px; overflow-x:auto; overflow-y:hidden;
       padding:6px 2px 12px 12px; scrollbar-width:thin; scrollbar-color:var(--navy) transparent;
       cursor:grab; -webkit-overflow-scrolling:touch;
@@ -271,7 +271,7 @@
     .link-svg-badge { position:absolute; top:5px; right:5px; width:22px; height:22px; background:transparent; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:5; transition:transform .1s; padding:0; }
     .link-svg-badge:hover { transform:scale(1.15); }
     .link-svg-badge svg { width:15px; height:15px; stroke:var(--navy); fill:none; stroke-width:2.4; filter:drop-shadow(0 1px 0 rgba(255,255,255,.65)); }
-    .gal02-section { width:100%; min-width:0; overflow:hidden; }
+    .gal02-section { width:100%; min-width:0; max-width:100%; overflow:hidden; }
     .gal02-accordion-item { width:100%; min-width:0; box-sizing:border-box; border:1.5px solid var(--navy); background:#fff; margin-bottom:10px; overflow:hidden; }
     .gal02-acc-header { background:rgba(28,32,56,.06); padding:10px 12px; font-weight:700; font-size:13px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
     .gal02-acc-desc { font-size:11px; opacity:.75; padding:6px 12px; border-bottom:1px dashed rgba(28,32,56,.2); background:rgba(255,255,255,.8); }
@@ -360,6 +360,16 @@
     .char-select-card.selected { border: 2px solid var(--navy); background: var(--pink); font-weight: bold; }
     .admin-list-manager { display:flex; flex-direction:column; gap:10px; }
     .admin-manager-row { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.55); border:1.5px solid var(--navy); padding:8px; }
+    .admin-upload-status { font:10px var(--mono); opacity:.75; line-height:1.45; padding:8px 10px; border:1px dashed var(--navy); background:rgba(255,255,255,.45); }
+    .links-page { display:flex; flex-direction:column; gap:16px; }
+    .links-page-intro { white-space:pre-wrap; line-height:1.65; font-size:14px; }
+    .archive-link-list { display:flex; flex-direction:column; gap:8px; }
+    .archive-link-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 13px; border:1.5px solid var(--navy); background:var(--white); box-shadow:2px 2px 0 rgba(28,32,56,.1); transition:.15s; }
+    .archive-link-row:hover { transform:translate(-1px,-1px); box-shadow:3px 3px 0 rgba(28,32,56,.14); }
+    .archive-link-category { font:10px var(--mono); opacity:.7; letter-spacing:.08em; min-width:90px; }
+    .archive-link-button { margin-left:auto; display:inline-flex; align-items:center; justify-content:center; min-width:120px; padding:7px 11px; border:1.5px solid var(--navy); background:var(--pink); font:700 11px var(--mono); }
+    .archive-link-button:hover { background:var(--navy); color:var(--pink); }
+    .detail-content-body { min-width:0; overflow:hidden; }
     .admin-manager-row input { flex:1; }
     .admin-manager-group-row { display:flex; align-items:center; gap:8px; }
     .admin-manager-char-row { display:flex; align-items:center; gap:8px; padding:7px 8px; border:1px dashed rgba(28,32,56,.35); background:#fff; }
@@ -515,6 +525,7 @@
           <button class="admin-trigger-btn" onclick="openAdminLogin()" title="Admin Login">
             <img src="./images/A04.png" alt="Admin Access" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231C2038\'><path d=\'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z\'/></svg>'">
           </button>
+          <button class="admin-only manager-small-btn" onclick="openUploadSettings()" style="margin-left:8px;">UPLOAD SETTINGS</button>
         </div>
       </div>
     </section>
@@ -543,7 +554,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>WORLDS</span>
-            <span class="admin-only"><button onclick="openAddModal('world')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('world')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('world')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="world-sidebar-list"></div>
         </aside>
@@ -605,7 +616,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>TRACK LIST</span>
-            <span class="admin-only"><button onclick="openAddModal('music')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('music')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('music')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="music-sidebar-list"></div>
         </aside>
@@ -636,7 +647,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>LOG HISTORY</span>
-            <span class="admin-only"><button onclick="openAddModal('feed')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('feed')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('feed')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="feed-sidebar-list"></div>
         </aside>
@@ -667,7 +678,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>SCHEDULE &amp; NOTICES</span>
-            <span class="admin-only"><button onclick="openAddModal('notice')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('notice')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('notice')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="notice-sidebar-list"></div>
         </aside>
@@ -709,8 +720,8 @@
     }
 
     const ARCHIVE_STORAGE_KEY='ruroon_archive_v4';
-    function persistArchiveData(){ try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify({database,categoryGroups,characterOrder,eventsData: (typeof eventsData!=='undefined'?eventsData:{})})); }catch(e){ console.warn('archive storage failed',e); } }
-    function loadArchiveData(){ try{ const raw=localStorage.getItem(ARCHIVE_STORAGE_KEY); if(!raw)return; const saved=JSON.parse(raw); if(saved.database){ Object.keys(database).forEach(k=>{ if(saved.database[k]){ database[k].splice(0,database[k].length,...saved.database[k]); } }); } if(saved.categoryGroups) categoryGroups=saved.categoryGroups; if(Array.isArray(saved.characterOrder)) characterOrder=saved.characterOrder; if(saved.eventsData && typeof eventsData!=='undefined') eventsData=saved.eventsData; }catch(e){ console.warn('archive storage load failed',e); } }
+    function persistArchiveData(){ try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify({database,categoryGroups,characterOrder,eventsData: (typeof eventsData!=='undefined'?eventsData:{}),noticeLinks})); }catch(e){ console.warn('archive storage failed',e); } }
+    function loadArchiveData(){ try{ const raw=localStorage.getItem(ARCHIVE_STORAGE_KEY); if(!raw)return; const saved=JSON.parse(raw); if(saved.database){ Object.keys(database).forEach(k=>{ if(saved.database[k]){ database[k].splice(0,database[k].length,...saved.database[k]); } }); } if(saved.categoryGroups) categoryGroups=saved.categoryGroups; if(Array.isArray(saved.characterOrder)) characterOrder=saved.characterOrder; if(saved.eventsData && typeof eventsData!=='undefined') eventsData=saved.eventsData; if(saved.noticeLinks) noticeLinks=saved.noticeLinks; }catch(e){ console.warn('archive storage load failed',e); } }
 
     /* ---------- DATA STORES ---------- */
     let categoryGroups = {
@@ -719,6 +730,19 @@
       music: ["ALBUM 01"]
     };
     let characterOrder = [];
+
+    /* ---------- FIXED NOTICE LINK PAGE ---------- */
+    let noticeLinks = {
+      id: 'links',
+      title: 'LINKS & CONTACT',
+      sub: 'CONTACT / LINKS',
+      content: '',
+      links: [
+        { category: 'CONTACT', title: 'EMAIL', url: 'mailto:' },
+        { category: 'ARCHIVE', title: 'NOTION', url: '' },
+        { category: 'WORKS', title: 'POSTYPE', url: '' }
+      ]
+    };
 
     const database = {
       world: [
@@ -917,7 +941,17 @@
             <span class="item-subtext">TIME RECORD</span>
           </div>
         </div>
-
+        <div class="list-item" id="item-notice-links" onclick="selectNoticeItem('links', this)">
+          <div class="item-info">
+            <span class="item-name">
+              <span>${noticeLinks.title || 'LINKS & CONTACT'}</span>
+              <span class="admin-only" style="margin-left:auto;">
+                <button class="inline-edit-trigger" onclick="event.stopPropagation(); openNoticeLinksEditor()" title="링크 페이지 편집">EDIT</button>
+              </span>
+            </span>
+            <span class="item-subtext">${noticeLinks.sub || 'CONTACT / LINKS'}</span>
+          </div>
+        </div>
         <div class="accordion-group">
           <div class="accordion-header" onclick="toggleAccordion(this)">
             <span>✦ ANNOUNCEMENTS</span><span class="acc-icon">▼</span>
@@ -1116,6 +1150,15 @@
         document.getElementById('notice-detail-sub').innerText = "TIME RECORD";
         document.getElementById('notice-detail-admin-marks').innerHTML = '';
         renderCalendarUI();
+      } else if (id === 'links') {
+        activeItemIds.notice = null;
+        document.getElementById('notice-detail-title').innerText = noticeLinks.title || 'LINKS & CONTACT';
+        document.getElementById('notice-detail-sub').innerText = noticeLinks.sub || 'CONTACT / LINKS';
+        document.getElementById('notice-detail-admin-marks').innerHTML = isAdminLoggedIn ? '<button class="inline-edit-trigger" onclick="openNoticeLinksEditor()">EDIT</button>' : '';
+        const intro = noticeLinks.content ? `<div class="links-page-intro">${noticeLinks.content}</div>` : '';
+        const links = Array.isArray(noticeLinks.links) ? noticeLinks.links.filter(l=>l && l.url) : [];
+        const buttons = links.length ? `<div class="archive-link-list">${links.map(l=>`<div class="archive-link-row"><span class="archive-link-category">${l.category||'LINK'}</span><a class="archive-link-button" href="${l.url}" target="_blank" rel="noopener noreferrer">${l.title||'OPEN'} ↗</a></div>`).join('')}</div>` : '<p>등록된 링크가 없습니다.</p>';
+        document.getElementById('notice-detail-body').innerHTML = `<div class="links-page">${intro}${buttons}</div>`;
       } else {
         const item = database.notice.find(n => n.id === id);
         if (item) {
@@ -1208,14 +1251,14 @@
           <label class="modal-label">애칭 / 별명</label><input type="text" id="edit-alias" class="modal-input" value="${item.alias||'ALIAS'}">
           <label class="modal-label">생일 (YYYY-MM-DD)</label><input type="date" id="edit-bday" class="modal-input" value="${item.birthday||''}">
           <label class="modal-label">NAI 그림 태그 / 프롬프트</label><textarea id="edit-tags" class="modal-textarea" style="min-height:160px;">${item.tags||''}</textarea>
-          <label class="modal-label">프로필 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">새 파일을 선택하면 기존 이미지를 교체합니다.</div>
-          <label class="modal-label">OFFICIAL GALLERY 이미지</label><input type="file" id="edit-gal01-files" class="modal-file" accept="image/*" multiple><div class="upload-help">여러 장 선택 가능. 새 파일을 선택하면 기존 Gallery를 교체합니다.</div>
+          <label class="modal-label">프로필 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">선택한 파일은 GitHub 업로드 서버를 통해 images/characters 폴더에 저장되고, 사이트에는 URL만 기록됩니다.</div>
+          <label class="modal-label">OFFICIAL GALLERY 이미지</label><input type="file" id="edit-gal01-files" class="modal-file" accept="image/*" multiple><div class="upload-help">여러 장 선택 가능. GitHub의 images/characters/.../gallery 폴더에 실제 파일로 업로드됩니다.</div>
           <label class="modal-label">공통 작품 링크</label>
           <div id="character-links-editor">${(item.links||[]).map((l,i)=>`<div class="admin-manager-row character-link-row"><input class="modal-input char-link-title" placeholder="링크 이름" value="${l.title||''}"><input class="modal-input char-link-url" placeholder="https://..." value="${l.url||''}"><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button></div>`).join('')}</div>
           <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addCharacterLinkEditor()">+ LINK</button>
           <label class="modal-label">NOTES &amp; LORE</label><textarea id="edit-tmi" class="modal-textarea" style="min-height:180px;">${item.tmi||''}</textarea>
           <div class="modal-label" style="margin-top:6px;">ARCHIVE GALLERY</div>
-          <div id="gallery02-editor">${gal02.map((g,i)=>`<div class="gallery02-admin-group" data-index="${i}"><input class="modal-input g02-title" placeholder="갤러리 제목" value="${g.title||''}"><textarea class="modal-textarea g02-desc" placeholder="설명">${g.desc||''}</textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">파일을 선택하면 이 그룹의 기존 이미지가 교체됩니다.</div></div>`).join('')}</div>
+          <div id="gallery02-editor">${gal02.map((g,i)=>`<div class="gallery02-admin-group" data-index="${i}"><input class="modal-input g02-title" placeholder="갤러리 제목" value="${g.title||''}"><textarea class="modal-textarea g02-desc" placeholder="설명">${g.desc||''}</textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">선택한 이미지는 GitHub에 실제 파일로 업로드됩니다.</div></div>`).join('')}</div>
           <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addGallery02AdminGroup()">+ GALLERY GROUP</button>
         `;
       }else if(section==='world'){
@@ -1223,7 +1266,7 @@
         fieldsHtml=`<label class="modal-label">세계관 제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
           <label class="modal-label">분류</label><input type="text" id="edit-group" class="modal-input" list="world-group-options" value="${item.group||groups[0]||''}"><datalist id="world-group-options">${groups.map(g=>`<option value="${g}">`).join('')}</datalist>
           <label class="modal-label">서브 타이틀</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||''}">
-          <label class="modal-label">세계관 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*">
+          <label class="modal-label">세계관 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">GitHub 업로드 서버를 통해 images/world 폴더에 저장됩니다.</div>
           <label class="modal-label">세계관 설명</label><textarea id="edit-desc" class="modal-textarea" style="min-height:180px;">${item.desc||''}</textarea>
           <label class="modal-label">등장 캐릭터 <span style="font-weight:400;opacity:.7;">(클릭으로 선택 · 드래그로 순서 변경)</span></label>
           <div id="world-char-select-grid" class="char-select-grid world-char-select-scroll">${[...database.characters].sort((a,b)=>{const ai=selectedCharIds.indexOf(a.id),bi=selectedCharIds.indexOf(b.id);return (ai<0?9999:ai)-(bi<0?9999:bi);}).map(c=>`<div class="char-select-card ${selectedCharIds.includes(c.id)?'selected':''}" draggable="true" data-cid="${c.id}" onclick="this.classList.toggle('selected')" ondragstart="worldCharDragStart(event)" ondragover="worldCharDragOver(event)" ondrop="worldCharDrop(event)" ondragend="worldCharDragEnd(event)"><span style="display:block;cursor:grab;">☷</span>${c.name}</div>`).join('')}</div></div>`;
@@ -1231,12 +1274,12 @@
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
           <label class="modal-label">서브</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||''}">
           <label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea" style="min-height:220px;">${item.content||''}</textarea>
-          <label class="modal-label">음원 파일</label><input type="file" id="edit-audio-file" class="modal-file" accept="audio/*"><div class="upload-help">MP3, WAV 등 음원 파일을 넣으면 저장 후 상세 페이지에서 바로 재생할 수 있습니다. 새 파일을 선택하지 않으면 기존 음원을 유지합니다.</div>
+          <label class="modal-label">음원 파일</label><input type="file" id="edit-audio-file" class="modal-file" accept="audio/*"><div class="upload-help">MP3, WAV 등은 GitHub의 music 폴더에 실제 파일로 업로드되고 URL만 저장됩니다.</div>
           <label class="modal-label">마지막 내용 (선택)</label><textarea id="edit-final-content" class="modal-textarea" placeholder="음악 플레이어 아래에 표시할 추가 내용을 입력하세요. 비워두면 표시되지 않습니다.">${item.finalContent||''}</textarea>`;
       }else if(section==='feed'){
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
           <label class="modal-label">날짜</label><input type="date" id="edit-date" class="modal-input" value="${item.date||''}">
-          <label class="modal-label">대표 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*">
+          <label class="modal-label">대표 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">GitHub의 images/feed 폴더에 실제 파일로 업로드됩니다.</div>
           <label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea" style="min-height:220px;">${stripImageHtml(item.content||'')}</textarea>`;
       }else if(section==='notice'){
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
@@ -1270,6 +1313,81 @@
       grid.insertBefore(worldCharDragEl, after ? target.nextSibling : target);
     }
     function worldCharDragEnd(e){ e.currentTarget.classList.remove('dragging'); worldCharDragEl=null; }
+
+    function openNoticeLinksEditor(){
+      const container=document.getElementById('admin-edit-container');
+      const rows=Array.isArray(noticeLinks.links)?noticeLinks.links:[];
+      container.innerHTML=`<div class="modal-title">EDIT LINKS PAGE</div>
+        <label class="modal-label">제목</label><input id="links-page-title" class="modal-input" value="${noticeLinks.title||''}">
+        <label class="modal-label">소제목</label><input id="links-page-sub" class="modal-input" value="${noticeLinks.sub||''}">
+        <label class="modal-label">글 <span style="font-weight:400;opacity:.7;">(비워두면 표시되지 않음)</span></label><textarea id="links-page-content" class="modal-textarea">${noticeLinks.content||''}</textarea>
+        <div class="manager-section-title">분류 - 링크 버튼</div>
+        <div id="notice-links-editor" class="admin-list-manager">${rows.map(l=>`<div class="admin-manager-row notice-link-row">
+          <input class="modal-input notice-link-category" placeholder="분류" value="${l.category||''}">
+          <input class="modal-input notice-link-title" placeholder="버튼 이름" value="${l.title||''}">
+          <input class="modal-input notice-link-url" placeholder="https://..." value="${l.url||''}">
+          <button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button>
+        </div>`).join('')}</div>
+        <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addNoticeLinkEditor()">+ LINK</button>
+        <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveNoticeLinksEditor()">SAVE</button></div>`;
+      document.getElementById('modal-admin-edit').classList.add('show');
+    }
+    function addNoticeLinkEditor(){
+      const box=document.getElementById('notice-links-editor'); if(!box)return;
+      const row=document.createElement('div'); row.className='admin-manager-row notice-link-row';
+      row.innerHTML='<input class="modal-input notice-link-category" placeholder="분류"><input class="modal-input notice-link-title" placeholder="버튼 이름"><input class="modal-input notice-link-url" placeholder="https://..."><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button>';
+      box.appendChild(row);
+    }
+    function saveNoticeLinksEditor(){
+      noticeLinks.title=document.getElementById('links-page-title').value.trim()||'LINKS & CONTACT';
+      noticeLinks.sub=document.getElementById('links-page-sub').value.trim()||'CONTACT / LINKS';
+      noticeLinks.content=document.getElementById('links-page-content').value;
+      noticeLinks.links=[...document.querySelectorAll('#notice-links-editor .notice-link-row')].map(r=>({
+        category:r.querySelector('.notice-link-category').value.trim(),
+        title:r.querySelector('.notice-link-title').value.trim(),
+        url:r.querySelector('.notice-link-url').value.trim()
+      })).filter(l=>l.url);
+      persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
+      if(document.getElementById('item-notice-links')) selectNoticeItem('links',document.getElementById('item-notice-links'));
+    }
+
+    function openListManager(section){
+      if(section==='characters'){ openCharacterListManager(); return; }
+      const container=document.getElementById('admin-edit-container');
+      const items=[...database[section]];
+      const hasGroups=['world','music'].includes(section);
+      const labels={world:'WORLD LIST',music:'MUSIC LIST',feed:'FEED LIST',notice:'NOTICE LIST'};
+      const title=labels[section]||`${section.toUpperCase()} LIST`;
+      container.innerHTML=`<div class="modal-title">EDIT ${title}</div>
+        ${hasGroups?`<datalist id="generic-group-options">${categoryGroups[section].map(g=>`<option value="${g}">`).join('')}</datalist><div class="manager-section-title">분류 이름 / 순서</div><div id="generic-group-editor" class="admin-list-manager">${[...categoryGroups[section]].map(g=>`<div class="admin-manager-group-row"><input class="modal-input generic-group-name" value="${g}"><button class="manager-small-btn" onclick="moveGenericGroup(this,-1)">▲</button><button class="manager-small-btn" onclick="moveGenericGroup(this,1)">▼</button><button class="manager-small-btn" onclick="removeGenericGroup(this)">삭제</button></div>`).join('')}</div><button class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addGenericGroup()">+ GROUP</button>`:''}
+        <div class="manager-section-title">표시 순서</div>
+        <div id="generic-order-editor" class="admin-list-manager">${items.map(i=>`<div class="admin-manager-char-row" draggable="true" data-id="${i.id}" ondragstart="genericOrderDragStart(event)" ondragover="genericOrderDragOver(event)" ondrop="genericOrderDrop(event)" ondragend="genericOrderDragEnd(event)">
+          <span class="drag-handle">☷</span><span style="flex:1;font-weight:700;">${i.title||i.name||i.date||i.id}</span>
+          ${hasGroups?`<input class="modal-input generic-item-group" list="generic-group-options" value="${i.group||''}" placeholder="분류">`:''}
+        </div>`).join('')}</div>
+        <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveGenericListManager('${section}')">SAVE LIST</button></div>`;
+      document.getElementById('modal-admin-edit').classList.add('show');
+    }
+    function addGenericGroup(){ const box=document.getElementById('generic-group-editor'); if(!box)return; const d=document.createElement('div'); d.className='admin-manager-group-row'; d.innerHTML='<input class="modal-input generic-group-name" placeholder="새 분류 이름"><button class="manager-small-btn" onclick="moveGenericGroup(this,-1)">▲</button><button class="manager-small-btn" onclick="moveGenericGroup(this,1)">▼</button><button class="manager-small-btn" onclick="removeGenericGroup(this)">삭제</button>'; box.appendChild(d); }
+    function moveGenericGroup(btn,dir){ const row=btn.parentElement,box=row.parentElement,rows=[...box.children],idx=rows.indexOf(row),next=idx+dir;if(next<0||next>=rows.length)return;if(dir<0)box.insertBefore(row,rows[next]);else box.insertBefore(rows[next],row); }
+    function removeGenericGroup(btn){ const box=btn.parentElement.parentElement;if(box.children.length<=1){alert('분류는 최소 1개가 필요합니다.');return;}btn.parentElement.remove(); }
+    let genericOrderDragEl=null;
+    function genericOrderDragStart(e){genericOrderDragEl=e.currentTarget;e.currentTarget.classList.add('dragging');e.dataTransfer.effectAllowed='move';}
+    function genericOrderDragOver(e){e.preventDefault();e.dataTransfer.dropEffect='move';}
+    function genericOrderDrop(e){e.preventDefault();const t=e.currentTarget;if(!genericOrderDragEl||t===genericOrderDragEl)return;const b=t.parentElement,r=t.getBoundingClientRect();b.insertBefore(genericOrderDragEl,e.clientY>r.top+r.height/2?t.nextSibling:t);}
+    function genericOrderDragEnd(e){e.currentTarget.classList.remove('dragging');genericOrderDragEl=null;}
+    function saveGenericListManager(section){
+      const rows=[...document.querySelectorAll('#generic-order-editor .admin-manager-char-row')];
+      const order=rows.map(r=>r.dataset.id);
+      if(['world','music'].includes(section)){
+        const names=[...document.querySelectorAll('#generic-group-editor .generic-group-name')].map(i=>i.value.trim()).filter(Boolean);
+        if(!names.length){alert('분류를 최소 1개 입력해 주세요.');return;}
+        categoryGroups[section]=names;
+        rows.forEach(r=>{const item=database[section].find(x=>x.id===r.dataset.id);const sel=r.querySelector('.generic-item-group');if(item&&sel)item.group=sel.value;});
+      }
+      database[section].sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id));
+      persistArchiveData();closeAdminEditModal();renderAllSidebars();
+    }
 
     function openCharacterListManager(){
       const container=document.getElementById('admin-edit-container');
@@ -1320,9 +1438,47 @@
       persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
     }
 
-    function addGallery02AdminGroup(){ const box=document.getElementById('gallery02-editor'); if(!box)return; const i=box.children.length; const div=document.createElement('div'); div.className='gallery02-admin-group'; div.dataset.index=i; div.innerHTML='<input class="modal-input g02-title" placeholder="갤러리 제목"><textarea class="modal-textarea g02-desc" placeholder="설명"></textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">파일을 선택하면 이 그룹에 이미지가 들어갑니다.</div>'; box.appendChild(div); }
+    function addGallery02AdminGroup(){ const box=document.getElementById('gallery02-editor'); if(!box)return; const i=box.children.length; const div=document.createElement('div'); div.className='gallery02-admin-group'; div.dataset.index=i; div.innerHTML='<input class="modal-input g02-title" placeholder="갤러리 제목"><textarea class="modal-textarea g02-desc" placeholder="설명"></textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">파일을 선택하면 저장 시 GitHub에 실제 파일로 업로드됩니다.</div>'; box.appendChild(div); }
     function stripImageHtml(html){ return String(html||'').replace(/<img[^>]*>/gi,'').replace(/<[^>]+>/g,'').trim(); }
-    function readFileAsDataURL(file){ return new Promise((resolve,reject)=>{ if(!file){resolve('');return;} const r=new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsDataURL(file); }); }
+    const GITHUB_UPLOAD_ENDPOINT = ''; /* 기본값. 비워두면 관리자 설정값을 사용합니다. */
+    const GITHUB_UPLOAD_ENDPOINT_KEY = 'ruroon_github_upload_endpoint';
+    function getGitHubUploadEndpoint(){ return localStorage.getItem(GITHUB_UPLOAD_ENDPOINT_KEY) || GITHUB_UPLOAD_ENDPOINT; }
+    const GITHUB_UPLOAD_TIMEOUT = 120000;
+
+    async function uploadFileToGitHub(file, folder){
+      if(!file) return '';
+      const endpoint=getGitHubUploadEndpoint();
+      if(!endpoint){
+        throw new Error('GitHub 업로드 서버 주소가 설정되지 않았습니다. HTML의 GITHUB_UPLOAD_ENDPOINT에 배포한 Worker URL을 넣어주세요.');
+      }
+      const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+      const path=`${folder}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safeName}`;
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),GITHUB_UPLOAD_TIMEOUT);
+      try{
+        const fd=new FormData();
+        fd.append('file',file);
+        fd.append('path',path);
+        const res=await fetch(endpoint,{method:'POST',body:fd,signal:controller.signal});
+        const data=await res.json().catch(()=>({}));
+        if(!res.ok || !data.url) throw new Error(data.error||`업로드 실패 (${res.status})`);
+        return data.url;
+      }finally{ clearTimeout(timer); }
+    }
+
+    async function uploadManyFilesToGitHub(files, folder){
+      const list=[...files];
+      const results=[];
+      for(const file of list) results.push(await uploadFileToGitHub(file,folder));
+      return results;
+    }
+
+    function readFileAsDataURL(file){
+      return uploadFileToGitHub(file,'uploads').catch(err=>{
+        console.error(err);
+        throw err;
+      });
+    }
 
     function closeAdminEditModal() {
       document.getElementById('modal-admin-edit').classList.remove('show');
@@ -1335,22 +1491,22 @@
         item.name=document.getElementById('edit-name').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'CHARACTERS'; item.alias=document.getElementById('edit-alias').value.trim(); item.birthday=document.getElementById('edit-bday').value; item.tags=document.getElementById('edit-tags').value; item.tmi=document.getElementById('edit-tmi').value;
         const linkRows=[...document.querySelectorAll('#character-links-editor .character-link-row')]; item.links=linkRows.map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.title||l.url);
         item.links=[...document.querySelectorAll('#character-links-editor .character-link-row')].map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.url);
-        const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile) item.img=await readFileAsDataURL(imgFile);
-        const galFiles=[...document.getElementById('edit-gal01-files').files]; if(galFiles.length) item.gallery01=await Promise.all(galFiles.map(async f=>({img:await readFileAsDataURL(f)})));
-        const groups=[]; for(const box of document.querySelectorAll('#gallery02-editor .gallery02-admin-group')){ const title=box.querySelector('.g02-title').value.trim(); const desc=box.querySelector('.g02-desc').value; const files=[...box.querySelector('.g02-files').files]; const old=item.gallery02?.[Number(box.dataset.index)]?.images||[]; let images=old; if(files.length) images=await Promise.all(files.map(async f=>({img:await readFileAsDataURL(f)}))); if(title||desc||images.length) groups.push({title:title||'ARCHIVE',desc,images}); } item.gallery02=groups;
+        const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile) item.img=await uploadFileToGitHub(imgFile, `images/characters/${item.id}`);
+        const galFiles=[...document.getElementById('edit-gal01-files').files]; if(galFiles.length) { const urls=await uploadManyFilesToGitHub(galFiles, `images/characters/${item.id}/gallery`); item.gallery01=urls.map(url=>({img:url})); }
+        const groups=[]; for(const box of document.querySelectorAll('#gallery02-editor .gallery02-admin-group')){ const title=box.querySelector('.g02-title').value.trim(); const desc=box.querySelector('.g02-desc').value; const files=[...box.querySelector('.g02-files').files]; const old=item.gallery02?.[Number(box.dataset.index)]?.images||[]; let images=old; if(files.length) { const urls=await uploadManyFilesToGitHub(files, `images/characters/${item.id}/gallery`); images=urls.map(url=>({img:url})); } if(title||desc||images.length) groups.push({title:title||'ARCHIVE',desc,images}); } item.gallery02=groups;
         item.gallery01=(item.gallery01||[]).map(g=>typeof g==='string'?{img:g}:{img:g.img});
         item.gallery02=(item.gallery02||[]).map(g=>({...g,images:(g.images||[]).map(x=>typeof x==='string'?{img:x}:{img:x.img})}));
       }else if(section==='world'){
-        item.title=document.getElementById('edit-title').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'WORLD DATABASE'; item.sub=document.getElementById('edit-sub').value.trim(); item.desc=document.getElementById('edit-desc').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await readFileAsDataURL(imgFile); item.charIds=[...document.querySelectorAll('#world-char-select-grid .char-select-card.selected')].map(el=>el.dataset.cid);
+        item.title=document.getElementById('edit-title').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'WORLD DATABASE'; item.sub=document.getElementById('edit-sub').value.trim(); item.desc=document.getElementById('edit-desc').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/world/${item.id}`); item.charIds=[...document.querySelectorAll('#world-char-select-grid .char-select-card.selected')].map(el=>el.dataset.cid);
       }else if(section==='music'){
         item.title=document.getElementById('edit-title').value.trim();
         item.sub=document.getElementById('edit-sub').value.trim();
         item.content=document.getElementById('edit-content').value;
         item.finalContent=document.getElementById('edit-final-content').value;
         const audioFile=document.getElementById('edit-audio-file').files[0];
-        if(audioFile) item.audio=await readFileAsDataURL(audioFile);
+        if(audioFile) item.audio=await uploadFileToGitHub(audioFile, 'music');
       }else if(section==='feed'){
-        item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.content=document.getElementById('edit-content').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await readFileAsDataURL(imgFile); item.content=item.content || '';
+        item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.content=document.getElementById('edit-content').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/feed/${item.id}`); item.content=item.content || '';
       }else if(section==='notice'){
         item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.pinned=document.getElementById('edit-pinned').checked; item.content=document.getElementById('edit-content').value;
       }else{ item.title=document.getElementById('edit-title').value; item.sub=document.getElementById('edit-sub').value; item.content=document.getElementById('edit-content').value; }
@@ -1375,6 +1531,15 @@
 
     /* ---------- AUTH SYSTEM ---------- */
     const SECRET_PASS = "Loversleporineladymart";
+
+    function openUploadSettings(){
+      if(!isAdminLoggedIn){ alert('관리자 로그인 후 사용할 수 있습니다.'); return; }
+      const current=getGitHubUploadEndpoint();
+      const value=prompt('GitHub 업로드 Worker 주소를 입력하세요.\n예: https://your-worker.example.workers.dev/upload',current);
+      if(value===null)return;
+      localStorage.setItem(GITHUB_UPLOAD_ENDPOINT_KEY,value.trim());
+      alert(value.trim()?'업로드 서버 주소를 저장했습니다.':'업로드 서버 주소를 비웠습니다.');
+    }
 
     function openAdminLogin() {
       document.getElementById('admin-pass-input').value = '';
