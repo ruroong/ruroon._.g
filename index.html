@@ -200,6 +200,18 @@
     .detail-subtitle { font-family: var(--mono); font-size: 11px; opacity: 0.7; margin-top: 4px; }
     .detail-content-body { display: flex; flex-direction: column; gap: 16px; line-height: 1.6; font-size: 14px; }
 
+    /* DETAIL SECTION LABELS — same title weight and same title-to-content spacing */
+    .gallery-section-title {
+      font-size: 13px; line-height: 1.4; font-weight: 600;
+      padding: 0 0 6px; margin: 0;
+      border-bottom: 1.5px solid var(--navy);
+    }
+    .gallery-section-title + .gallery-drag-viewport { margin-top: -8px; }
+    .gallery-section-title + .world-char-cards-grid { margin-top: -8px; }
+    .gallery-section-title + div { margin-top: 8px; }
+    #char-detail-body > .gallery-section-title { margin-top: 0 !important; }
+    #world-detail-body > .gallery-section-title { margin-top: 0 !important; }
+
     /* EDIT INLINE TRIGGER BUTTON */
     .inline-edit-trigger {
       display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border: 1.5px solid var(--navy); background: var(--white);
@@ -255,26 +267,11 @@
     .title-link-icon:hover svg { stroke:var(--navy); }
     .char-detail-title-row { display:flex; align-items:center; gap:8px; width:100%; }
 
-    /* SECTION SUBHEADINGS — NOTES / OFFICIAL GALLERY / ARCHIVE GALLERY */
-    .gallery-section-title {
-      font-family:var(--mono);
-      font-size:12px;
-      font-weight:600;
-      line-height:1.2;
-      border-bottom:1.5px solid var(--navy);
-      padding-bottom:4px;
-      margin-top:10px;
-      margin-bottom:10px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-    }
-
     /* GALLERY — contained drag-scroll viewport */
     .gallery-drag-viewport {
       width:100%; max-width:100%; min-width:0; box-sizing:border-box;
       overflow:hidden; position:relative;
-      padding:0 2px 12px 12px;
+      padding:6px 2px 12px 12px;
       cursor:grab;
       touch-action:pan-y;
       overscroll-behavior-x:contain;
@@ -323,7 +320,7 @@
     .gal02-accordion-item.collapsed .gal02-acc-body { display:none; }
 
     /* WORLD CHARACTER CARDS — uniform fixed-size profile cards */
-    .world-char-cards-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 140px)); grid-auto-rows:auto; justify-content:start; gap:14px; align-items:start; margin-top:0; width:100%; min-width:0; }
+    .world-char-cards-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 140px)); grid-auto-rows:auto; justify-content:start; gap:14px; align-items:start; margin-top:10px; width:100%; min-width:0; }
     .world-char-card { width:140px; min-width:140px; max-width:140px; background:#fff; border:1px solid rgba(214,142,171,.6); padding:8px; cursor:pointer; transition:transform .15s,border-color .15s; box-sizing:border-box; overflow:hidden; box-shadow:none; }
     .world-char-card:hover { transform:translateY(-2px); border-color:rgba(214,142,171,.95); box-shadow:none; }
     .world-char-card img { width:100%; aspect-ratio:1/1; height:auto; display:block; object-fit:cover; border:0 !important; margin:0 !important; filter:none !important; image-rendering:auto; }
@@ -410,14 +407,14 @@
     .modal-btn-cancel { background: var(--white); color: var(--navy); }
 
     /* LIGHTBOX MODAL FOR GALLERY */
-    .lightbox-modal { position:fixed; inset:0; background:rgba(0,0,0,.86); z-index:99999; display:none; align-items:center; justify-content:center; padding:24px; box-sizing:border-box; }
-    .lightbox-modal.show { display:flex; }
-    .lightbox-img-wrapper { position:relative; width:min(92vw,1200px); height:min(88vh,900px); display:flex; align-items:center; justify-content:center; }
-    .lightbox-img { display:block; max-width:88vw; max-height:86vh; width:auto; height:auto; object-fit:contain; border:2px solid #fff; box-shadow:0 0 20px rgba(0,0,0,.5); user-select:none; -webkit-user-drag:none; }
-    .lightbox-nav-btn { position:absolute; top:50%; transform:translateY(-50%); width:42px; height:42px; display:flex; align-items:center; justify-content:center; background:rgba(28,32,56,.88); color:#fff; border:1px solid #fff; padding:0; font-size:18px; cursor:pointer; user-select:none; z-index:2; }
-    .lightbox-prev { left:8px; }
-    .lightbox-next { right:8px; }
-    .lightbox-close { position:fixed; top:16px; right:18px; width:38px; height:38px; display:flex; align-items:center; justify-content:center; color:#fff; background:rgba(28,32,56,.88); border:1px solid #fff; font-size:20px; font-weight:bold; cursor:pointer; z-index:3; }
+    .lightbox-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; display: none; align-items: center; justify-content: center; flex-direction: column; }
+    .lightbox-modal.show { display: flex; }
+    .lightbox-img-wrapper { position: relative; max-width: 85vw; max-height: 80vh; display: flex; justify-content: center; align-items: center; }
+    .lightbox-img { max-width: 100%; max-height: 80vh; border: 2px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+    .lightbox-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(28,32,56,0.8); color: #fff; border: 1px solid #fff; padding: 12px; font-size: 20px; cursor: pointer; user-select: none; }
+    .lightbox-prev { left: -60px; }
+    .lightbox-next { right: -60px; }
+    .lightbox-close { position: absolute; top: -40px; right: 0; z-index: 3; color: #fff; font-size: 24px; font-weight: bold; cursor: pointer; }
 
     /* SELECTABLE CARDS IN ADMIN FORM */
     .char-select-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; max-height: 180px; overflow-y: auto; background: #fff; padding: 8px; border: 1.5px solid var(--navy); }
@@ -491,7 +488,7 @@
   </div>
 
   <!-- [MODAL] LIGHTBOX FOR GALLERY -->
-  <div class="lightbox-modal" id="lightbox-modal">
+  <div class="lightbox-modal" id="lightbox-modal" onclick="if(event.target===this) closeLightbox()">
     <div class="lightbox-img-wrapper">
       <span class="lightbox-close" onclick="closeLightbox()">✕ CLOSE</span>
       <button class="lightbox-nav-btn lightbox-prev" onclick="navLightbox(-1)">◀</button>
@@ -1202,7 +1199,7 @@
         gal01Html = `<div class="gallery-section-title"><span>OFFICIAL GALLERY</span></div>
           <div class="gallery-drag-viewport" id="gal01-scroll-box" data-gallery-drag>
             <div class="gallery-drag-track">
-              ${allGallery01Imgs.map((gObj, idx) => `<div class="gal-thumb-item" data-lightbox-type="gal01" data-lightbox-p1="${idx}"><img src="${gObj.img}" class="gal-thumb-img" draggable="false"></div>`).join('')}
+              ${allGallery01Imgs.map((gObj, idx) => `<div class="gal-thumb-item" onclick="openLightboxFromData('gal01', ${idx})"><img src="${gObj.img}" class="gal-thumb-img" draggable="false"></div>`).join('')}
             </div>
           </div>`;
       }
@@ -1214,7 +1211,7 @@
             <div class="gal02-acc-header" onclick="this.parentElement.classList.toggle('collapsed')"><span>✦ ${group.title || 'ARCHIVE'}</span><span>▼</span></div>
             ${group.desc ? `<div class="gal02-acc-desc">${group.desc}</div>` : ''}
             <div class="gallery-drag-viewport" data-gallery-drag>
-              <div class="gallery-drag-track">${(group.images || []).map((imgObj,iIdx) => { const a=typeof imgObj==='string'?{img:imgObj,links:[]}:imgObj; return `<div class="gal-thumb-item" data-lightbox-type="gal02" data-lightbox-p1="${gIdx}" data-lightbox-p2="${iIdx}"><img src="${a.img}" class="gal-thumb-img" draggable="false"></div>`; }).join('')}</div>
+              <div class="gallery-drag-track">${(group.images || []).map((imgObj,iIdx) => { const a=typeof imgObj==='string'?{img:imgObj,links:[]}:imgObj; return `<div class="gal-thumb-item" onclick="openLightboxFromData('gal02', ${gIdx}, ${iIdx})"><img src="${a.img}" class="gal-thumb-img" draggable="false"></div>`; }).join('')}</div>
             </div>
           </div>`).join('')}
         </div></div>`;
@@ -1314,32 +1311,41 @@
         if (viewport.dataset.dragReady === '1') return;
         viewport.dataset.dragReady = '1';
 
+        let pointerId = null;
+        let pointerDown = false;
         let dragging = false;
         let moved = false;
         let startX = 0;
         let startScroll = 0;
-        let pointerId = null;
 
         viewport.addEventListener('pointerdown', e => {
           if (e.button !== undefined && e.button !== 0) return;
-          dragging = true;
+          pointerDown = true;
+          dragging = false;
           moved = false;
           pointerId = e.pointerId;
           startX = e.clientX;
           startScroll = viewport.scrollLeft;
-          viewport.classList.add('is-dragging');
-          try { viewport.setPointerCapture(pointerId); } catch (_) {}
         });
 
         viewport.addEventListener('pointermove', e => {
-          if (!dragging) return;
+          if (!pointerDown || e.pointerId !== pointerId) return;
           const dx = e.clientX - startX;
-          if (Math.abs(dx) > 4) moved = true;
-          viewport.scrollLeft = startScroll - dx;
+          if (!dragging && Math.abs(dx) > 6) {
+            dragging = true;
+            moved = true;
+            viewport.classList.add('is-dragging');
+            try { viewport.setPointerCapture(pointerId); } catch (_) {}
+          }
+          if (dragging) {
+            e.preventDefault();
+            viewport.scrollLeft = startScroll - dx;
+          }
         });
 
         const endDrag = e => {
-          if (!dragging) return;
+          if (!pointerDown || (pointerId !== null && e.pointerId !== undefined && e.pointerId !== pointerId)) return;
+          pointerDown = false;
           dragging = false;
           viewport.classList.remove('is-dragging');
           if (pointerId !== null) {
@@ -1355,6 +1361,7 @@
         viewport.addEventListener('pointerup', endDrag);
         viewport.addEventListener('pointercancel', endDrag);
         viewport.addEventListener('lostpointercapture', () => {
+          pointerDown = false;
           dragging = false;
           viewport.classList.remove('is-dragging');
           pointerId = null;
@@ -1386,21 +1393,16 @@
       }
 
       if (!currentLightboxList.length) return;
+      if (currentLightboxIdx >= currentLightboxList.length) currentLightboxIdx = 0;
       showLightboxImg();
     }
 
     function showLightboxImg() {
-      const modal = document.getElementById('lightbox-modal');
-      const img = document.getElementById('lightbox-img');
-      if (!modal || !img || !currentLightboxList.length) return;
-      if (currentLightboxIdx < 0) currentLightboxIdx = currentLightboxList.length - 1;
-      if (currentLightboxIdx >= currentLightboxList.length) currentLightboxIdx = 0;
-      img.src = currentLightboxList[currentLightboxIdx];
-      modal.classList.add('show');
+      document.getElementById('lightbox-img').src = currentLightboxList[currentLightboxIdx];
+      document.getElementById('lightbox-modal').classList.add('show');
     }
 
     function navLightbox(dir) {
-      if (!currentLightboxList.length) return;
       currentLightboxIdx += dir;
       if (currentLightboxIdx < 0) currentLightboxIdx = currentLightboxList.length - 1;
       if (currentLightboxIdx >= currentLightboxList.length) currentLightboxIdx = 0;
@@ -1408,56 +1410,16 @@
     }
 
     function closeLightbox() {
-      const modal = document.getElementById('lightbox-modal');
-      const img = document.getElementById('lightbox-img');
-      if (modal) modal.classList.remove('show');
-      if (img) img.src = '';
+      document.getElementById('lightbox-modal').classList.remove('show');
     }
 
-    /* Gallery thumbnails use delegated clicks so drag-scroll and enlargement do not fight each other. */
-    document.addEventListener('click', e => {
-      const thumb = e.target.closest('.gal-thumb-item[data-lightbox-type]');
-      if (!thumb) return;
-      const viewport = thumb.closest('[data-gallery-drag]');
-      if (viewport && viewport.dataset.suppressClick === '1') {
-        e.preventDefault();
-        e.stopPropagation();
-        return;
-      }
-      e.preventDefault();
-      e.stopPropagation();
-      openLightboxFromData(
-        thumb.dataset.lightboxType,
-        Number(thumb.dataset.lightboxP1),
-        thumb.dataset.lightboxP2 === undefined ? undefined : Number(thumb.dataset.lightboxP2)
-      );
-    }, true);
-
     document.addEventListener('keydown', e => {
-      const modal = document.getElementById('lightbox-modal');
-      if (!modal || !modal.classList.contains('show')) return;
-      if (e.key === 'ArrowLeft') { e.preventDefault(); navLightbox(-1); }
-      if (e.key === 'ArrowRight') { e.preventDefault(); navLightbox(1); }
-      if (e.key === 'Escape') { e.preventDefault(); closeLightbox(); }
+      if (document.getElementById('lightbox-modal').classList.contains('show')) {
+        if (e.key === 'ArrowLeft') navLightbox(-1);
+        if (e.key === 'ArrowRight') navLightbox(1);
+        if (e.key === 'Escape') closeLightbox();
+      }
     });
-
-    (() => {
-      let touchStartX = 0;
-      let touchStartY = 0;
-      const modal = document.getElementById('lightbox-modal');
-      if (!modal) return;
-      modal.addEventListener('touchstart', e => {
-        if (!e.touches.length) return;
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-      }, {passive:true});
-      modal.addEventListener('touchend', e => {
-        if (!e.changedTouches.length) return;
-        const dx = e.changedTouches[0].clientX - touchStartX;
-        const dy = e.changedTouches[0].clientY - touchStartY;
-        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) navLightbox(dx > 0 ? -1 : 1);
-      }, {passive:true});
-    })();
 
     function showCharacterLinksModal(charId) {
       const char = database.characters.find(c => c.id === charId);
