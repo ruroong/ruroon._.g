@@ -439,6 +439,8 @@
     #main-bgm { width:1px; height:1px; }
 
     @media (max-width: 820px) {
+      .back-brand-btn { display:none; }
+
       .split-layout { grid-template-columns: 1fr; }
       .messenger-list-sidebar { order: -1; max-height: 380px; }
       .char-main-top { flex-direction:column; }
@@ -811,6 +813,7 @@
           sub: 'WORLD DATABASE', 
           img: './images/A01.png', 
           desc: '날씨와 기상의 변화가 세계 전체의 흐름을 좌우하는 엠페클라 메인 세계관입니다.',
+          links: [],
           charIds: ['ruroon', 'char_b']
         }
       ],
@@ -1149,13 +1152,23 @@
             `;
           }
 
+          const hasWorldLinks = Array.isArray(item.links) && item.links.some(l => l && l.url);
+          const worldLinkIcon = hasWorldLinks ? `<button class="title-link-icon" onclick="event.stopPropagation(); showWorldLinksModal('${item.id}')" title="WORLD LINKS"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button>` : '';
+
           document.getElementById('world-detail-body').innerHTML = `
-            ${item.img ? `<img src="${item.img}" style="width:100%; max-height:280px; object-fit:cover; border:1.5px solid var(--navy); margin:0 0 12px;">` : ''}
+            ${item.img ? `<img src="${item.img}" style="width:100%; aspect-ratio:16 / 9; height:auto; object-fit:cover; border:1.5px solid var(--navy); margin:0 0 12px;">` : ''}
             ${item.musicId ? `<div class="char-meta-row" style="margin:0 0 16px; align-items:center;"><span class="char-meta-label">MUSIC</span><span class="char-meta-val">${getLinkedMusicHtml(item)}</span></div>` : ''}
             <p style="line-height:1.6; font-size:14px; margin-bottom:16px;">${item.desc || ''}</p>
             ${cardsHtml}
           `;
           document.getElementById('world-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('world', id);
+
+          const worldTitleEl = document.getElementById('world-detail-title');
+          const worldTitleParent = worldTitleEl.parentElement;
+          if(worldTitleParent && worldTitleParent.classList.contains('detail-title')) worldTitleParent.classList.add('char-detail-title-row');
+          const oldWorldIcon = worldTitleParent.querySelector('.title-link-icon');
+          if(oldWorldIcon) oldWorldIcon.remove();
+          if(worldLinkIcon) worldTitleParent.insertAdjacentHTML('beforeend', worldLinkIcon);
         }
       }
     }
@@ -1390,6 +1403,15 @@
       document.getElementById('modal-links').classList.add('show');
     }
 
+    function showWorldLinksModal(worldId) {
+      const world = database.world.find(w => w.id === worldId);
+      if (!world) return;
+      const links = Array.isArray(world.links) ? world.links.filter(l => l && l.url) : [];
+      const body = document.getElementById('links-modal-body');
+      body.innerHTML = links.length ? links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer" style="display:flex;justify-content:space-between;align-items:center;background:#fff;padding:10px 2px;border:none;border-bottom:1px solid rgba(28,32,56,.18);font-weight:bold;font-size:13px;color:var(--navy);text-decoration:none;"><span>${l.title || l.url}</span><span style="font-family:var(--mono);">GO ↗</span></a>`).join('') : '<p style="font-size:13px;">연결된 세계관 링크가 없습니다.</p>';
+      document.getElementById('modal-links').classList.add('show');
+    }
+
     /* ---------- FULL EDIT & ADD SYSTEM (ADMIN) ---------- */
     function openEditModal(section, id) {
       const item = database[section].find(i => i.id === id);
@@ -1435,6 +1457,9 @@
           <label class="modal-label">서브 타이틀</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||''}">
           <label class="modal-label">세계관 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">GitHub 업로드 서버를 통해 images/world 폴더에 저장됩니다.</div>
           <label class="modal-label">전용 음악</label>${getMusicLinkFieldHtml(item.musicId||'')}
+          <label class="modal-label">세계관 링크</label>
+          <div id="world-links-editor">${(item.links||[]).map((l,i)=>`<div class="admin-manager-row world-link-row"><input class="modal-input world-link-title" placeholder="링크 이름" value="${l.title||''}"><input class="modal-input world-link-url" placeholder="https://..." value="${l.url||''}"><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button></div>`).join('')}</div>
+          <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addWorldLinkEditor()">+ LINK</button>
           <label class="modal-label">세계관 설명</label><textarea id="edit-desc" class="modal-textarea" style="min-height:180px;">${item.desc||''}</textarea>
           <label class="modal-label">등장 캐릭터 <span style="font-weight:400;opacity:.7;">(클릭으로 선택 · 드래그로 순서 변경)</span></label>
           <div id="world-char-select-grid" class="char-select-grid world-char-select-scroll">${[...database.characters].sort((a,b)=>{const ai=selectedCharIds.indexOf(a.id),bi=selectedCharIds.indexOf(b.id);return (ai<0?9999:ai)-(bi<0?9999:bi);}).map(c=>`<div class="char-select-card ${selectedCharIds.includes(c.id)?'selected':''}" draggable="true" data-cid="${c.id}" onclick="this.classList.toggle('selected')" ondragstart="worldCharDragStart(event)" ondragover="worldCharDragOver(event)" ondrop="worldCharDrop(event)" ondragend="worldCharDragEnd(event)"><span style="display:block;cursor:grab;">☷</span>${c.name}</div>`).join('')}</div></div>`;
@@ -1466,6 +1491,13 @@
       const box=document.getElementById('character-links-editor'); if(!box)return;
       const row=document.createElement('div'); row.className='admin-manager-row character-link-row';
       row.innerHTML='<input class="modal-input char-link-title" placeholder="링크 이름"><input class="modal-input char-link-url" placeholder="https://..."><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button>';
+      box.appendChild(row);
+    }
+
+    function addWorldLinkEditor(){
+      const box=document.getElementById('world-links-editor'); if(!box)return;
+      const row=document.createElement('div'); row.className='admin-manager-row world-link-row';
+      row.innerHTML='<input class="modal-input world-link-title" placeholder="링크 이름"><input class="modal-input world-link-url" placeholder="https://..."><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button>';
       box.appendChild(row);
     }
 
@@ -1758,7 +1790,10 @@
         item.gallery01=(item.gallery01||[]).map(g=>typeof g==='string'?{img:g}:{img:g.img});
         item.gallery02=(item.gallery02||[]).map(g=>({...g,images:(g.images||[]).map(x=>typeof x==='string'?{img:x}:{img:x.img})}));
       }else if(section==='world'){
-        item.title=document.getElementById('edit-title').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'WORLD DATABASE'; item.sub=document.getElementById('edit-sub').value.trim(); item.desc=document.getElementById('edit-desc').value; item.musicId=document.getElementById('edit-music-id').value || ''; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/world/${item.id}`); item.charIds=[...document.querySelectorAll('#world-char-select-grid .char-select-card.selected')].map(el=>el.dataset.cid);
+        item.title=document.getElementById('edit-title').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'WORLD DATABASE'; item.sub=document.getElementById('edit-sub').value.trim(); item.desc=document.getElementById('edit-desc').value; item.musicId=document.getElementById('edit-music-id').value || '';
+        const worldLinkRows=[...document.querySelectorAll('#world-links-editor .world-link-row')];
+        item.links=worldLinkRows.map(row=>({title:row.querySelector('.world-link-title').value.trim(),url:row.querySelector('.world-link-url').value.trim()})).filter(l=>l.url);
+        const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/world/${item.id}`); item.charIds=[...document.querySelectorAll('#world-char-select-grid .char-select-card.selected')].map(el=>el.dataset.cid);
       }else if(section==='music'){
         item.title=document.getElementById('edit-title').value.trim();
         item.sub=document.getElementById('edit-sub').value.trim();
