@@ -92,7 +92,7 @@
     }
 
     /* HEADER & STICKY NAV */
-    .sticky-header-group { position: sticky; top: 0; z-index: 15; }
+    .sticky-header-group { position: sticky; top: 0; z-index: 100; }
     header { background: rgba(236, 168, 185, 0.92); backdrop-filter: blur(10px); border-bottom: 1.5px solid var(--line); }
     
     .nav { height: 60px; display: flex; justify-content: center; align-items: center; position: relative; }
@@ -178,7 +178,8 @@
     .ctrl-btn.play-main { font-size: 16px; font-weight: bold; }
     .player-svg-icon { width: 14px; height: 14px; fill: var(--navy); }
 
-    .external-signal-bottom { margin-top: auto; padding-top: 50px; padding-bottom: 20px; }
+    .external-signal-bottom { margin-top: auto; padding-top: 50px; padding-bottom: 20px; display:flex; flex-direction:column; align-items:center; gap:10px; }
+    .external-signal-bottom .admin-only { margin-left:0 !important; }
     .admin-trigger-btn { background: transparent; border: none; padding: 0; display: inline-block; transition: transform 0.2s; }
     .admin-trigger-btn:hover { transform: scale(1.1); }
     .admin-trigger-btn img { width: 42px; height: 42px; object-fit: contain; display: block; }
@@ -254,20 +255,21 @@
     .title-link-icon:hover svg { stroke:var(--navy); }
     .char-detail-title-row { display:flex; align-items:center; gap:8px; width:100%; }
 
-    /* GALLERY 01 & 02 — fixed-width horizontal galleries */
+    /* GALLERY 01 & 02 — viewport-contained horizontal galleries */
     .gallery-section-title { font-family: var(--mono); font-size: 12px; font-weight: 800; border-bottom: 1.5px solid var(--navy); padding-bottom: 4px; margin-top: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
     .gal01-scroll-wrapper, .gal02-scroll-wrapper {
       width:100%; max-width:100%; min-width:0; max-inline-size:100%; box-sizing:border-box;
       display:flex; flex-wrap:nowrap; gap:10px; overflow-x:auto; overflow-y:hidden;
       padding:6px 2px 12px 12px; scrollbar-width:thin; scrollbar-color:var(--navy) transparent;
-      cursor:grab; -webkit-overflow-scrolling:touch;
+      cursor:grab; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain;
     }
-    .gal01-scroll-wrapper::-webkit-scrollbar, .gal02-scroll-wrapper::-webkit-scrollbar { height:6px; }
+    .gal01-scroll-wrapper::-webkit-scrollbar, .gal02-scroll-wrapper::-webkit-scrollbar { height:7px; }
+    .gal01-scroll-wrapper::-webkit-scrollbar-track, .gal02-scroll-wrapper::-webkit-scrollbar-track { background:rgba(28,32,56,.08); }
     .gal01-scroll-wrapper::-webkit-scrollbar-thumb, .gal02-scroll-wrapper::-webkit-scrollbar-thumb { background:var(--navy); border-radius:3px; }
     .gal01-scroll-wrapper:active, .gal02-scroll-wrapper:active { cursor:grabbing; }
-    .gal-thumb-item { position:relative; z-index:21; width:135px; height:135px; flex:0 0 135px; border:none !important; outline:none !important; box-shadow:none !important; background:transparent; overflow:hidden; transition:transform .15s; }
+    .gal-thumb-item { position:relative; z-index:1; width:135px; min-width:135px; max-width:135px; height:135px; flex:0 0 135px; border:none !important; outline:none !important; box-shadow:none !important; background:transparent; overflow:hidden; transition:transform .15s; }
     .gal-thumb-item:hover { transform:translateY(-2px); }
-    .gal-thumb-img { width:100%; height:100%; object-fit:cover; display:block; opacity:1 !important; filter:none !important; position:relative; z-index:21; }
+    .gal-thumb-img { width:100%; height:100%; object-fit:cover; display:block; opacity:1 !important; filter:none !important; position:relative; z-index:1; }
     .link-svg-badge { position:absolute; top:5px; right:5px; width:22px; height:22px; background:transparent; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:5; transition:transform .1s; padding:0; }
     .link-svg-badge:hover { transform:scale(1.15); }
     .link-svg-badge svg { width:15px; height:15px; stroke:var(--navy); fill:none; stroke-width:2.4; filter:drop-shadow(0 1px 0 rgba(255,255,255,.65)); }
@@ -278,16 +280,17 @@
     .gal02-acc-body { width:100%; min-width:0; box-sizing:border-box; padding:12px 0 12px 0; overflow:hidden; }
     .gal02-accordion-item.collapsed .gal02-acc-body { display:none; }
 
-    /* WORLD CHARACTER CARDS — clean square profile cards */
-    .world-char-cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:14px; align-items:start; margin-top:10px; }
-    .world-char-card { background:#fff; border:1px solid rgba(214,142,171,.6); padding:8px; cursor:pointer; transition:transform .15s,border-color .15s; box-sizing:border-box; overflow:hidden; box-shadow:none; }
+    /* WORLD CHARACTER CARDS — uniform fixed-size profile cards */
+    .world-char-cards-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 140px)); grid-auto-rows:auto; justify-content:start; gap:14px; align-items:start; margin-top:10px; width:100%; min-width:0; }
+    .world-char-card { width:140px; min-width:140px; max-width:140px; background:#fff; border:1px solid rgba(214,142,171,.6); padding:8px; cursor:pointer; transition:transform .15s,border-color .15s; box-sizing:border-box; overflow:hidden; box-shadow:none; }
     .world-char-card:hover { transform:translateY(-2px); border-color:rgba(214,142,171,.95); box-shadow:none; }
     .world-char-card img { width:100%; aspect-ratio:1/1; height:auto; display:block; object-fit:cover; border:0 !important; margin:0 !important; filter:none !important; image-rendering:auto; }
     .world-char-card .card-name { margin-top:8px; padding:2px 1px 3px; font-size:14px; line-height:1.3; font-weight:600; color:var(--navy); text-align:left; letter-spacing:.01em; }
     .world-char-card .card-sub { display:none !important; }
 
-    /* WORLD EDIT CHARACTER SELECT — no nested scrollbar; modal owns scrolling */
-    .world-char-select-scroll { max-height:none !important; height:auto !important; overflow:visible !important; }
+    /* WORLD EDIT CHARACTER SELECT — uniform cards; modal owns scrolling */
+    .world-char-select-scroll { display:grid !important; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)) !important; gap:8px !important; max-height:none !important; height:auto !important; overflow:visible !important; }
+    .world-char-select-scroll .char-select-card { width:100%; min-width:0; height:72px; min-height:72px; max-height:72px; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; line-height:1.25; }
     .admin-edit-modal { max-height:92vh; overflow-y:auto; }
 
     /* MUSIC INLINE PLAYER */
@@ -323,6 +326,15 @@
     /* MODAL BACKDROP & DIALOGS */
     .modal-backdrop { position: fixed; inset: 0; background: rgba(28, 32, 56, 0.65); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: center; justify-content: center; }
     .modal-backdrop.show { display: flex; }
+
+    /* ASYNC SAVE / UPLOAD LOADING */
+    #save-loading-overlay { position:fixed; inset:0; z-index:3000; display:none; align-items:center; justify-content:center; background:rgba(28,32,56,.55); backdrop-filter:blur(3px); }
+    #save-loading-overlay.show { display:flex; }
+    .save-loading-box { min-width:240px; padding:24px 28px; background:var(--pink); border:2px solid var(--navy); box-shadow:6px 6px 0 var(--navy); display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center; }
+    .save-loading-spinner { width:34px; height:34px; border:3px solid rgba(28,32,56,.2); border-top-color:var(--navy); border-radius:50%; animation:save-spin .8s linear infinite; }
+    .save-loading-text { font:700 11px var(--mono); letter-spacing:.08em; }
+    .save-loading-sub { font:10px var(--mono); opacity:.7; line-height:1.45; }
+    @keyframes save-spin { to { transform:rotate(360deg); } }
 
     .login-modal, .admin-edit-modal, .link-view-modal {
       background: #ECA8B9; border: 2px solid var(--navy); box-shadow: 6px 6px 0px var(--navy); width: min(520px, 92vw); padding: 24px; display: flex; flex-direction: column; gap: 16px; max-height: 90vh; overflow-y: auto;
@@ -448,6 +460,14 @@
     <div class="admin-edit-modal" id="admin-edit-container"></div>
   </div>
 
+  <div id="save-loading-overlay" aria-live="polite" aria-busy="true">
+    <div class="save-loading-box">
+      <div class="save-loading-spinner"></div>
+      <div class="save-loading-text" id="save-loading-text">SAVING...</div>
+      <div class="save-loading-sub" id="save-loading-sub">파일을 업로드하고 데이터를 저장하는 중입니다.<br>파일이 많으면 잠시 걸릴 수 있습니다.</div>
+    </div>
+  </div>
+
   <div class="sticky-header-group">
     <header>
       <div class="container nav">
@@ -522,10 +542,10 @@
         </div>
 
         <div class="external-signal-bottom">
+          <button class="admin-only manager-small-btn" onclick="openUploadSettings()">GITHUB UPLOAD / TOKEN</button>
           <button class="admin-trigger-btn" onclick="openAdminLogin()" title="Admin Login">
             <img src="./images/A04.png" alt="Admin Access" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231C2038\'><path d=\'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z\'/></svg>'">
           </button>
-          <button class="admin-only manager-small-btn" onclick="openUploadSettings()" style="margin-left:8px;">GITHUB UPLOAD</button>
         </div>
       </div>
     </section>
@@ -1023,6 +1043,16 @@
     }
 
     /* ---------- SELECT ITEM HANDLERS ---------- */
+    function getMusicOptionsHtml(selectedId='') {
+      return `<option value="">연결하지 않음</option>` + database.music.map(m => `<option value="${m.id}" ${m.id===selectedId?'selected':''}>${m.title}</option>`).join('');
+    }
+
+    function getLinkedMusicPlayerHtml(item) {
+      const music = item && item.musicId ? database.music.find(m => m.id === item.musicId) : null;
+      if (!music || !music.audio) return '';
+      return `<div class="music-inline-player"><audio controls preload="metadata" src="${music.audio}"></audio></div>`;
+    }
+
     function selectWorldItem(id, el) {
       if (handleListSelection(el, '#page-world', 'world')) {
         const item = database.world.find(w => w.id === id);
@@ -1053,6 +1083,7 @@
 
           document.getElementById('world-detail-body').innerHTML = `
             ${item.img ? `<img src="${item.img}" style="width:100%; max-height:280px; object-fit:cover; border:1.5px solid var(--navy); margin-bottom:12px;">` : ''}
+            ${getLinkedMusicPlayerHtml(item)}
             <p style="line-height:1.6; font-size:14px; margin-bottom:16px;">${item.desc || ''}</p>
             ${cardsHtml}
           `;
@@ -1098,9 +1129,10 @@
             <div class="char-main-img-box"><img src="${item.img || './images/A01.png'}" class="char-main-img"></div>
             <div class="char-meta-table">
               <div class="char-meta-row"><span class="char-meta-label">NAME</span><span class="char-meta-val">${item.name}</span></div>
-              <div class="char-meta-row"><span class="char-meta-label">ALIAS</span><span class="char-meta-val">${item.alias || 'N/A'}</span></div>
+              <div class="char-meta-row"><span class="char-meta-label">KNOWN AS</span><span class="char-meta-val">${item.alias || 'N/A'}</span></div>
               <div class="char-meta-row"><span class="char-meta-label">BIRTHDAY</span><span class="char-meta-val">${item.birthday || '미정'}</span></div>
-              <div class="char-meta-row" style="align-items:flex-start;"><span class="char-meta-label">NAI TAGS</span><span class="char-meta-val"><span class="char-tag-block">${item.tags || 'None'}</span></span></div>
+              <div class="char-meta-row" style="align-items:flex-start;"><span class="char-meta-label">PROMPT</span><span class="char-meta-val"><span class="char-tag-block">${item.tags || 'None'}</span></span></div>
+              ${item.musicId ? `<div class="char-meta-row" style="align-items:flex-start;"><span class="char-meta-label">MUSIC</span><span class="char-meta-val">${getLinkedMusicPlayerHtml(item)}</span></div>` : ''}
             </div>
           </div>
           ${gal01Html}
@@ -1248,9 +1280,10 @@
         fieldsHtml=`
           <label class="modal-label">캐릭터 이름</label><input type="text" id="edit-name" class="modal-input" value="${item.name||''}">
           <label class="modal-label">분류</label><input type="text" id="edit-group" class="modal-input" list="character-group-options" value="${item.group||groups[0]||''}"><datalist id="character-group-options">${groups.map(g=>`<option value="${g}">`).join('')}</datalist>
-          <label class="modal-label">애칭 / 별명</label><input type="text" id="edit-alias" class="modal-input" value="${item.alias||'ALIAS'}">
+          <label class="modal-label">KNOWN AS</label><input type="text" id="edit-alias" class="modal-input" value="${item.alias||'ALIAS'}">
           <label class="modal-label">생일 (YYYY-MM-DD)</label><input type="date" id="edit-bday" class="modal-input" value="${item.birthday||''}">
-          <label class="modal-label">NAI 그림 태그 / 프롬프트</label><textarea id="edit-tags" class="modal-textarea" style="min-height:160px;">${item.tags||''}</textarea>
+          <label class="modal-label">PROMPT</label><textarea id="edit-tags" class="modal-textarea" style="min-height:160px;">${item.tags||''}</textarea>
+          <label class="modal-label">전용 음악</label><select id="edit-music-id" class="modal-input">${getMusicOptionsHtml(item.musicId||'')}</select><div class="upload-help">MUSIC에 등록된 음원 중 하나를 연결합니다. 연결된 음원에 실제 파일이 없으면 프로필에는 플레이어가 표시되지 않습니다.</div>
           <label class="modal-label">프로필 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">선택한 파일은 GitHub 업로드 서버를 통해 images/characters 폴더에 저장되고, 사이트에는 URL만 기록됩니다.</div>
           <label class="modal-label">OFFICIAL GALLERY 이미지</label><input type="file" id="edit-gal01-files" class="modal-file" accept="image/*" multiple><div class="upload-help">여러 장 선택 가능. GitHub의 images/characters/.../gallery 폴더에 실제 파일로 업로드됩니다.</div>
           <label class="modal-label">공통 작품 링크</label>
@@ -1267,6 +1300,7 @@
           <label class="modal-label">분류</label><input type="text" id="edit-group" class="modal-input" list="world-group-options" value="${item.group||groups[0]||''}"><datalist id="world-group-options">${groups.map(g=>`<option value="${g}">`).join('')}</datalist>
           <label class="modal-label">서브 타이틀</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||''}">
           <label class="modal-label">세계관 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">GitHub 업로드 서버를 통해 images/world 폴더에 저장됩니다.</div>
+          <label class="modal-label">전용 음악</label><select id="edit-music-id" class="modal-input">${getMusicOptionsHtml(item.musicId||'')}</select><div class="upload-help">MUSIC에 등록된 음원 중 하나를 연결합니다. 연결된 음원에 실제 파일이 없으면 세계관에는 플레이어가 표시되지 않습니다.</div>
           <label class="modal-label">세계관 설명</label><textarea id="edit-desc" class="modal-textarea" style="min-height:180px;">${item.desc||''}</textarea>
           <label class="modal-label">등장 캐릭터 <span style="font-weight:400;opacity:.7;">(클릭으로 선택 · 드래그로 순서 변경)</span></label>
           <div id="world-char-select-grid" class="char-select-grid world-char-select-scroll">${[...database.characters].sort((a,b)=>{const ai=selectedCharIds.indexOf(a.id),bi=selectedCharIds.indexOf(b.id);return (ai<0?9999:ai)-(bi<0?9999:bi);}).map(c=>`<div class="char-select-card ${selectedCharIds.includes(c.id)?'selected':''}" draggable="true" data-cid="${c.id}" onclick="this.classList.toggle('selected')" ondragstart="worldCharDragStart(event)" ondragover="worldCharDragOver(event)" ondrop="worldCharDrop(event)" ondragend="worldCharDragEnd(event)"><span style="display:block;cursor:grab;">☷</span>${c.name}</div>`).join('')}</div></div>`;
@@ -1560,11 +1594,27 @@
       document.getElementById('modal-admin-edit').classList.remove('show');
     }
 
+    function showSaveLoading(message='SAVING...', sub='파일을 업로드하고 데이터를 저장하는 중입니다.<br>파일이 많으면 잠시 걸릴 수 있습니다.'){
+      const overlay=document.getElementById('save-loading-overlay');
+      const text=document.getElementById('save-loading-text');
+      const subEl=document.getElementById('save-loading-sub');
+      if(text) text.textContent=message;
+      if(subEl) subEl.innerHTML=sub;
+      if(overlay) overlay.classList.add('show');
+    }
+    function hideSaveLoading(){
+      const overlay=document.getElementById('save-loading-overlay');
+      if(overlay) overlay.classList.remove('show');
+    }
+
     async function saveAdminEdit(section,id,isNew){
+      showSaveLoading('SAVING...', '파일을 업로드하고 데이터를 저장하는 중입니다.<br>파일이 많으면 잠시 걸릴 수 있습니다.');
+      try{
+
       let item=database[section].find(i=>i.id===id);
       if(isNew){ item={id}; database[section].push(item); }
       if(section==='characters'){
-        item.name=document.getElementById('edit-name').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'CHARACTERS'; item.alias=document.getElementById('edit-alias').value.trim(); item.birthday=document.getElementById('edit-bday').value; item.tags=document.getElementById('edit-tags').value; item.tmi=document.getElementById('edit-tmi').value;
+        item.name=document.getElementById('edit-name').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'CHARACTERS'; item.alias=document.getElementById('edit-alias').value.trim(); item.birthday=document.getElementById('edit-bday').value; item.tags=document.getElementById('edit-tags').value; item.musicId=document.getElementById('edit-music-id').value || ''; item.tmi=document.getElementById('edit-tmi').value;
         const linkRows=[...document.querySelectorAll('#character-links-editor .character-link-row')]; item.links=linkRows.map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.title||l.url);
         item.links=[...document.querySelectorAll('#character-links-editor .character-link-row')].map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.url);
         const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile) item.img=await uploadFileToGitHub(imgFile, `images/characters/${item.id}`);
@@ -1573,7 +1623,7 @@
         item.gallery01=(item.gallery01||[]).map(g=>typeof g==='string'?{img:g}:{img:g.img});
         item.gallery02=(item.gallery02||[]).map(g=>({...g,images:(g.images||[]).map(x=>typeof x==='string'?{img:x}:{img:x.img})}));
       }else if(section==='world'){
-        item.title=document.getElementById('edit-title').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'WORLD DATABASE'; item.sub=document.getElementById('edit-sub').value.trim(); item.desc=document.getElementById('edit-desc').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/world/${item.id}`); item.charIds=[...document.querySelectorAll('#world-char-select-grid .char-select-card.selected')].map(el=>el.dataset.cid);
+        item.title=document.getElementById('edit-title').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'WORLD DATABASE'; item.sub=document.getElementById('edit-sub').value.trim(); item.desc=document.getElementById('edit-desc').value; item.musicId=document.getElementById('edit-music-id').value || ''; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/world/${item.id}`); item.charIds=[...document.querySelectorAll('#world-char-select-grid .char-select-card.selected')].map(el=>el.dataset.cid);
       }else if(section==='music'){
         item.title=document.getElementById('edit-title').value.trim();
         item.sub=document.getElementById('edit-sub').value.trim();
@@ -1590,7 +1640,18 @@
       categoryGroups.characters=[...new Set([...categoryGroups.characters,...database.characters.map(x=>x.group).filter(Boolean)])];
       categoryGroups.music=[...new Set([...categoryGroups.music,...database.music.map(x=>x.group).filter(Boolean)])];
       characterOrder=(characterOrder.length?characterOrder:database.characters.map(c=>c.id)).filter(id=>database.characters.some(c=>c.id===id)); database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
-      persistArchiveData(); closeAdminEditModal(); renderAllSidebars(); if(activeItemIds.characters && section==='characters') setTimeout(()=>{const el=document.getElementById('item-characters-'+activeItemIds.characters); if(el)selectCharItem(activeItemIds.characters,el);},50);
+      persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
+      setTimeout(()=>{
+        if(section==='characters' && activeItemIds.characters){ const el=document.getElementById('item-characters-'+activeItemIds.characters); if(el)selectCharItem(activeItemIds.characters,el); }
+        if(section==='world' && activeItemIds.world){ const el=document.getElementById('item-world-'+activeItemIds.world); if(el)selectWorldItem(activeItemIds.world,el); }
+      },50);
+    
+      }catch(err){
+        console.error(err);
+        alert(`저장 중 오류가 발생했습니다.\n\n${err.message || err}`);
+      }finally{
+        hideSaveLoading();
+      }
     }
 
     function deleteExistingItem(section, id) {
@@ -1686,11 +1747,14 @@
     let eventsData = {};
 
     function getBirthdayEventsForDate(dateKey) {
+      const targetParts = String(dateKey).split('-');
+      if(targetParts.length !== 3) return [];
+      const targetMonthDay = `${targetParts[1]}-${targetParts[2]}`;
       return database.characters.filter(c => {
         if (!c.birthday) return false;
         const parts = String(c.birthday).split('-');
         if (parts.length !== 3) return false;
-        return `${parts[0]}-${parts[1]}-${parts[2]}` === dateKey;
+        return `${parts[1]}-${parts[2]}` === targetMonthDay;
       }).map(c => ({ text: `${c.name} 생일`, birthday: true, name: c.name }));
     }
 
