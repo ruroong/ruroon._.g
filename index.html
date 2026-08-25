@@ -320,9 +320,17 @@
     .world-char-select-scroll .char-select-card { width:100%; min-width:0; height:72px; min-height:72px; max-height:72px; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; line-height:1.25; }
     .admin-edit-modal { max-height:92vh; overflow-y:auto; }
 
-    /* MUSIC INLINE PLAYER */
-    .music-inline-player { width:100%; box-sizing:border-box; margin:16px 0 12px; padding:10px 0; border-top:1px solid rgba(214,142,171,.6); border-bottom:1px solid rgba(214,142,171,.6); }
-    .music-inline-player audio { width:100%; display:block; } .world-inline-music { width:100%; max-width:100%; margin:0 0 16px; } .world-inline-music .music-inline-player { margin:0; }
+    /* MUSIC LINK (character/world profile) */
+    .linked-music {
+      display:inline-flex; align-items:center; gap:5px;
+      min-width:0; max-width:100%;
+      color:var(--navy); text-decoration:none; font-weight:700;
+      border-bottom:1px solid rgba(20,34,62,.45);
+      padding-bottom:1px; cursor:pointer;
+      overflow-wrap:anywhere;
+    }
+    .linked-music-arrow { font-size:12px; line-height:1; flex:0 0 auto; }
+    .linked-music:hover { opacity:.65; }
     .music-final-content { margin-top:12px; line-height:1.65; }
 
     /* RETRO CALENDAR */
@@ -1106,10 +1114,11 @@
         <div class="upload-help">MUSIC 탭에 등록된 곡만 연결합니다. 여기서는 음원 파일을 업로드하지 않습니다.</div>`;
     }
 
-    function getLinkedMusicPlayerHtml(item) {
-      const music = item && item.musicId ? database.music.find(m => m.id === item.musicId) : null;
-      if (!music || !music.audio) return '';
-      return `<div class="music-inline-player"><audio controls controlsList="nodownload" disableRemotePlayback preload="metadata" src="${music.audio}"></audio></div>`;
+    function getLinkedMusicHtml(item) {
+      const ref = item ? (item.musicId || item.music || item.musicTitle || '') : '';
+      const music = ref ? database.music.find(m => m.id === ref || m.title === ref) : null;
+      if (!music) return '';
+      return `<a class="linked-music" href="#music/${music.id}" title="MUSIC: ${music.title}" onclick="event.preventDefault(); event.stopPropagation(); navigateTo('music/${music.id}');">${music.title}<span class="linked-music-arrow">↗</span></a>`;
     }
 
     function selectWorldItem(id, el) {
@@ -1142,7 +1151,7 @@
 
           document.getElementById('world-detail-body').innerHTML = `
             ${item.img ? `<img src="${item.img}" style="width:100%; max-height:280px; object-fit:cover; border:1.5px solid var(--navy); margin:0 0 12px;">` : ''}
-            ${item.musicId && getLinkedMusicPlayerHtml(item) ? `<div class="world-inline-music">${getLinkedMusicPlayerHtml(item)}</div>` : ''}
+            ${item.musicId ? `<div class="char-meta-row" style="margin:0 0 16px; align-items:center;"><span class="char-meta-label">MUSIC</span><span class="char-meta-val">${getLinkedMusicHtml(item)}</span></div>` : ''}
             <p style="line-height:1.6; font-size:14px; margin-bottom:16px;">${item.desc || ''}</p>
             ${cardsHtml}
           `;
@@ -1195,7 +1204,7 @@
               <div class="char-meta-row"><span class="char-meta-label">KNOWN AS</span><span class="char-meta-val">${item.alias || 'N/A'}</span></div>
               <div class="char-meta-row"><span class="char-meta-label">BIRTHDAY</span><span class="char-meta-val">${item.birthday || '미정'}</span></div>
               <div class="char-meta-row" style="align-items:flex-start;"><span class="char-meta-label">PROMPT</span><span class="char-meta-val"><span class="char-tag-block">${item.tags || 'None'}</span></span></div>
-              ${item.musicId ? `<div class="char-meta-row" style="align-items:flex-start;"><span class="char-meta-label">MUSIC</span><span class="char-meta-val">${getLinkedMusicPlayerHtml(item)}</span></div>` : ''}
+              ${item.musicId ? `<div class="char-meta-row" style="align-items:flex-start;"><span class="char-meta-label">MUSIC</span><span class="char-meta-val">${getLinkedMusicHtml(item)}</span></div>` : ''}
             </div>
           </div>
           ${gal01Html}
