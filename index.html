@@ -248,8 +248,10 @@
     
     .tag-pill { display: block; width: 100%; background: rgba(255,255,255,0.7); border: 1px solid var(--navy); padding: 12px; border-radius: 0; font-size: 12px; line-height: 1.55; font-family: var(--mono); margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
     .char-tag-block { white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--mono); font-size: 12px; line-height: 1.55; font-weight: 500; }
-    .title-link-icon { margin-left:auto; flex-shrink:0; width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center; border:1.5px solid var(--navy); background:#FF3366; cursor:pointer; }
-    .title-link-icon svg { width:13px; height:13px; stroke:#fff; fill:none; stroke-width:2.5; }
+    .title-link-icon { margin-left:auto; flex-shrink:0; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; border:none; background:transparent; color:var(--navy); cursor:pointer; padding:0; }
+    .title-link-icon svg { width:17px; height:17px; stroke:var(--navy); fill:none; stroke-width:2.2; }
+    .title-link-icon:hover { transform:scale(1.12); }
+    .title-link-icon:hover svg { stroke:var(--navy); }
     .char-detail-title-row { display:flex; align-items:center; gap:8px; width:100%; }
 
     /* GALLERY 01 (HORIZONTAL SWIPE) & 갤러리 레이아웃 */
@@ -269,11 +271,12 @@
 
     /* RED SQUARE LINK SVG BADGE */
     .link-svg-badge {
-      position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; background: #FF3366; border: 1px solid var(--navy);
+      position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; background: transparent; border: none;
       display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5; transition: transform 0.1s;
+      padding: 0;
     }
     .link-svg-badge:hover { transform: scale(1.15); }
-    .link-svg-badge svg { width: 12px; height: 12px; stroke: #FFF; fill: none; stroke-width: 2.5; }
+    .link-svg-badge svg { width: 15px; height: 15px; stroke: var(--navy); fill: none; stroke-width: 2.4; filter: drop-shadow(0 1px 0 rgba(255,255,255,.65)); }
 
     /* GALLERY 02 (LIST TYPE WITH ACCORDION) */
     .gal02-accordion-item { border: 1.5px solid var(--navy); background: #fff; margin-bottom: 10px; }
@@ -355,13 +358,24 @@
     .char-select-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; max-height: 180px; overflow-y: auto; background: #fff; padding: 8px; border: 1.5px solid var(--navy); }
     .char-select-card { border: 1px solid #ccc; padding: 4px; text-align: center; font-size: 11px; background: #f9f9f9; }
     .char-select-card.selected { border: 2px solid var(--navy); background: var(--pink); font-weight: bold; }
+    .admin-list-manager { display:flex; flex-direction:column; gap:10px; }
+    .admin-manager-row { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.55); border:1.5px solid var(--navy); padding:8px; }
+    .admin-manager-row input { flex:1; }
+    .admin-manager-group-row { display:flex; align-items:center; gap:8px; }
+    .admin-manager-char-row { display:flex; align-items:center; gap:8px; padding:7px 8px; border:1px dashed rgba(28,32,56,.35); background:#fff; }
+    .admin-manager-char-row .drag-handle { cursor:grab; font-size:14px; opacity:.6; }
+    .admin-manager-char-row select { flex:1; }
+    .admin-manager-char-row.dragging { opacity:.45; }
+    .manager-section-title { font-family:var(--mono); font-size:11px; font-weight:800; letter-spacing:.08em; border-bottom:1.5px solid var(--navy); padding-bottom:5px; margin-top:4px; }
+    .manager-small-btn { padding:5px 8px; border:1px solid var(--navy); background:#fff; font:700 10px var(--mono); cursor:pointer; }
+    .manager-small-btn:hover { background:var(--navy); color:var(--pink); }
 
     /* FOOTER */
     .slim-footer { background: var(--navy); color: var(--pink); padding: 16px 0; margin-top: 60px; position: relative; z-index: 5; }
     .footer-content { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; opacity: 0.9; }
     .top-btn { background: none; border: none; color: var(--pink); font-family: var(--mono); font-size: 10px; }
 
-    #yt-player-container { position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; }
+    #yt-player-container { position: fixed; width: 2px; height: 2px; left: -10px; bottom: -10px; opacity: 0.01; pointer-events: none; overflow:hidden; }
 
     @media (max-width: 820px) {
       .split-layout { grid-template-columns: 1fr; }
@@ -560,7 +574,7 @@
         <aside class="messenger-list-sidebar">
           <div class="sidebar-title-bar">
             <span>CHARACTERS</span>
-            <span class="admin-only"><button onclick="openAddModal('characters')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openCharacterListManager()" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('characters')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
           </div>
           <div class="sidebar-scroll-area" id="char-sidebar-list"></div>
         </aside>
@@ -695,8 +709,8 @@
     }
 
     const ARCHIVE_STORAGE_KEY='ruroon_archive_v4';
-    function persistArchiveData(){ try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify({database,categoryGroups,eventsData: (typeof eventsData!=='undefined'?eventsData:{})})); }catch(e){ console.warn('archive storage failed',e); } }
-    function loadArchiveData(){ try{ const raw=localStorage.getItem(ARCHIVE_STORAGE_KEY); if(!raw)return; const saved=JSON.parse(raw); if(saved.database){ Object.keys(database).forEach(k=>{ if(saved.database[k]){ database[k].splice(0,database[k].length,...saved.database[k]); } }); } if(saved.categoryGroups) categoryGroups=saved.categoryGroups; if(saved.eventsData && typeof eventsData!=='undefined') eventsData=saved.eventsData; }catch(e){ console.warn('archive storage load failed',e); } }
+    function persistArchiveData(){ try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify({database,categoryGroups,characterOrder,eventsData: (typeof eventsData!=='undefined'?eventsData:{})})); }catch(e){ console.warn('archive storage failed',e); } }
+    function loadArchiveData(){ try{ const raw=localStorage.getItem(ARCHIVE_STORAGE_KEY); if(!raw)return; const saved=JSON.parse(raw); if(saved.database){ Object.keys(database).forEach(k=>{ if(saved.database[k]){ database[k].splice(0,database[k].length,...saved.database[k]); } }); } if(saved.categoryGroups) categoryGroups=saved.categoryGroups; if(Array.isArray(saved.characterOrder)) characterOrder=saved.characterOrder; if(saved.eventsData && typeof eventsData!=='undefined') eventsData=saved.eventsData; }catch(e){ console.warn('archive storage load failed',e); } }
 
     /* ---------- DATA STORES ---------- */
     let categoryGroups = {
@@ -704,6 +718,7 @@
       characters: ["EMPECLA", "SUB WORLD"],
       music: ["ALBUM 01"]
     };
+    let characterOrder = [];
 
     const database = {
       world: [
@@ -770,6 +785,8 @@
     };
 
     loadArchiveData();
+    if(!characterOrder.length) characterOrder=database.characters.map(c=>c.id);
+    database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
 
     /* ---------- RENDER SIDEBAR LISTS ---------- */
     function renderWorldSidebar() {
@@ -805,7 +822,8 @@
       const container = document.getElementById('char-sidebar-list');
       let html = '';
       [...new Set([...categoryGroups.characters, ...database.characters.map(item => item.group).filter(Boolean)])].forEach(groupName => {
-        const items = database.characters.filter(item => item.group === groupName);
+        const orderedCharacters = (characterOrder.length ? characterOrder : database.characters.map(c=>c.id));
+        const items = orderedCharacters.map(id => database.characters.find(c=>c.id===id)).filter(Boolean).filter(item => item.group === groupName);
         html += `
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
@@ -1037,7 +1055,7 @@
         </div>`;
       }
 
-      const hasCharacterLinks = (item.gallery01 || []).some(g => typeof g === 'object' && g.links && g.links.length) || (item.gallery02 || []).some(g => (g.images || []).some(x => typeof x === 'object' && x.links && x.links.length));
+      const hasCharacterLinks = Array.isArray(item.links) && item.links.some(l => l && l.url);
       const linkIcon = hasCharacterLinks ? `<button class="title-link-icon" onclick="event.stopPropagation(); showCharacterLinksModal('${item.id}')" title="LINKED WORKS"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button>` : '';
 
       document.getElementById('char-detail-body').innerHTML = `
@@ -1154,36 +1172,12 @@
       }
     });
 
-    function showLinksModal(charId, type, p1, p2) {
-      const char = database.characters.find(c => c.id === charId);
-      if(!char) return;
-      let links = [];
-      if(type === 'gal01') links = char.gallery01[p1].links || [];
-      else if(type === 'gal02') links = char.gallery02[p1].images[p2].links || [];
-
-      const modalBody = document.getElementById('links-modal-body');
-      if (links.length === 0) {
-        modalBody.innerHTML = '<p style="font-size:13px;">연결된 작품 링크가 없습니다.</p>';
-      } else {
-        modalBody.innerHTML = links.map(l => `
-          <a href="${l.url}" target="_blank" style="display:flex; justify-content:space-between; background:#fff; padding:10px; border:1.5px solid var(--navy); font-weight:bold; font-size:13px;">
-            <span>✦ ${l.title}</span>
-            <span style="font-family:var(--mono);">GO ↗</span>
-          </a>
-        `).join('');
-      }
-      document.getElementById('modal-links').classList.add('show');
-    }
-
     function showCharacterLinksModal(charId) {
       const char = database.characters.find(c => c.id === charId);
       if (!char) return;
-      let links=[];
-      (char.gallery01 || []).forEach(g => { if(typeof g==='object') links=links.concat(g.links||[]); });
-      (char.gallery02 || []).forEach(g => (g.images||[]).forEach(x => { if(typeof x==='object') links=links.concat(x.links||[]); }));
-      const unique=links.filter((l,i,a)=>l && l.url && a.findIndex(x=>x.url===l.url)===i);
-      const body=document.getElementById('links-modal-body');
-      body.innerHTML=unique.length ? unique.map(l=>`<a href="${l.url}" target="_blank" style="display:flex;justify-content:space-between;background:#fff;padding:10px;border:1.5px solid var(--navy);font-weight:bold;font-size:13px;"><span>${l.title || l.url}</span><span style="font-family:var(--mono);">GO ↗</span></a>`).join('') : '<p style="font-size:13px;">연결된 작품 링크가 없습니다.</p>';
+      const links = Array.isArray(char.links) ? char.links.filter(l => l && l.url) : [];
+      const body = document.getElementById('links-modal-body');
+      body.innerHTML = links.length ? links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer" style="display:flex;justify-content:space-between;align-items:center;background:#fff;padding:10px 2px;border:none;border-bottom:1px solid rgba(28,32,56,.18);font-weight:bold;font-size:13px;color:var(--navy);text-decoration:none;"><span>${l.title || l.url}</span><span style="font-family:var(--mono);">GO ↗</span></a>`).join('') : '<p style="font-size:13px;">연결된 작품 링크가 없습니다.</p>';
       document.getElementById('modal-links').classList.add('show');
     }
 
@@ -1212,10 +1206,13 @@
           <label class="modal-label">캐릭터 이름</label><input type="text" id="edit-name" class="modal-input" value="${item.name||''}">
           <label class="modal-label">분류</label><input type="text" id="edit-group" class="modal-input" list="character-group-options" value="${item.group||groups[0]||''}"><datalist id="character-group-options">${groups.map(g=>`<option value="${g}">`).join('')}</datalist>
           <label class="modal-label">애칭 / 별명</label><input type="text" id="edit-alias" class="modal-input" value="${item.alias||'ALIAS'}">
-          <label class="modal-label">생일 (YYYY-MM-DD)</label><input type="date" id="edit-bday" class="modal-input" value="${item.birthday||''}"><div class="upload-help">입력한 생일은 저장 후 캘린더에 자동 표시됩니다. 별도 연동 버튼은 없습니다.</div>
+          <label class="modal-label">생일 (YYYY-MM-DD)</label><input type="date" id="edit-bday" class="modal-input" value="${item.birthday||''}">
           <label class="modal-label">NAI 그림 태그 / 프롬프트</label><textarea id="edit-tags" class="modal-textarea" style="min-height:160px;">${item.tags||''}</textarea>
           <label class="modal-label">프로필 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">새 파일을 선택하면 기존 이미지를 교체합니다.</div>
           <label class="modal-label">OFFICIAL GALLERY 이미지</label><input type="file" id="edit-gal01-files" class="modal-file" accept="image/*" multiple><div class="upload-help">여러 장 선택 가능. 새 파일을 선택하면 기존 Gallery를 교체합니다.</div>
+          <label class="modal-label">공통 작품 링크</label>
+          <div id="character-links-editor">${(item.links||[]).map((l,i)=>`<div class="admin-manager-row character-link-row"><input class="modal-input char-link-title" placeholder="링크 이름" value="${l.title||''}"><input class="modal-input char-link-url" placeholder="https://..." value="${l.url||''}"><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button></div>`).join('')}</div>
+          <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addCharacterLinkEditor()">+ LINK</button>
           <label class="modal-label">NOTES &amp; LORE</label><textarea id="edit-tmi" class="modal-textarea" style="min-height:180px;">${item.tmi||''}</textarea>
           <div class="modal-label" style="margin-top:6px;">ARCHIVE GALLERY</div>
           <div id="gallery02-editor">${gal02.map((g,i)=>`<div class="gallery02-admin-group" data-index="${i}"><input class="modal-input g02-title" placeholder="갤러리 제목" value="${g.title||''}"><textarea class="modal-textarea g02-desc" placeholder="설명">${g.desc||''}</textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">파일을 선택하면 이 그룹의 기존 이미지가 교체됩니다.</div></div>`).join('')}</div>
@@ -1228,7 +1225,8 @@
           <label class="modal-label">서브 타이틀</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||''}">
           <label class="modal-label">세계관 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*">
           <label class="modal-label">세계관 설명</label><textarea id="edit-desc" class="modal-textarea" style="min-height:180px;">${item.desc||''}</textarea>
-          <label class="modal-label">등장 캐릭터</label><div class="char-select-grid">${database.characters.map(c=>`<div class="char-select-card ${selectedCharIds.includes(c.id)?'selected':''}" onclick="this.classList.toggle('selected')" data-cid="${c.id}">${c.name}</div>`).join('')}</div>`;
+          <label class="modal-label">등장 캐릭터 <span style="font-weight:400;opacity:.7;">(클릭으로 선택 · 드래그로 순서 변경)</span></label>
+          <div id="world-char-select-grid" class="char-select-grid" style="max-height:300px;">${[...database.characters].sort((a,b)=>{const ai=selectedCharIds.indexOf(a.id),bi=selectedCharIds.indexOf(b.id);return (ai<0?9999:ai)-(bi<0?9999:bi);}).map(c=>`<div class="char-select-card ${selectedCharIds.includes(c.id)?'selected':''}" draggable="true" data-cid="${c.id}" onclick="this.classList.toggle('selected')" ondragstart="worldCharDragStart(event)" ondragover="worldCharDragOver(event)" ondrop="worldCharDrop(event)" ondragend="worldCharDragEnd(event)"><span style="display:block;cursor:grab;">☷</span>${c.name}</div>`).join('')}</div>`;
       }else if(section==='feed'){
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
           <label class="modal-label">날짜</label><input type="date" id="edit-date" class="modal-input" value="${item.date||''}">
@@ -1246,6 +1244,76 @@
       document.getElementById('modal-admin-edit').classList.add('show');
     }
 
+    function addCharacterLinkEditor(){
+      const box=document.getElementById('character-links-editor'); if(!box)return;
+      const row=document.createElement('div'); row.className='admin-manager-row character-link-row';
+      row.innerHTML='<input class="modal-input char-link-title" placeholder="링크 이름"><input class="modal-input char-link-url" placeholder="https://..."><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button>';
+      box.appendChild(row);
+    }
+
+    let worldCharDragEl=null;
+    function worldCharDragStart(e){ worldCharDragEl=e.currentTarget; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
+    function worldCharDragOver(e){ e.preventDefault(); e.dataTransfer.dropEffect='move'; }
+    function worldCharDrop(e){
+      e.preventDefault();
+      const target=e.currentTarget;
+      if(!worldCharDragEl || target===worldCharDragEl)return;
+      const grid=document.getElementById('world-char-select-grid'); if(!grid)return;
+      const rect=target.getBoundingClientRect();
+      const after=e.clientY > rect.top + rect.height/2;
+      grid.insertBefore(worldCharDragEl, after ? target.nextSibling : target);
+    }
+    function worldCharDragEnd(e){ e.currentTarget.classList.remove('dragging'); worldCharDragEl=null; }
+
+    function openCharacterListManager(){
+      const container=document.getElementById('admin-edit-container');
+      const groups=[...categoryGroups.characters];
+      const order=(characterOrder.length?characterOrder:database.characters.map(c=>c.id)).filter(id=>database.characters.some(c=>c.id===id));
+      database.characters.forEach(c=>{if(!order.includes(c.id))order.push(c.id);});
+      container.innerHTML=`<div class="modal-title">EDIT CHARACTER LIST</div>
+        <div class="manager-section-title">목록 분류 이름 / 순서</div>
+        <div id="character-group-editor" class="admin-list-manager">${groups.map((g,i)=>`
+          <div class="admin-manager-group-row" data-index="${i}">
+            <input class="modal-input character-group-name" value="${g}">
+            <button type="button" class="manager-small-btn" onclick="moveCharacterGroup(this,-1)">▲</button>
+            <button type="button" class="manager-small-btn" onclick="moveCharacterGroup(this,1)">▼</button>
+            <button type="button" class="manager-small-btn" onclick="removeCharacterGroup(this)">삭제</button>
+          </div>`).join('')}</div>
+        <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addCharacterGroupEditor()">+ GROUP</button>
+        <div class="manager-section-title">캐릭터 분류 / 표시 순서</div>
+        <div id="character-order-editor" class="admin-list-manager">${order.map(id=>{
+          const c=database.characters.find(x=>x.id===id); return c?`<div class="admin-manager-char-row" draggable="true" data-cid="${c.id}" ondragstart="charOrderDragStart(event)" ondragover="charOrderDragOver(event)" ondrop="charOrderDrop(event)" ondragend="charOrderDragEnd(event)">
+            <span class="drag-handle">☷</span><span style="min-width:100px;font-weight:700;">${c.name}</span>
+            <select class="character-manager-group">${groups.map(g=>`<option value="${g}" ${c.group===g?'selected':''}>${g}</option>`).join('')}</select>
+          </div>`:'';}).join('')}</div>
+        <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveCharacterListManager()">SAVE LIST</button></div>`;
+      document.getElementById('modal-admin-edit').classList.add('show');
+    }
+    function addCharacterGroupEditor(){
+      const box=document.getElementById('character-group-editor'); if(!box)return;
+      const div=document.createElement('div'); div.className='admin-manager-group-row';
+      div.innerHTML='<input class="modal-input character-group-name" placeholder="새 분류 이름" oninput="syncCharacterGroupOptions(this)"><button type="button" class="manager-small-btn" onclick="moveCharacterGroup(this,-1)">▲</button><button type="button" class="manager-small-btn" onclick="moveCharacterGroup(this,1)">▼</button><button type="button" class="manager-small-btn" onclick="removeCharacterGroup(this)">삭제</button>';
+      box.appendChild(div);
+    }
+    function moveCharacterGroup(btn,dir){ const row=btn.parentElement, box=row.parentElement; const rows=[...box.children], idx=rows.indexOf(row), next=idx+dir; if(next<0||next>=rows.length)return; if(dir<0)box.insertBefore(row,rows[next]); else box.insertBefore(rows[next],row); }
+    function syncCharacterGroupOptions(input){ const name=input.value.trim(); if(!name)return; document.querySelectorAll('.character-manager-group').forEach(sel=>{ if(![...sel.options].some(o=>o.value===name)){ const o=document.createElement('option'); o.value=name; o.textContent=name; sel.appendChild(o); } }); }
+    function removeCharacterGroup(btn){ const box=btn.parentElement.parentElement; if(box.children.length<=1){alert('분류는 최소 1개가 필요합니다.');return;} btn.parentElement.remove(); }
+    let charOrderDragEl=null;
+    function charOrderDragStart(e){ charOrderDragEl=e.currentTarget; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
+    function charOrderDragOver(e){ e.preventDefault(); e.dataTransfer.dropEffect='move'; }
+    function charOrderDrop(e){ e.preventDefault(); const target=e.currentTarget; if(!charOrderDragEl||target===charOrderDragEl)return; const box=target.parentElement, rect=target.getBoundingClientRect(); box.insertBefore(charOrderDragEl,e.clientY>rect.top+rect.height/2?target.nextSibling:target); }
+    function charOrderDragEnd(e){ e.currentTarget.classList.remove('dragging'); charOrderDragEl=null; }
+    function saveCharacterListManager(){
+      const names=[...document.querySelectorAll('#character-group-editor .character-group-name')].map(i=>i.value.trim()).filter(Boolean);
+      if(!names.length){alert('분류를 최소 1개 입력해 주세요.');return;}
+      const rows=[...document.querySelectorAll('#character-order-editor .admin-manager-char-row')];
+      characterOrder=rows.map(r=>r.dataset.cid);
+      rows.forEach(r=>{ const c=database.characters.find(x=>x.id===r.dataset.cid); if(c)c.group=r.querySelector('.character-manager-group').value; });
+      categoryGroups.characters=names;
+      database.characters.forEach(c=>{if(!names.includes(c.group))c.group=names[0];});
+      persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
+    }
+
     function addGallery02AdminGroup(){ const box=document.getElementById('gallery02-editor'); if(!box)return; const i=box.children.length; const div=document.createElement('div'); div.className='gallery02-admin-group'; div.dataset.index=i; div.innerHTML='<input class="modal-input g02-title" placeholder="갤러리 제목"><textarea class="modal-textarea g02-desc" placeholder="설명"></textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">파일을 선택하면 이 그룹에 이미지가 들어갑니다.</div>'; box.appendChild(div); }
     function stripImageHtml(html){ return String(html||'').replace(/<img[^>]*>/gi,'').replace(/<[^>]+>/g,'').trim(); }
     function readFileAsDataURL(file){ return new Promise((resolve,reject)=>{ if(!file){resolve('');return;} const r=new FileReader(); r.onload=()=>resolve(r.result); r.onerror=reject; r.readAsDataURL(file); }); }
@@ -1259,17 +1327,23 @@
       if(isNew){ item={id}; database[section].push(item); }
       if(section==='characters'){
         item.name=document.getElementById('edit-name').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'CHARACTERS'; item.alias=document.getElementById('edit-alias').value.trim(); item.birthday=document.getElementById('edit-bday').value; item.tags=document.getElementById('edit-tags').value; item.tmi=document.getElementById('edit-tmi').value;
+        const linkRows=[...document.querySelectorAll('#character-links-editor .character-link-row')]; item.links=linkRows.map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.title||l.url);
+        item.links=[...document.querySelectorAll('#character-links-editor .character-link-row')].map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.url);
         const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile) item.img=await readFileAsDataURL(imgFile);
-        const galFiles=[...document.getElementById('edit-gal01-files').files]; if(galFiles.length) item.gallery01=await Promise.all(galFiles.map(async f=>({img:await readFileAsDataURL(f),links:[]})));
-        const groups=[]; for(const box of document.querySelectorAll('#gallery02-editor .gallery02-admin-group')){ const title=box.querySelector('.g02-title').value.trim(); const desc=box.querySelector('.g02-desc').value; const files=[...box.querySelector('.g02-files').files]; const old=item.gallery02?.[Number(box.dataset.index)]?.images||[]; let images=old; if(files.length) images=await Promise.all(files.map(async f=>({img:await readFileAsDataURL(f),links:[]}))); if(title||desc||images.length) groups.push({title:title||'ARCHIVE',desc,images}); } item.gallery02=groups;
+        const galFiles=[...document.getElementById('edit-gal01-files').files]; if(galFiles.length) item.gallery01=await Promise.all(galFiles.map(async f=>({img:await readFileAsDataURL(f)})));
+        const groups=[]; for(const box of document.querySelectorAll('#gallery02-editor .gallery02-admin-group')){ const title=box.querySelector('.g02-title').value.trim(); const desc=box.querySelector('.g02-desc').value; const files=[...box.querySelector('.g02-files').files]; const old=item.gallery02?.[Number(box.dataset.index)]?.images||[]; let images=old; if(files.length) images=await Promise.all(files.map(async f=>({img:await readFileAsDataURL(f)}))); if(title||desc||images.length) groups.push({title:title||'ARCHIVE',desc,images}); } item.gallery02=groups;
+        item.gallery01=(item.gallery01||[]).map(g=>typeof g==='string'?{img:g}:{img:g.img});
+        item.gallery02=(item.gallery02||[]).map(g=>({...g,images:(g.images||[]).map(x=>typeof x==='string'?{img:x}:{img:x.img})}));
       }else if(section==='world'){
-        item.title=document.getElementById('edit-title').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'WORLD DATABASE'; item.sub=document.getElementById('edit-sub').value.trim(); item.desc=document.getElementById('edit-desc').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await readFileAsDataURL(imgFile); item.charIds=[...document.querySelectorAll('.char-select-card.selected')].map(el=>el.dataset.cid);
+        item.title=document.getElementById('edit-title').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'WORLD DATABASE'; item.sub=document.getElementById('edit-sub').value.trim(); item.desc=document.getElementById('edit-desc').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await readFileAsDataURL(imgFile); item.charIds=[...document.querySelectorAll('#world-char-select-grid .char-select-card.selected')].map(el=>el.dataset.cid);
       }else if(section==='feed'){
         item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.content=document.getElementById('edit-content').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await readFileAsDataURL(imgFile); item.content=item.content || '';
       }else if(section==='notice'){
         item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.pinned=document.getElementById('edit-pinned').checked; item.content=document.getElementById('edit-content').value;
       }else{ item.title=document.getElementById('edit-title').value; item.sub=document.getElementById('edit-sub').value; item.content=document.getElementById('edit-content').value; }
-      categoryGroups.world=[...new Set([...categoryGroups.world,...database.world.map(x=>x.group).filter(Boolean)])]; categoryGroups.characters=[...new Set([...categoryGroups.characters,...database.characters.map(x=>x.group).filter(Boolean)])];
+      categoryGroups.world=[...new Set([...categoryGroups.world,...database.world.map(x=>x.group).filter(Boolean)])];
+      categoryGroups.characters=[...new Set([...categoryGroups.characters,...database.characters.map(x=>x.group).filter(Boolean)])];
+      characterOrder=(characterOrder.length?characterOrder:database.characters.map(c=>c.id)).filter(id=>database.characters.some(c=>c.id===id)); database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
       persistArchiveData(); closeAdminEditModal(); renderAllSidebars(); if(activeItemIds.characters && section==='characters') setTimeout(()=>{const el=document.getElementById('item-characters-'+activeItemIds.characters); if(el)selectCharItem(activeItemIds.characters,el);},50);
     }
 
@@ -1278,6 +1352,7 @@
         const idx = database[section].findIndex(i => i.id === id);
         if (idx !== -1) {
           database[section].splice(idx, 1);
+          if(section==='characters') characterOrder=characterOrder.filter(x=>x!==id);
           persistArchiveData();
           renderAllSidebars();
         }
@@ -1449,16 +1524,20 @@
     });
 
     /* ---------- BGM PLAYER ---------- */
-    let player, isPlaying = false, progressTimer = null;
+    let player, isPlaying = false, progressTimer = null, playerReady = false;
+    const BGM_VIDEO_ID = '67QfTqSLSoI';
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('yt-player', {
-        height: '0', width: '0', videoId: '67QfTqSLSoI',
-        playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': '67QfTqSLSoI' },
-        events: { 'onStateChange': onPlayerStateChange }
+        height: '2', width: '2', videoId: BGM_VIDEO_ID,
+        playerVars: { autoplay: 0, controls: 0, loop: 1, playlist: BGM_VIDEO_ID, playsinline: 1, rel: 0 },
+        events: { onReady: function(){ playerReady=true; }, onStateChange: onPlayerStateChange, onError: function(e){ console.warn('BGM YouTube error:',e.data); } }
       });
     }
-    function toggleBgm() { if(!player) return; if(isPlaying) player.pauseVideo(); else player.playVideo(); }
-    function restartTrack() { if(!player) return; player.seekTo(0); }
+    function toggleBgm() {
+      if(!player || !playerReady) { alert('음악 플레이어를 불러오는 중입니다. 잠시 후 다시 눌러주세요.'); return; }
+      if(isPlaying) player.pauseVideo(); else player.playVideo();
+    }
+    function restartTrack() { if(!player || !playerReady) return; player.seekTo(0,true); if(!isPlaying) player.playVideo(); }
     function updateProgressBar() {
       if (!player || !isPlaying) return;
       const currentTime = player.getCurrentTime();
