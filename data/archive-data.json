@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-26T00:53:50.481Z",
+  "updatedAt": "2026-08-26T00:54:39.717Z",
   "database": {
     "world": [
       {
@@ -34,35 +34,6 @@
     ],
     "characters": [
       {
-        "id": "char_b",
-        "group": "PERSONA",
-        "name": "캐릭터 B",
-        "sub": "EMPECLA ARCHIVIST",
-        "alias": "N/A",
-        "birthday": "2026-11-03",
-        "tags": "#안경,#연구원",
-        "img": "./images/A02.png",
-        "tmi": "밤샘 연구가 일상이다.",
-        "gallery01": [
-          {
-            "img": "./images/A02.png"
-          }
-        ],
-        "gallery02": [
-          {
-            "title": "ㅇ",
-            "desc": "ㅇ",
-            "images": []
-          }
-        ],
-        "links": [
-          {
-            "title": "크랙",
-            "url": "https://share.crack.wrtn.ai/50wvu5"
-          }
-        ]
-      },
-      {
         "id": "characters_1787637348231",
         "name": "ㅇㅁㄹㅇㅁㄹㄴㅇ",
         "group": "성해력(聖海曆) 715",
@@ -82,7 +53,9 @@
         "group": "ALBUM 01",
         "title": "01. Signal Theme #1",
         "sub": "TRACK 01 / MAIN THEME",
-        "content": "<p>Signal Theme #1의 가사 및 정보입니다.</p>"
+        "content": "<p>Signal Theme #1의 가사 및 정보입니다.</p>",
+        "finalContent": "",
+        "playlistUrl": "dddd"
       }
     ],
     "feed": [
@@ -118,7 +91,6 @@
     ]
   },
   "characterOrder": [
-    "char_b",
     "characters_1787637348231"
   ],
   "mainBgmIds": [
