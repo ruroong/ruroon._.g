@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-26T12:39:15.352Z",
+  "updatedAt": "2026-08-26T12:39:21.209Z",
   "database": {
     "world": [
       {
@@ -46,6 +46,19 @@
         "gallery02": [],
         "gallery01": [],
         "musicId": "track_01"
+      },
+      {
+        "id": "characters_1787747958748",
+        "name": "",
+        "group": "PERSONA",
+        "alias": "ALIAS",
+        "birthday": "",
+        "tags": "",
+        "musicId": "",
+        "tmi": "",
+        "links": [],
+        "gallery02": [],
+        "gallery01": []
       }
     ],
     "music": [
@@ -119,7 +132,8 @@
     ]
   },
   "characterOrder": [
-    "characters_1787637348231"
+    "characters_1787637348231",
+    "characters_1787747958748"
   ],
   "mainBgmIds": [
     "track_01",
