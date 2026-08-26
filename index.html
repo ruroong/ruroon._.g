@@ -806,7 +806,7 @@
     const ARCHIVE_STORAGE_KEY='ruroon_archive_v4';
     const SHARED_ARCHIVE_PATH='data/archive-data.json';
     const SHARED_ARCHIVE_URL=`https://raw.githubusercontent.com/ruroong/ruroon._.g/main/${SHARED_ARCHIVE_PATH}`;
-    const SHARED_ARCHIVE_WORKER_URL='https://falling-bonus-48d6.tmdmdgudjs2131.workers.dev';
+    const SHARED_ARCHIVE_WORKER_URL='https://falling-bonus-48d6.tmdmdgudjs2131.workers.dev/';
     let sharedArchiveLoaded=false;
     let sharedArchiveMissing=false;
     let sharedArchiveLoadError=null;
@@ -871,14 +871,23 @@
       sharedArchiveMissing=false;
       sharedArchiveLoadError=null;
       try{
-        const res=await fetch(`${SHARED_ARCHIVE_URL}?v=${Date.now()}`,{cache:'no-store'});
-        if(res.status===404){
+        // Public archive READ now goes through the Cloudflare Worker.
+        const res=await fetch(SHARED_ARCHIVE_WORKER_URL,{
+          method:'GET',
+          cache:'no-store'
+        });
+        const saved=await res.json().catch(()=>null);
+        if(res.status===404 || (saved && saved.notFound===true)){
           sharedArchiveMissing=true;
           console.info('Shared archive data file does not exist yet.');
           return false;
         }
-        if(!res.ok) throw new Error(`공용 아카이브 데이터를 불러오지 못했습니다. (${res.status})`);
-        const saved=await res.json();
+        if(!res.ok){
+          throw new Error((saved && (saved.error || saved.message)) || `공용 아카이브 데이터를 불러오지 못했습니다. (${res.status})`);
+        }
+        if(!saved || typeof saved!=='object' || !saved.database){
+          throw new Error('Cloudflare Worker가 올바른 공용 아카이브 데이터를 반환하지 않았습니다.');
+        }
         applyArchiveState(saved);
         sharedArchiveLoaded=true;
         try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(saved)); }catch(e){}
@@ -902,39 +911,29 @@
 
     async function syncArchiveDataToGitHub(){
       const state=getArchiveState();
-
-      // Public archive data is now saved through the Cloudflare Worker.
-      // The Worker keeps the GitHub token server-side and handles the latest SHA.
       const controller=new AbortController();
       const timer=setTimeout(()=>controller.abort(),120000);
-
       try{
+        // Public archive WRITE now goes through the Cloudflare Worker.
         const res=await fetch(SHARED_ARCHIVE_WORKER_URL,{
           method:'POST',
-          headers:{
-            'Content-Type':'application/json'
-          },
-          body:JSON.stringify({data:state}),
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({action:'write',data:state}),
           signal:controller.signal
         });
-
         const result=await res.json().catch(()=>({}));
-
         if(!res.ok || !result.ok){
-          const detail=result.error || result.details || `Worker API 오류 (${res.status})`;
-          throw new Error(detail);
+          const detail=result.error || result.message || `Cloudflare Worker 오류 (${res.status})`;
+          const error=new Error(detail);
+          error.status=res.status;
+          throw error;
         }
-
-        try{
-          localStorage.setItem(ARCHIVE_STORAGE_KEY,JSON.stringify(state));
-        }catch(e){}
-
+        try{ localStorage.setItem(ARCHIVE_STORAGE_KEY,JSON.stringify(state)); }catch(e){}
         sharedArchiveLoaded=true;
         sharedArchiveMissing=false;
         sharedArchiveLoadError=null;
         return true;
       }catch(err){
-        sharedArchiveLoadError=err;
         console.error('Cloudflare Worker archive save failed.',err);
         throw err;
       }finally{
