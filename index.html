@@ -871,25 +871,37 @@
     async function syncArchiveDataToGitHub(){
       const state=getArchiveState();
       const content=btoa(unescape(encodeURIComponent(JSON.stringify(state,null,2))));
-      let sha='';
+      const filePath=`/contents/${SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/')}`;
+      const getCurrentSha=async()=>{
+        try{
+          const existing=await githubApi(`${filePath}?ref=${encodeURIComponent(GITHUB_BRANCH)}`);
+          return existing.sha||'';
+        }catch(err){
+          // 404 means the shared JSON has not been created yet; that is normal on the first SAVE.
+          if(err && err.status===404) return '';
+          throw err;
+        }
+      };
+
+      let sha=await getCurrentSha();
+      let body={message:'Update shared archive data',content,branch:GITHUB_BRANCH};
+      if(sha) body.sha=sha;
+
       try{
-        const existing=await githubApi(`/contents/${SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/')}?ref=${encodeURIComponent(GITHUB_BRANCH)}`);
-        sha=existing.sha||'';
+        await githubApi(filePath,{method:'PUT',body:JSON.stringify(body)});
       }catch(err){
-        // 404 means the shared JSON has not been created yet; that is normal on the first SAVE.
-        // Any other error (bad token, permission, repository/path problem, etc.) must surface.
-        if(err && err.status===404) {
-          sha='';
-        } else {
+        // GitHub returns 409 when another device/tab changed the same file after our SHA lookup.
+        // Refresh the SHA once and retry so normal simultaneous saves do not fail.
+        if(err && err.status===409){
+          const latestSha=await getCurrentSha();
+          if(!latestSha) throw err;
+          body.sha=latestSha;
+          await githubApi(filePath,{method:'PUT',body:JSON.stringify(body)});
+        }else{
           throw err;
         }
       }
-      const body={message:'Update shared archive data',content,branch:GITHUB_BRANCH};
-      if(sha) body.sha=sha;
-      await githubApi(`/contents/${SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/')}`,{
-        method:'PUT',
-        body:JSON.stringify(body)
-      });
+
       try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(state)); }catch(e){}
       return true;
     }
