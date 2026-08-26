@@ -806,6 +806,7 @@
     const ARCHIVE_STORAGE_KEY='ruroon_archive_v4';
     const SHARED_ARCHIVE_PATH='data/archive-data.json';
     const SHARED_ARCHIVE_URL=`https://raw.githubusercontent.com/ruroong/ruroon._.g/main/${SHARED_ARCHIVE_PATH}`;
+    const SHARED_ARCHIVE_WORKER_URL='https://falling-bonus-48d6.tmdmdgudjs2131.workers.dev';
     let sharedArchiveLoaded=false;
     let sharedArchiveMissing=false;
     let sharedArchiveLoadError=null;
@@ -901,58 +902,44 @@
 
     async function syncArchiveDataToGitHub(){
       const state=getArchiveState();
-      const content=btoa(unescape(encodeURIComponent(JSON.stringify(state,null,2))));
-      const filePath=`/contents/${SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/')}`;
 
-      const getCurrentSha=async()=>{
-        try{
-          const existing=await githubApi(`${filePath}?ref=${encodeURIComponent(GITHUB_BRANCH)}`);
-          return existing.sha||'';
-        }catch(err){
-          // 404 = archive-data.json has not been created yet.
-          if(err && err.status===404) return '';
-          throw err;
-        }
-      };
-
-      let sha=await getCurrentSha();
-      let body={
-        message:'Update shared archive data',
-        content,
-        branch:GITHUB_BRANCH
-      };
-      if(sha) body.sha=sha;
+      // Public archive data is now saved through the Cloudflare Worker.
+      // The Worker keeps the GitHub token server-side and handles the latest SHA.
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),120000);
 
       try{
-        await githubApi(filePath,{
-          method:'PUT',
-          body:JSON.stringify(body)
+        const res=await fetch(SHARED_ARCHIVE_WORKER_URL,{
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json'
+          },
+          body:JSON.stringify({data:state}),
+          signal:controller.signal
         });
-      }catch(err){
-        // Preserve the V5 behavior: only refresh SHA and retry on a real 409 conflict.
-        if(err && err.status===409){
-          const latestSha=await getCurrentSha();
-          if(!latestSha) throw err;
 
-          body.sha=latestSha;
+        const result=await res.json().catch(()=>({}));
 
-          await githubApi(filePath,{
-            method:'PUT',
-            body:JSON.stringify(body)
-          });
-        }else{
-          throw err;
+        if(!res.ok || !result.ok){
+          const detail=result.error || result.details || `Worker API 오류 (${res.status})`;
+          throw new Error(detail);
         }
+
+        try{
+          localStorage.setItem(ARCHIVE_STORAGE_KEY,JSON.stringify(state));
+        }catch(e){}
+
+        sharedArchiveLoaded=true;
+        sharedArchiveMissing=false;
+        sharedArchiveLoadError=null;
+        return true;
+      }catch(err){
+        sharedArchiveLoadError=err;
+        console.error('Cloudflare Worker archive save failed.',err);
+        throw err;
+      }finally{
+        clearTimeout(timer);
       }
-
-      try{
-        localStorage.setItem(ARCHIVE_STORAGE_KEY,JSON.stringify(state));
-      }catch(e){}
-
-      sharedArchiveLoaded=true;
-      sharedArchiveMissing=false;
-      sharedArchiveLoadError=null;
-      return true;
     }
 
     /* ---------- DATA STORES ---------- */
