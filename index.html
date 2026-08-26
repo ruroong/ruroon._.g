@@ -805,6 +805,8 @@
     const SHARED_ARCHIVE_PATH='data/archive-data.json';
     const SHARED_ARCHIVE_URL=`https://raw.githubusercontent.com/ruroong/ruroon._.g/main/${SHARED_ARCHIVE_PATH}`;
     let sharedArchiveLoaded=false;
+    let sharedArchiveMissing=false;
+    let sharedArchiveLoadError=null;
     let sharedArchiveSyncPromise=Promise.resolve();
 
     function getArchiveState(){
@@ -835,20 +837,23 @@
     }
 
     function persistArchiveData(){
-      try{
-        localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(getArchiveState()));
-      }catch(e){ console.warn('archive local storage failed',e); }
-      // 관리자 변경사항은 같은 저장소의 공개 JSON에도 즉시 동기화한다.
-      // GitHub 토큰이 없는 경우에만 이 브라우저에서 토큰 입력을 요청한다.
+      // GitHub archive-data.json is the public source of truth.
+      // Do not overwrite localStorage until the shared save succeeds.
       if(typeof isAdminLoggedIn!=='undefined' && isAdminLoggedIn){
         sharedArchiveSyncPromise = sharedArchiveSyncPromise
           .then(()=>syncArchiveDataToGitHub())
+          .then(()=>{
+            try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(getArchiveState())); }catch(e){ console.warn('archive local storage failed',e); }
+            return true;
+          })
           .catch(err=>{
             console.error('Shared archive sync failed:',err);
-            alert(`공용 아카이브 저장에 실패했습니다.\n\n${err.message || err}\n\n이 브라우저의 임시 저장은 유지됩니다.`);
+            alert(`공용 아카이브 저장에 실패했습니다.\n\n${err.message || err}\n\nGitHub 공용 데이터에는 반영되지 않았습니다.`);
+            return false;
           });
+        return sharedArchiveSyncPromise;
       }
-      return sharedArchiveSyncPromise;
+      return Promise.resolve(true);
     }
 
     function loadArchiveData(){
@@ -860,10 +865,13 @@
     }
 
     async function loadSharedArchiveData(){
+      sharedArchiveMissing=false;
+      sharedArchiveLoadError=null;
       try{
         const res=await fetch(`${SHARED_ARCHIVE_URL}?v=${Date.now()}`,{cache:'no-store'});
         if(res.status===404){
-          console.info('Shared archive data file is not created yet. Using local/default data until the first admin SAVE.');
+          sharedArchiveMissing=true;
+          console.info('Shared archive data file does not exist yet.');
           return false;
         }
         if(!res.ok) throw new Error(`공용 아카이브 데이터를 불러오지 못했습니다. (${res.status})`);
@@ -873,7 +881,8 @@
         try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(saved)); }catch(e){}
         return true;
       }catch(e){
-        console.warn('Shared archive load failed; local/default data will be used.',e);
+        sharedArchiveLoadError=e;
+        console.error('Shared archive load failed. Local data will NOT be used on the public page.',e);
         return false;
       }
     }
@@ -1005,7 +1014,7 @@
     // 메인 페이지 BGM으로 사용할 MUSIC 항목 ID 목록
     let mainBgmIds = ['track_01'];
 
-    loadArchiveData();
+    // Public pages do not automatically load device-local archive data.
     if (!Array.isArray(mainBgmIds)) mainBgmIds = ['track_01'];
     if(!characterOrder.length) characterOrder=database.characters.map(c=>c.id);
     database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
@@ -2037,11 +2046,13 @@
       document.getElementById('modal-login').classList.remove('show');
     }
 
-    function verifyAdminPassword() {
+    async function verifyAdminPassword() {
       const input = document.getElementById('admin-pass-input').value;
       if (input === SECRET_PASS) {
         isAdminLoggedIn = true;
         closeAdminLogin();
+        // Only migrate this browser's old local data when the shared JSON does not exist yet.
+        if(!sharedArchiveLoaded && sharedArchiveMissing){ loadArchiveData(); }
         activateAdminMode();
       } else {
         alert('비밀번호가 올바르지 않습니다.');
@@ -2336,9 +2347,11 @@
 
     /* INIT */
     window.onload = async function() {
-      // 공개 페이지는 항상 GitHub의 공용 JSON을 먼저 읽는다.
-      // 따라서 PC/휴대폰/브라우저가 달라도 같은 데이터가 표시된다.
-      await loadSharedArchiveData();
+      // GitHub is the single public source of truth. Device-local stale data is never used as public fallback.
+      const loaded=await loadSharedArchiveData();
+      if(!loaded && !sharedArchiveMissing){
+        console.warn('공용 아카이브 로드 실패: 기기별 임시 데이터는 사용하지 않습니다.');
+      }
       if(!characterOrder.length) characterOrder=database.characters.map(c=>c.id);
       database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
       renderAllSidebars();
