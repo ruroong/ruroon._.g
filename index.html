@@ -792,8 +792,102 @@
     }
 
     const ARCHIVE_STORAGE_KEY='ruroon_archive_v4';
-    function persistArchiveData(){ try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify({database,categoryGroups,characterOrder,mainBgmIds,eventsData: (typeof eventsData!=='undefined'?eventsData:{}),noticeLinks})); }catch(e){ console.warn('archive storage failed',e); } }
-    function loadArchiveData(){ try{ const raw=localStorage.getItem(ARCHIVE_STORAGE_KEY); if(!raw)return; const saved=JSON.parse(raw); if(saved.database){ Object.keys(database).forEach(k=>{ if(saved.database[k]){ database[k].splice(0,database[k].length,...saved.database[k]); } }); } if(saved.categoryGroups) categoryGroups=saved.categoryGroups; if(Array.isArray(saved.characterOrder)) characterOrder=saved.characterOrder; if(Array.isArray(saved.mainBgmIds)) mainBgmIds=saved.mainBgmIds; if(saved.eventsData && typeof eventsData!=='undefined') eventsData=saved.eventsData; if(saved.noticeLinks) noticeLinks=saved.noticeLinks; }catch(e){ console.warn('archive storage load failed',e); } }
+    const SHARED_ARCHIVE_PATH='data/archive-data.json';
+    const SHARED_ARCHIVE_URL=`https://raw.githubusercontent.com/ruroong/ruroon._.g/main/${SHARED_ARCHIVE_PATH}`;
+    let sharedArchiveLoaded=false;
+    let sharedArchiveSyncPromise=Promise.resolve();
+
+    function getArchiveState(){
+      return {
+        version: 1,
+        updatedAt: new Date().toISOString(),
+        database,
+        categoryGroups,
+        characterOrder,
+        mainBgmIds,
+        eventsData: (typeof eventsData!=='undefined'?eventsData:{}),
+        noticeLinks
+      };
+    }
+
+    function applyArchiveState(saved){
+      if(!saved || typeof saved!=='object') return;
+      if(saved.database){
+        Object.keys(database).forEach(k=>{
+          if(Array.isArray(saved.database[k])) database[k].splice(0,database[k].length,...saved.database[k]);
+        });
+      }
+      if(saved.categoryGroups && typeof saved.categoryGroups==='object') categoryGroups=saved.categoryGroups;
+      if(Array.isArray(saved.characterOrder)) characterOrder=saved.characterOrder;
+      if(Array.isArray(saved.mainBgmIds)) mainBgmIds=saved.mainBgmIds;
+      if(saved.eventsData && typeof eventsData!=='undefined') eventsData=saved.eventsData;
+      if(saved.noticeLinks && typeof saved.noticeLinks==='object') noticeLinks=saved.noticeLinks;
+    }
+
+    function persistArchiveData(){
+      try{
+        localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(getArchiveState()));
+      }catch(e){ console.warn('archive local storage failed',e); }
+      // 관리자 변경사항은 같은 저장소의 공개 JSON에도 즉시 동기화한다.
+      // GitHub 토큰이 없는 경우에만 이 브라우저에서 토큰 입력을 요청한다.
+      if(typeof isAdminLoggedIn!=='undefined' && isAdminLoggedIn){
+        sharedArchiveSyncPromise = sharedArchiveSyncPromise
+          .then(()=>syncArchiveDataToGitHub())
+          .catch(err=>{
+            console.error('Shared archive sync failed:',err);
+            alert(`공용 아카이브 저장에 실패했습니다.\n\n${err.message || err}\n\n이 브라우저의 임시 저장은 유지됩니다.`);
+          });
+      }
+      return sharedArchiveSyncPromise;
+    }
+
+    function loadArchiveData(){
+      try{
+        const raw=localStorage.getItem(ARCHIVE_STORAGE_KEY);
+        if(!raw)return;
+        applyArchiveState(JSON.parse(raw));
+      }catch(e){ console.warn('archive storage load failed',e); }
+    }
+
+    async function loadSharedArchiveData(){
+      try{
+        const res=await fetch(`${SHARED_ARCHIVE_URL}?v=${Date.now()}`,{cache:'no-store'});
+        if(res.status===404){
+          console.info('Shared archive data file is not created yet. Using local/default data until the first admin SAVE.');
+          return false;
+        }
+        if(!res.ok) throw new Error(`공용 아카이브 데이터를 불러오지 못했습니다. (${res.status})`);
+        const saved=await res.json();
+        applyArchiveState(saved);
+        sharedArchiveLoaded=true;
+        try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(saved)); }catch(e){}
+        return true;
+      }catch(e){
+        console.warn('Shared archive load failed; local/default data will be used.',e);
+        return false;
+      }
+    }
+
+    async function syncArchiveDataToGitHub(){
+      const state=getArchiveState();
+      const content=btoa(unescape(encodeURIComponent(JSON.stringify(state,null,2))));
+      let sha='';
+      try{
+        const existing=await githubApi(`/contents/${SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/')}?ref=${encodeURIComponent(GITHUB_BRANCH)}`);
+        sha=existing.sha||'';
+      }catch(err){
+        // 404 means the shared JSON has not been created yet; other errors must surface.
+        if(!String(err.message||'').includes('(404)')) throw err;
+      }
+      const body={message:'Update shared archive data',content,branch:GITHUB_BRANCH};
+      if(sha) body.sha=sha;
+      await githubApi(`/contents/${SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/')}`,{
+        method:'PUT',
+        body:JSON.stringify(body)
+      });
+      try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+      return true;
+    }
 
     /* ---------- DATA STORES ---------- */
     let categoryGroups = {
@@ -1566,7 +1660,7 @@
       row.innerHTML='<input class="modal-input notice-link-category" placeholder="분류"><input class="modal-input notice-link-title" placeholder="버튼 이름"><input class="modal-input notice-link-url" placeholder="https://..."><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button>';
       box.appendChild(row);
     }
-    function saveNoticeLinksEditor(){
+    async function saveNoticeLinksEditor(){
       noticeLinks.title=document.getElementById('links-page-title').value.trim()||'LINKS & CONTACT';
       noticeLinks.sub=document.getElementById('links-page-sub').value.trim()||'CONTACT / LINKS';
       noticeLinks.content=document.getElementById('links-page-content').value;
@@ -1575,7 +1669,7 @@
         title:r.querySelector('.notice-link-title').value.trim(),
         url:r.querySelector('.notice-link-url').value.trim()
       })).filter(l=>l.url);
-      persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
+      await persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
       if(document.getElementById('item-notice-links')) selectNoticeItem('links',document.getElementById('item-notice-links'));
     }
 
@@ -1604,7 +1698,7 @@
     function genericOrderDragOver(e){e.preventDefault();e.dataTransfer.dropEffect='move';}
     function genericOrderDrop(e){e.preventDefault();const t=e.currentTarget;if(!genericOrderDragEl||t===genericOrderDragEl)return;const b=t.parentElement,r=t.getBoundingClientRect();b.insertBefore(genericOrderDragEl,e.clientY>r.top+r.height/2?t.nextSibling:t);}
     function genericOrderDragEnd(e){e.currentTarget.classList.remove('dragging');genericOrderDragEl=null;}
-    function saveGenericListManager(section){
+    async function saveGenericListManager(section){
       const rows=[...document.querySelectorAll('#generic-order-editor .admin-manager-char-row')];
       const order=rows.map(r=>r.dataset.id);
       if(['world','music'].includes(section)){
@@ -1614,7 +1708,7 @@
         rows.forEach(r=>{const item=database[section].find(x=>x.id===r.dataset.id);const sel=r.querySelector('.generic-item-group');if(item&&sel)item.group=sel.value;});
       }
       database[section].sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id));
-      persistArchiveData();closeAdminEditModal();renderAllSidebars();
+      await persistArchiveData();closeAdminEditModal();renderAllSidebars();
     }
 
     function openCharacterListManager(){
@@ -1655,7 +1749,7 @@
     function charOrderDragOver(e){ e.preventDefault(); e.dataTransfer.dropEffect='move'; }
     function charOrderDrop(e){ e.preventDefault(); const target=e.currentTarget; if(!charOrderDragEl||target===charOrderDragEl)return; const box=target.parentElement, rect=target.getBoundingClientRect(); box.insertBefore(charOrderDragEl,e.clientY>rect.top+rect.height/2?target.nextSibling:target); }
     function charOrderDragEnd(e){ e.currentTarget.classList.remove('dragging'); charOrderDragEl=null; }
-    function saveCharacterListManager(){
+    async function saveCharacterListManager(){
       const names=[...document.querySelectorAll('#character-group-editor .character-group-name')].map(i=>i.value.trim()).filter(Boolean);
       if(!names.length){alert('분류를 최소 1개 입력해 주세요.');return;}
       const rows=[...document.querySelectorAll('#character-order-editor .admin-manager-char-row')];
@@ -1663,7 +1757,7 @@
       rows.forEach(r=>{ const c=database.characters.find(x=>x.id===r.dataset.cid); if(c)c.group=r.querySelector('.character-manager-group').value; });
       categoryGroups.characters=names;
       database.characters.forEach(c=>{if(!names.includes(c.group))c.group=names[0];});
-      persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
+      await persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
     }
 
     function addGallery02AdminGroup(){ const box=document.getElementById('gallery02-editor'); if(!box)return; const i=box.children.length; const div=document.createElement('div'); div.className='gallery02-admin-group'; div.dataset.index=i; div.innerHTML='<input class="modal-input g02-title" placeholder="갤러리 제목"><textarea class="modal-textarea g02-desc" placeholder="설명"></textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">파일을 선택하면 저장 시 GitHub에 실제 파일로 업로드됩니다.</div>'; box.appendChild(div); }
@@ -1840,7 +1934,7 @@
       categoryGroups.characters=[...new Set([...categoryGroups.characters,...database.characters.map(x=>x.group).filter(Boolean)])];
       categoryGroups.music=[...new Set([...categoryGroups.music,...database.music.map(x=>x.group).filter(Boolean)])];
       characterOrder=(characterOrder.length?characterOrder:database.characters.map(c=>c.id)).filter(id=>database.characters.some(c=>c.id===id)); database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
-      persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
+      await persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
       if(section==='music' && playerReady) { const currentTracks=getPlayableMainBgmTracks(); if(!currentTracks.length){ player.pause(); player.removeAttribute('src'); player.load(); } else { const currentId=currentTracks[Math.min(mainBgmIndex,currentTracks.length-1)]?.id; const target=currentTracks.findIndex(t=>t.id===currentId); if(target>=0) loadMainBgmTrack(target, !player.paused); else loadMainBgmTrack(0, false); } }
       setTimeout(()=>{
         if(section==='characters' && activeItemIds.characters){ const el=document.getElementById('item-characters-'+activeItemIds.characters); if(el)selectCharItem(activeItemIds.characters,el); }
@@ -1855,14 +1949,14 @@
       }
     }
 
-    function deleteExistingItem(section, id) {
+    async function deleteExistingItem(section, id) {
       if (confirm('해당 항목을 정말 삭제하시겠습니까?')) {
         const idx = database[section].findIndex(i => i.id === id);
         if (idx !== -1) {
           database[section].splice(idx, 1);
           if(section==='music') mainBgmIds=(mainBgmIds||[]).filter(x=>x!==id);
           if(section==='characters') characterOrder=characterOrder.filter(x=>x!==id);
-          persistArchiveData();
+          await persistArchiveData();
           renderAllSidebars();
         }
       }
@@ -1953,14 +2047,14 @@
       setTimeout(() => document.getElementById('calendar-add-title')?.focus(), 80);
     }
 
-    function saveCalendarEvent() {
+    async function saveCalendarEvent() {
       const date = document.getElementById('calendar-add-date')?.value || '';
       const title = document.getElementById('calendar-add-title')?.value.trim() || '';
       if (!date) { alert('날짜를 선택해 주세요.'); return; }
       if (!title) { alert('일정 이름을 입력해 주세요.'); return; }
       if (!eventsData[date]) eventsData[date] = [];
       eventsData[date].push(title);
-      persistArchiveData();
+      await persistArchiveData();
       selectedDateKey = date;
       closeAdminEditModal();
       renderCalendarUI();
@@ -2036,12 +2130,12 @@
       renderCalendarUI();
     }
 
-    function deleteCalendarEvent(dateKey, idx) {
+    async function deleteCalendarEvent(dateKey, idx) {
       if (confirm('해당 일정을 삭제하시겠습니까?')) {
         if (!eventsData[dateKey]) return;
         eventsData[dateKey].splice(idx, 1);
         if (!eventsData[dateKey].length) delete eventsData[dateKey];
-        persistArchiveData();
+        await persistArchiveData();
         renderCalendarUI();
       }
     }
@@ -2202,9 +2296,18 @@
     document.addEventListener('DOMContentLoaded', initBgmPlayer);
 
     /* INIT */
-    window.onload = function() {
+    window.onload = async function() {
+      // 공개 페이지는 항상 GitHub의 공용 JSON을 먼저 읽는다.
+      // 따라서 PC/휴대폰/브라우저가 달라도 같은 데이터가 표시된다.
+      await loadSharedArchiveData();
+      if(!characterOrder.length) characterOrder=database.characters.map(c=>c.id);
+      database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
       renderAllSidebars();
       handleHashRoute();
+      if(playerReady){
+        const tracks=getPlayableMainBgmTracks();
+        if(tracks.length){ loadMainBgmTrack(Math.min(mainBgmIndex,tracks.length-1),false); }
+      }
     };
   </script>
 </body>
