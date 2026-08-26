@@ -900,25 +900,38 @@
     }
 
     async function syncArchiveDataToGitHub(){
-      const state=getArchiveState();
-      const content=utf8ToBase64(JSON.stringify(state,null,2));
       const filePath=`/contents/${SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/')}`;
-      const getCurrentSha=async()=>{
+      const content=utf8ToBase64(JSON.stringify(getArchiveState(),null,2));
+
+      // GitHub Contents API uses the current blob SHA when updating an existing file.
+      // A 409 means another commit happened between our read and write. Always
+      // re-read the file from the API and retry with the newest SHA.
+      const getCurrentFile=async()=>{
+        const cacheBust=`?ref=${encodeURIComponent(GITHUB_BRANCH)}&_=${Date.now()}_${Math.random().toString(36).slice(2,10)}`;
         try{
-          const cacheBust=`?ref=${encodeURIComponent(GITHUB_BRANCH)}&_=${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
-          const existing=await githubApi(filePath+cacheBust,{method:'GET',headers:{'Cache-Control':'no-cache','Pragma':'no-cache'}});
-          return existing.sha||'';
+          return await githubApi(filePath+cacheBust,{
+            method:'GET',
+            headers:{'Cache-Control':'no-cache, no-store, max-age=0','Pragma':'no-cache'}
+          });
         }catch(err){
-          if(err && err.status===404) return '';
+          if(err && err.status===404) return null;
           throw err;
         }
       };
+
       let lastError=null;
-      for(let attempt=1; attempt<=8; attempt++){
+      // 12 attempts with increasing delays. This is deliberately conservative
+      // because archive-data.json is shared by every device.
+      for(let attempt=1; attempt<=12; attempt++){
         try{
-          const sha=await getCurrentSha();
-          const body={message:`Update shared archive data (attempt ${attempt})`,content,branch:GITHUB_BRANCH};
-          if(sha) body.sha=sha;
+          const current=await getCurrentFile();
+          const body={
+            message:`Update shared archive data (${new Date().toISOString()})`,
+            content,
+            branch:GITHUB_BRANCH
+          };
+          if(current?.sha) body.sha=current.sha;
+
           await githubApi(filePath,{method:'PUT',body:JSON.stringify(body)});
           sharedArchiveLoaded=true;
           sharedArchiveMissing=false;
@@ -926,8 +939,10 @@
           return true;
         }catch(err){
           lastError=err;
-          if(err && (err.status===409 || err.status===404) && attempt<8){
-            await new Promise(resolve=>setTimeout(resolve,300*attempt));
+          if(err && (err.status===409 || err.status===422) && attempt<12){
+            // Give GitHub's Contents API a moment to expose the latest commit,
+            // then fetch a completely fresh SHA on the next loop.
+            await new Promise(resolve=>setTimeout(resolve,Math.min(5000,250*attempt)));
             continue;
           }
           throw err;
@@ -2021,7 +2036,9 @@
       categoryGroups.characters=[...new Set([...categoryGroups.characters,...database.characters.map(x=>x.group).filter(Boolean)])];
       categoryGroups.music=[...new Set([...categoryGroups.music,...database.music.map(x=>x.group).filter(Boolean)])];
       characterOrder=(characterOrder.length?characterOrder:database.characters.map(c=>c.id)).filter(id=>database.characters.some(c=>c.id===id)); database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
-      await persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
+      const sharedSaveOk = await persistArchiveData();
+      if(!sharedSaveOk) return;
+      closeAdminEditModal(); renderAllSidebars();
       if(section==='music' && playerReady) { const currentTracks=getPlayableMainBgmTracks(); if(!currentTracks.length){ player.pause(); player.removeAttribute('src'); player.load(); } else { const currentId=currentTracks[Math.min(mainBgmIndex,currentTracks.length-1)]?.id; const target=currentTracks.findIndex(t=>t.id===currentId); if(target>=0) loadMainBgmTrack(target, !player.paused); else loadMainBgmTrack(0, false); } }
       setTimeout(()=>{
         if(section==='characters' && activeItemIds.characters){ const el=document.getElementById('item-characters-'+activeItemIds.characters); if(el)selectCharItem(activeItemIds.characters,el); }
