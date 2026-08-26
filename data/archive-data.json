@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-26T00:54:55.603Z",
+  "updatedAt": "2026-08-26T09:21:38.668Z",
   "database": {
     "world": [
       {
@@ -55,6 +55,15 @@
         "content": "<p>Signal Theme #1의 가사 및 정보입니다.</p>",
         "finalContent": "",
         "playlistUrl": "dddd"
+      },
+      {
+        "id": "music_1787736060056",
+        "title": "00. Main BGM #0",
+        "sub": "사람은 이상하고 사랑은 모르겠어",
+        "content": "",
+        "finalContent": "",
+        "playlistUrl": "",
+        "audio": "https://ruroong.github.io/ruroon._.g/music/1787736094761_naovm5___________________4.mp3"
       }
     ],
     "feed": [
@@ -93,7 +102,8 @@
     "characters_1787637348231"
   ],
   "mainBgmIds": [
-    "track_01"
+    "track_01",
+    "music_1787736060056"
   ],
   "eventsData": {},
   "noticeLinks": {
