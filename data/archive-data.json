@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-26T00:09:06.448Z",
+  "updatedAt": "2026-08-26T00:09:20.038Z",
   "database": {
     "world": [
       {
@@ -159,7 +159,7 @@
       {
         "id": "characters_1787637348231",
         "name": "ㅇㅁㄹㅇㅁㄹㄴㅇ",
-        "group": "PERSONA",
+        "group": "성해력(聖海曆) 715",
         "alias": "ALIAS",
         "birthday": "",
         "tags": "",
