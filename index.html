@@ -902,47 +902,26 @@
     async function syncArchiveDataToGitHub(){
       const filePath=`/contents/${SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/')}`;
       const content=utf8ToBase64(JSON.stringify(getArchiveState(),null,2));
-
-      // GitHub Contents API uses the current blob SHA when updating an existing file.
-      // A 409 means another commit happened between our read and write. Always
-      // re-read the file from the API and retry with the newest SHA.
       const getCurrentFile=async()=>{
-        const cacheBust=`?ref=${encodeURIComponent(GITHUB_BRANCH)}&_=${Date.now()}_${Math.random().toString(36).slice(2,10)}`;
-        try{
-          return await githubApi(filePath+cacheBust,{
-            method:'GET',
-            headers:{'Cache-Control':'no-cache, no-store, max-age=0','Pragma':'no-cache'}
-          });
-        }catch(err){
-          if(err && err.status===404) return null;
-          throw err;
-        }
+        const ref=encodeURIComponent(GITHUB_BRANCH);
+        const current=await githubApi(`${filePath}?ref=${ref}`,{method:'GET',headers:{'Cache-Control':'no-cache'}});
+        return current;
       };
-
       let lastError=null;
-      // 12 attempts with increasing delays. This is deliberately conservative
-      // because archive-data.json is shared by every device.
-      for(let attempt=1; attempt<=12; attempt++){
+      for(let attempt=1; attempt<=6; attempt++){
         try{
-          const current=await getCurrentFile();
-          const body={
-            message:`Update shared archive data (${new Date().toISOString()})`,
-            content,
-            branch:GITHUB_BRANCH
-          };
+          let current=null;
+          try{ current=await getCurrentFile(); }
+          catch(err){ if(err?.status===404) current=null; else throw err; }
+          const body={message:`Update shared archive data (${new Date().toISOString()})`,content,branch:GITHUB_BRANCH};
           if(current?.sha) body.sha=current.sha;
-
           await githubApi(filePath,{method:'PUT',body:JSON.stringify(body)});
-          sharedArchiveLoaded=true;
-          sharedArchiveMissing=false;
-          sharedArchiveLoadError=null;
+          sharedArchiveLoaded=true; sharedArchiveMissing=false; sharedArchiveLoadError=null;
           return true;
         }catch(err){
           lastError=err;
-          if(err && (err.status===409 || err.status===422) && attempt<12){
-            // Give GitHub's Contents API a moment to expose the latest commit,
-            // then fetch a completely fresh SHA on the next loop.
-            await new Promise(resolve=>setTimeout(resolve,Math.min(5000,250*attempt)));
+          if(err?.status===409 || err?.status===422){
+            await new Promise(r=>setTimeout(r,700*attempt));
             continue;
           }
           throw err;
@@ -1883,7 +1862,7 @@
       return value;
     }
 
-    async function githubApi(path, options={}){
+    async function githubApi(path, options={}, retryCount=0){
       const token=getGitHubToken() || askForGitHubToken();
       if(!token) throw new Error('GitHub 토큰이 설정되지 않았습니다.');
       const controller=new AbortController();
@@ -1891,23 +1870,39 @@
       try{
         const res=await fetch(`${GITHUB_API_BASE}${path}`,{
           ...options,
+          mode:'cors',
+          cache:'no-store',
           signal:controller.signal,
           headers:{
             'Accept':'application/vnd.github+json',
             'Authorization':`Bearer ${token}`,
+            'X-GitHub-Api-Version':'2022-11-28',
             'Content-Type':'application/json',
             ...(options.headers||{})
           }
         });
-        const data=await res.json().catch(()=>({}));
+        const text=await res.text();
+        let data={};
+        try{ data=text?JSON.parse(text):{}; }catch(e){ data={message:text||''}; }
         if(!res.ok){
           if(res.status===401 || res.status===403) clearGitHubToken();
           const message=data.message || `GitHub API 오류`;
           const error=new Error(`${message} (${res.status})`);
           error.status=res.status;
+          error.response=data;
           throw error;
         }
         return data;
+      }catch(err){
+        if(err?.name==='AbortError') throw new Error(`GitHub 요청 시간 초과 (${GITHUB_UPLOAD_TIMEOUT/1000}초)`);
+        if(err?.status) throw err;
+        // Browser-level network failures are reported by fetch as the unhelpful
+        // "Failed to fetch". Retry a couple of times before exposing the error.
+        if(retryCount<2){
+          await new Promise(r=>setTimeout(r,800*(retryCount+1)));
+          return githubApi(path,options,retryCount+1);
+        }
+        throw new Error(`GitHub API 통신 실패: ${err?.message||err}`);
       }finally{ clearTimeout(timer); }
     }
 
