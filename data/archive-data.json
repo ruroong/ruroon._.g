@@ -1,152 +1,2469 @@
-{
-  "version": 1,
-  "updatedAt": "2026-08-26T10:05:34.997Z",
-  "database": {
-    "world": [
-      {
-        "id": "empecla",
-        "group": "WORLD DATABASE",
-        "title": "Empecla (엠페클라)",
-        "sub": "WORLD DATABASE",
-        "img": "./images/A01.png",
-        "desc": "날씨와 기상의 변화가 세계 전체의 흐름을 좌우하는 엠페클라 메인 세계관입니다.",
-        "charIds": [
-          "characters_1787637348231"
-        ],
-        "musicId": "track_01",
-        "links": []
-      },
-      {
-        "id": "world_1787616372935",
-        "title": "",
-        "group": "ruroong",
-        "sub": "",
-        "desc": "",
-        "charIds": []
-      },
-      {
-        "id": "world_1787616385877",
-        "title": "",
-        "group": "ruroong",
-        "sub": "",
-        "desc": "",
-        "charIds": []
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ruroon._.g ARCHIVE</title>
+  <meta name="description" content="ruroon._.g personal archive">
+
+  <!-- Pretendard & Fonts -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ultra&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face {
+      font-family: 'Broadway';
+      src: local('Broadway');
+    }
+
+    :root {
+      --pink: #ECA8B9;
+      --navy: #1C2038;
+      --white: #FFFFFF;
+      --line: #1C2038;
+      --shadow: 0 8px 0 rgba(28, 32, 56, 0.12);
+      --pretendard: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      --mono: var(--pretendard);
+      --sans: var(--pretendard);
+      --broadway: 'Broadway', 'Ultra', 'Arial Black', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    
+    body {
+      background: var(--pink);
+      color: var(--navy);
+      font-family: var(--sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      cursor: url('./images/A03.png') 10 10, auto;
+    }
+
+    a, button, .list-item, .accordion-header, .full-cal-day, .cal-nav-btn, .gal-thumb-item, .char-select-card {
+      cursor: url('./images/A03.png') 10 10, pointer;
+    }
+
+    /* 도트 패턴 오버레이 */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.15;
+      background-image: radial-gradient(var(--navy) 0.6px, transparent 0.6px);
+      background-size: 5px 5px;
+      z-index: 20;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; border: none; background: none; }
+    .container { width: min(1180px, calc(100% - 42px)); margin: auto; }
+    .mono { font-family: var(--mono); }
+
+    /* ANIMATIONS */
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    @keyframes orbit-tilt { 0% { transform: translate(-50%, -55%) rotate(-2deg); } 50% { transform: translate(-50%, -55%) rotate(2deg); } 100% { transform: translate(-50%, -55%) rotate(-2deg); } }
+    @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+    @keyframes star-sparkle { 0%, 100% { opacity: 0.15; transform: scale(0.7) rotate(0deg); } 50% { opacity: 1.3; transform: scale(1.3) rotate(15deg); } }
+    @keyframes sound-wave { 0%, 100% { height: 4px; } 50% { height: 20px; } }
+
+    /* 클릭 하트 도장 효과 */
+    .click-stamp {
+      position: fixed; width: 32px; height: 32px; pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%) scale(0.6); animation: stamp-pop 0.6s ease-out forwards;
+    }
+    @keyframes stamp-pop {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(0.6); }
+      50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.1); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.3); }
+    }
+
+    /* 마우스 꼬리 별 스파클 */
+    .tail-star {
+      position: fixed; pointer-events: none; z-index: 9998; color: var(--navy); font-size: 10px; animation: tail-fade 0.7s linear forwards;
+    }
+    @keyframes tail-fade {
+      0% { opacity: 1; transform: scale(1) rotate(0deg) translateY(0); }
+      100% { opacity: 0; transform: scale(0.2) rotate(45deg) translateY(12px); }
+    }
+
+    /* HEADER & STICKY NAV */
+    .sticky-header-group { position: sticky; top: 0; z-index: 100; }
+    header { background: rgba(236, 168, 185, 0.92); backdrop-filter: blur(10px); border-bottom: 1.5px solid var(--line); }
+    
+    .nav { height: 60px; display: flex; justify-content: center; align-items: center; position: relative; }
+    .back-brand-btn {
+      position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+      font-weight: 800; font-size: 14px; letter-spacing: 0.15em; font-family: var(--mono);
+      text-transform: uppercase; display: flex; align-items: center; gap: 6px; opacity: 0.9; transition: opacity 0.2s;
+    }
+    .back-brand-btn:hover { opacity: 1; }
+    
+    .header-center-logo { display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+    .header-center-logo:hover { transform: scale(1.05); }
+    .globe-svg { width: 58px; height: 32px; stroke: var(--navy); fill: none; stroke-width: 1.5; }
+    
+    .status { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; font: 11px var(--mono); }
+    .status i { width: 7px; height: 7px; border-radius: 50%; background: var(--navy); animation: twinkle 1.5s infinite ease-in-out; }
+    .status.admin-active { color: #D32F2F; font-weight: bold; }
+    .status.admin-active i { background: #FF4D4D; box-shadow: 0 0 8px #FF4D4D; }
+
+    .sub-navbar { background: rgba(236, 168, 185, 0.95); backdrop-filter: blur(10px); border-bottom: 1.5px solid var(--line); display: none; }
+    .sub-navbar.show { display: block; }
+    
+    .sub-navlinks { display: flex; justify-content: center; align-items: center; gap: 32px; padding: 12px 0; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; position: relative; }
+    .sub-navlinks a { position: relative; padding: 4px 2px; opacity: 0.65; transition: 0.2s; font-weight: 500; }
+    .sub-navlinks a:hover, .sub-navlinks a.active { opacity: 1; font-weight: 700; }
+    .sub-navlinks a::after { content: ""; position: absolute; left: 0; bottom: 0; width: 0; height: 1.5px; background: var(--navy); transition: 0.25s; }
+    .sub-navlinks a:hover::after, .sub-navlinks a.active::after { width: 100%; }
+
+    /* SVG UI MARKS & BUTTONS */
+    .admin-svg-icon { width: 14px; height: 14px; stroke: var(--navy); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; cursor: pointer; transition: transform 0.15s, stroke 0.15s; }
+    .admin-svg-icon:hover { transform: scale(1.2); stroke: #D32F2F; }
+    .admin-only { display: none !important; }
+    .admin-mode .admin-only { display: inline-flex !important; align-items: center; gap: 4px; }
+    
+    /* PAGE VIEW SYSTEM */
+    .page-section { display: none; padding: 40px 0; min-height: calc(100vh - 110px); }
+    .page-section.active-page { display: block; }
+
+    /* SIGNAL (HOME) BACKGROUND STARS */
+    .side-stars-bg { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+    .sparkle-star { position: absolute; color: var(--navy); user-select: none; animation: star-sparkle ease-in-out infinite; }
+    .star-1 { top: 12%; left: 6%; font-size: 18px; animation-duration: 2.2s; }
+    .star-2 { top: 28%; left: 12%; font-size: 12px; animation-duration: 3.1s; animation-delay: 0.5s; }
+    .star-3 { top: 48%; left: 5%; font-size: 22px; animation-duration: 2.7s; animation-delay: 0.2s; }
+    .star-4 { top: 70%; left: 10%; font-size: 14px; animation-duration: 3.5s; animation-delay: 0.8s; }
+    .star-5 { top: 15%; right: 7%; font-size: 20px; animation-duration: 2.5s; animation-delay: 0.3s; }
+    .star-6 { top: 32%; right: 11%; font-size: 13px; animation-duration: 3.8s; animation-delay: 0.7s; }
+    .star-7 { top: 52%; right: 6%; font-size: 24px; animation-duration: 2.1s; animation-delay: 0.1s; }
+    .star-8 { top: 72%; right: 12%; font-size: 15px; animation-duration: 3.0s; animation-delay: 0.4s; }
+
+    /* SIGNAL (HOME) */
+    .hero { display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: calc(100vh - 120px); text-align: center; position: relative; z-index: 2; }
+    .hero-visual-wrapper { position: relative; width: min(650px, 90vw); margin-top: 100px; display: flex; justify-content: center; align-items: center; }
+    .main-title-img { width: 100%; height: auto; display: block; position: relative; z-index: 2; animation: float 4s infinite ease-in-out; }
+    .orbit-bg-img { position: absolute; width: 125%; height: auto; top: 50%; left: 50%; z-index: 3; opacity: 0.85; pointer-events: none; animation: orbit-tilt 6s infinite ease-in-out; }
+    .main-navlinks { display: flex; gap: 36px; font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; margin-top: 100px; }
+    .main-navlinks a { position: relative; padding: 4px 2px; opacity: 0.8; transition: 0.2s; font-weight: 500; }
+    .main-navlinks a:hover, .main-navlinks a.active { opacity: 1; font-weight: 700; }
+    .main-navlinks a::after { content: ""; position: absolute; left: 0; bottom: 0; width: 0; height: 1.5px; background: var(--navy); transition: 0.25s; }
+    .main-navlinks a:hover::after, .main-navlinks a.active::after { width: 100%; }
+
+    .player-minimal { width: min(340px, 85vw); margin-top: 100px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .sound-wave-container { display: flex; align-items: center; justify-content: center; gap: 3px; height: 22px; margin-bottom: 2px; }
+    .wave-bar { width: 3px; height: 4px; background-color: var(--navy); border-radius: 2px; opacity: 0.8; }
+    .playing .wave-bar { animation: sound-wave 1.2s infinite ease-in-out; }
+    .playing .wave-bar:nth-child(1) { animation-delay: 0.1s; }
+    .playing .wave-bar:nth-child(2) { animation-delay: 0.4s; }
+    .playing .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+    .playing .wave-bar:nth-child(4) { animation-delay: 0.6s; }
+    .playing .wave-bar:nth-child(5) { animation-delay: 0.3s; }
+    .playing .wave-bar:nth-child(6) { animation-delay: 0.8s; }
+    .playing .wave-bar:nth-child(7) { animation-delay: 0.5s; }
+    .playing .wave-bar:nth-child(8) { animation-delay: 0.2s; }
+    .playing .wave-bar:nth-child(9) { animation-delay: 0.7s; }
+    .playing .wave-bar:nth-child(10) { animation-delay: 0.3s; }
+
+    .progress-bar-container { width: 100%; height: 3px; background: rgba(28, 32, 56, 0.25); border-radius: 2px; position: relative; }
+    .progress-bar-fill { height: 100%; width: 0%; background: var(--navy); border-radius: 2px; position: relative; }
+    .progress-thumb { width: 9px; height: 9px; background: var(--navy); border-radius: 50%; position: absolute; right: -4px; top: -3px; }
+    .player-controls { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 4px; }
+    .ctrl-btn { color: var(--navy); opacity: 0.85; transition: opacity 0.2s, transform 0.1s; display: flex; align-items: center; justify-content: center; }
+    .ctrl-btn:hover { opacity: 1; transform: scale(1.15); }
+    .ctrl-btn.play-main { font-size: 16px; font-weight: bold; }
+    .player-svg-icon { width: 14px; height: 14px; fill: var(--navy); }
+
+    .external-signal-bottom { margin-top: auto; padding-top: 50px; padding-bottom: 20px; display:flex; flex-direction:column; align-items:center; gap:10px; }
+    .external-signal-bottom .admin-only { margin-left:0 !important; }
+    .admin-trigger-btn { background: transparent; border: none; padding: 0; display: inline-block; transition: transform 0.2s; }
+    .admin-trigger-btn:hover { transform: scale(1.1); }
+    .admin-trigger-btn img { width: 42px; height: 42px; object-fit: contain; display: block; }
+
+    /* COMMON HEADERS */
+    .section-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
+    .section-kicker { font: 11px var(--mono); letter-spacing: 0.18em; margin-bottom: 6px; opacity: 0.7; }
+    .section-title { font-family: var(--broadway); font-size: clamp(34px, 5.5vw, 58px); line-height: 1; letter-spacing: 0.02em; }
+    .section-note { font: 10px var(--mono); text-align: right; opacity: 0.75; line-height: 1.6; }
+
+    /* SPLIT MASTER-DETAIL LAYOUT */
+    .split-layout { display: grid; grid-template-columns: minmax(0, 1fr) 310px; gap: 24px; align-items: start; min-width:0; max-width:100%; } .split-layout > * { min-width:0; }
+
+    /* DETAIL VIEW BOX */
+    .detail-view-box { border: 1.5px solid var(--navy); background: rgba(255, 255, 255, 0.5); padding: 24px; min-height: 520px; min-width:0; max-width:100%; overflow:hidden; box-shadow: var(--shadow); position: relative; }
+    .detail-header { border-bottom: 1.5px solid var(--navy); padding-bottom: 12px; margin-bottom: 20px; }
+    .detail-title { font-size: 24px; font-weight: 800; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .detail-subtitle { font-family: var(--mono); font-size: 11px; opacity: 0.7; margin-top: 4px; }
+    .detail-content-body { display: flex; flex-direction: column; gap: 16px; line-height: 1.6; font-size: 14px; }
+
+    /* DETAIL SECTION LABELS — same title weight and same title-to-content spacing */
+    .gallery-section-title {
+      font-size: 13px; line-height: 1.4; font-weight: 600;
+      padding: 0 0 6px; margin: 0;
+      border-bottom: 1.5px solid var(--navy);
+    }
+    .gallery-section-title + .gallery-drag-viewport { margin-top: -8px; }
+    .gallery-section-title + .world-char-cards-grid { margin-top: -8px; }
+    .gallery-section-title + div { margin-top: 8px; }
+    #char-detail-body > .gallery-section-title { margin-top: 0 !important; }
+    #world-detail-body > .gallery-section-title { margin-top: 0 !important; }
+
+    /* EDIT INLINE TRIGGER BUTTON */
+    .inline-edit-trigger {
+      display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border: 1.5px solid var(--navy); background: var(--white);
+      font-size: 10px; font-family: var(--mono); font-weight: bold; cursor: pointer; box-shadow: 1px 1px 0 var(--navy); transition: all 0.15s;
+    }
+    .inline-edit-trigger:hover { background: var(--navy); color: var(--pink); }
+
+    /* RIGHT SIDEBAR LIST */
+    .messenger-list-sidebar { border: 1.5px solid var(--navy); background: rgba(255, 255, 255, 0.3); box-shadow: var(--shadow); display: flex; flex-direction: column; max-height: 580px; }
+    .sidebar-title-bar { background: var(--navy); color: var(--white); padding: 12px 14px; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .sidebar-scroll-area { overflow-y: auto; flex-grow: 1; }
+    .sidebar-scroll-area::-webkit-scrollbar { width: 6px; }
+    .sidebar-scroll-area::-webkit-scrollbar-track { background: rgba(28, 32, 56, 0.05); }
+    .sidebar-scroll-area::-webkit-scrollbar-thumb { background: var(--navy); }
+
+    .accordion-group { border-bottom: 1.5px solid var(--navy); }
+    .accordion-group:last-child { border-bottom: none; }
+    .accordion-header { padding: 10px 12px; font-family: var(--mono); font-size: 11px; font-weight: 700; background: rgba(28, 32, 56, 0.08); display: flex; justify-content: space-between; align-items: center; user-select: none; transition: background 0.2s; }
+    .accordion-header:hover { background: rgba(28, 32, 56, 0.15); }
+    .accordion-body { display: flex; flex-direction: column; }
+    .accordion-group.collapsed .accordion-body { display: none; }
+    .accordion-group.collapsed .acc-icon { transform: rotate(-90deg); }
+    .acc-icon { transition: transform 0.2s; }
+
+    .list-item { padding: 10px 12px; display: flex; align-items: center; gap: 10px; border-top: 1px dashed rgba(28, 32, 56, 0.2); transition: background 0.2s; position: relative; }
+    .list-item:hover { background: rgba(255, 255, 255, 0.6); }
+    .list-item.active { background: var(--navy) !important; color: var(--pink) !important; }
+
+    .pin-badge { font-size: 10px; background: var(--navy); color: var(--pink); padding: 1px 4px; border-radius: 2px; margin-right: 4px; font-weight: bold; }
+    .list-item.active .pin-badge { background: var(--pink); color: var(--navy); }
+
+    .item-thumb { width: 34px; height: 34px; border-radius: 4px; border: 1px solid var(--navy); background: #eee; object-fit: cover; flex-shrink: 0; }
+    .item-info { display: flex; flex-direction: column; overflow: hidden; width: 100%; }
+    .item-name { font-size: 13px; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; display: flex; align-items: center; justify-content: space-between; }
+    .item-subtext { font-size: 10px; opacity: 0.7; font-family: var(--mono); }
+
+    /* CHARACTER PROFILE STRUCTURE */
+    .char-profile-container { display: flex; flex-direction: column; gap: 20px; }
+    .char-main-top { display: flex; flex-direction: column; gap: 16px; }
+    .char-main-img-box { width: 100%; max-width: 100%; aspect-ratio: 1 / 1; height: auto; border: 1.5px solid var(--navy); background: var(--white); overflow: hidden; position: relative; }
+    .char-main-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    
+    .char-meta-table { display: flex; flex-direction: column; gap: 8px; font-size: 13px; justify-content: center; }
+    .char-meta-row { display: flex; border-bottom: 1px dashed rgba(28, 32, 56, 0.2); padding-bottom: 6px; align-items: center; }
+    .char-meta-label { width: 100px; font-family: var(--mono); font-weight: 700; font-size: 11px; opacity: 0.8; }
+    .char-meta-val { flex-grow: 1; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    
+    .tag-pill { display: block; width: 100%; background: rgba(255,255,255,0.7); border: 1px solid var(--navy); padding: 12px; border-radius: 0; font-size: 12px; line-height: 1.55; font-family: var(--mono); margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .char-tag-block { white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--mono); font-size: 12px; line-height: 1.55; font-weight: 500; }
+    .title-link-icon { margin-left:auto; flex-shrink:0; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; border:none; background:transparent; color:var(--navy); cursor:pointer; padding:0; }
+    .title-link-icon svg { width:17px; height:17px; stroke:var(--navy); fill:none; stroke-width:2.2; }
+    .title-link-icon:hover { transform:scale(1.12); }
+    .title-link-icon:hover svg { stroke:var(--navy); }
+    .char-detail-title-row { display:flex; align-items:center; gap:8px; width:100%; }
+
+    /* GALLERY — contained drag-scroll viewport */
+    .gallery-drag-viewport {
+      width:100%; max-width:100%; min-width:0; box-sizing:border-box;
+      overflow:hidden; position:relative;
+      padding:6px 2px 12px 12px;
+      cursor:grab;
+      touch-action:pan-y;
+      overscroll-behavior-x:contain;
+    }
+    .gallery-drag-viewport.is-dragging { cursor:grabbing; }
+    .gallery-drag-track {
+      display:flex; flex-wrap:nowrap; gap:10px;
+      width:max-content; max-width:none;
+      min-width:max-content;
+      align-items:flex-start;
+      user-select:none;
+    }
+    .gallery-drag-viewport,
+    .gallery-drag-viewport * {
+      scrollbar-width:none;
+      -ms-overflow-style:none;
+    }
+    .gallery-drag-viewport::-webkit-scrollbar,
+    .gallery-drag-viewport *::-webkit-scrollbar { display:none; width:0; height:0; }
+    .gal-thumb-item {
+      position:relative; z-index:1;
+      width:135px; min-width:135px; max-width:135px;
+      height:135px; flex:0 0 135px;
+      border:none !important; outline:none !important; box-shadow:none !important;
+      background:transparent; overflow:hidden;
+      transition:transform .15s;
+      user-select:none;
+    }
+    .gal-thumb-item:hover { transform:translateY(-2px); }
+    .gallery-drag-viewport.is-dragging .gal-thumb-item { pointer-events:none; }
+    .gal-thumb-img {
+      width:100%; height:100%; object-fit:cover;
+      display:block; opacity:1 !important; filter:none !important;
+      position:relative; z-index:1;
+      user-select:none; -webkit-user-drag:none;
+      pointer-events:none;
+    }
+    .link-svg-badge { position:absolute; top:5px; right:5px; width:22px; height:22px; background:transparent; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:5; transition:transform .1s; padding:0; }
+    .link-svg-badge:hover { transform:scale(1.15); }
+    .link-svg-badge svg { width:15px; height:15px; stroke:var(--navy); fill:none; stroke-width:2.4; filter:drop-shadow(0 1px 0 rgba(255,255,255,.65)); }
+    .gal02-section { width:100%; min-width:0; max-width:100%; overflow:hidden; }
+    .gal02-accordion-item { width:100%; min-width:0; box-sizing:border-box; border:1.5px solid var(--navy); background:#fff; margin-bottom:10px; overflow:hidden; }
+    .gal02-acc-header { background:rgba(28,32,56,.06); padding:10px 12px; font-weight:700; font-size:13px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; user-select:none; }
+    .gal02-acc-arrow { transition:transform .18s ease; }
+    .gal02-accordion-item.collapsed .gal02-acc-arrow { transform:rotate(-90deg); }
+    .gal02-acc-desc { font-size:11px; opacity:.75; padding:6px 12px; border-bottom:1px dashed rgba(28,32,56,.2); background:rgba(255,255,255,.8); }
+    .gal02-acc-body { width:100%; min-width:0; box-sizing:border-box; padding:12px 0 12px 0; overflow:hidden; }
+    .gal02-accordion-item.collapsed .gal02-acc-body { display:none; }
+
+    /* WORLD CHARACTER CARDS — uniform fixed-size profile cards */
+    .world-char-cards-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 140px)); grid-auto-rows:auto; justify-content:start; gap:14px; align-items:start; margin-top:10px; width:100%; min-width:0; }
+    .world-char-card { width:140px; min-width:140px; max-width:140px; background:#fff; border:1px solid rgba(214,142,171,.6); padding:8px; cursor:pointer; transition:transform .15s,border-color .15s; box-sizing:border-box; overflow:hidden; box-shadow:none; }
+    .world-char-card:hover { transform:translateY(-2px); border-color:rgba(214,142,171,.95); box-shadow:none; }
+    .world-char-card img { width:100%; aspect-ratio:1/1; height:auto; display:block; object-fit:cover; border:0 !important; margin:0 !important; filter:none !important; image-rendering:auto; }
+    .world-char-card .card-name { margin-top:8px; padding:2px 1px 3px; font-size:14px; line-height:1.3; font-weight:600; color:var(--navy); text-align:left; letter-spacing:.01em; }
+    .world-char-card .card-sub { display:none !important; }
+
+    /* WORLD EDIT CHARACTER SELECT — uniform cards; modal owns scrolling */
+    .world-char-select-scroll { display:grid !important; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)) !important; gap:8px !important; max-height:none !important; height:auto !important; overflow:visible !important; }
+    .world-char-select-scroll .char-select-card { width:100%; min-width:0; height:72px; min-height:72px; max-height:72px; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; line-height:1.25; }
+    .admin-edit-modal { max-height:92vh; overflow-y:auto; }
+
+    /* MUSIC LINK (character/world profile) */
+    .linked-music {
+      display:inline-flex; align-items:center; gap:5px;
+      min-width:0; max-width:100%;
+      color:var(--navy); text-decoration:none; font-weight:700;
+      border-bottom:1px solid rgba(20,34,62,.45);
+      padding-bottom:1px; cursor:pointer;
+      overflow-wrap:anywhere;
+    }
+    .linked-music-arrow { font-size:12px; line-height:1; flex:0 0 auto; }
+    .linked-music:hover { opacity:.65; }
+    .music-final-content { margin-top:12px; line-height:1.65; }
+    .music-playlist-link {
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      margin-top:12px; padding:11px 14px;
+      border:1.5px solid var(--navy); background:rgba(255,255,255,.55);
+      color:var(--navy); text-decoration:none; font-family:var(--mono);
+      font-size:11px; font-weight:800; letter-spacing:.04em;
+      transition:opacity .15s ease, transform .15s ease;
+    }
+    .music-playlist-link:hover { opacity:.72; transform:translateY(-1px); }
+    .music-playlist-link .playlist-arrow { font-size:14px; line-height:1; flex:0 0 auto; }
+
+    /* RETRO CALENDAR */
+    .calendar-container-full { display: flex; flex-direction: column; gap: 16px; }
+    .cal-top-bar { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-weight: 800; font-size: 16px; letter-spacing: 0.05em; padding-bottom: 8px; }
+    .cal-nav-btn { background: var(--white); border: 1.5px solid var(--navy); color: var(--navy); padding: 6px 14px; font-size: 11px; font-family: var(--mono); font-weight: bold; box-shadow: 2px 2px 0 var(--navy); transition: 0.15s; }
+    .cal-nav-btn:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--navy); }
+    .inline-add-trigger { background: transparent; border: 1px solid currentColor; color: inherit; padding: 2px 6px; font-family: var(--mono); font-size: 9px; font-weight: 800; cursor: pointer; line-height: 1.2; }
+    .inline-add-trigger:hover { background: var(--navy); color: var(--pink); }
+
+    .full-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); border: 1.5px solid var(--navy); background: var(--navy); gap: 1.5px; width: 100%; }
+    .full-cal-head { font-family: var(--mono); font-weight: 800; font-size: 11px; padding: 10px 0; text-align: center; background: var(--pink) !important; color: var(--navy); }
+    .full-cal-day { height: 85px; min-height: 85px; max-height: 85px; box-sizing: border-box; background: #ffffff !important; padding: 8px; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 4px; font-family: var(--mono); font-size: 13px; transition: background 0.15s; overflow: hidden; }
+    .full-cal-day.empty { background: #ffffff !important; }
+    .full-cal-day:not(.empty):hover { background: #f4e3e8 !important; }
+    .full-cal-day.selected { background: #f1cbd5 !important; }
+    .full-cal-day.today { font-weight: bold; color: var(--navy) !important; }
+    .day-num { font-weight: 700; margin-bottom: 4px; }
+
+    .event-inline-list { display: flex; flex-direction: column; gap: 3px; width: 100%; max-height: 47px; overflow: hidden; }
+    .event-inline-item { display: flex; align-items: center; gap: 5px; height: 17px; min-height: 17px; font-size: 10px; font-family: var(--sans); background: rgba(28, 32, 56, 0.06); padding: 3px 6px; border-radius: 3px; color: var(--navy); width: 100%; box-sizing: border-box; overflow: hidden; }
+    .event-inline-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; display: block; }
+    .event-more-count { font-size: 9px; font-family: var(--mono); font-weight: 800; opacity: .72; padding: 1px 4px; white-space: nowrap; }
+    .event-dot-icon { width: 5px; height: 5px; border-radius: 50%; background: var(--navy); flex-shrink: 0; }
+
+    .schedule-panel-read { border-top: 1.5px dashed var(--navy); padding-top: 16px; margin-top: 8px; }
+    .schedule-panel-title { font-size: 13px; font-family: var(--mono); font-weight: 800; margin-bottom: 12px; }
+    .schedule-list-ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .schedule-list-ul li { background: var(--white); border: 1.5px solid var(--navy); padding: 10px 14px; font-size: 13px; display: flex; align-items: center; gap: 8px; box-shadow: 2px 2px 0 rgba(28, 32, 56, 0.1); }
+
+    /* MODAL BACKDROP & DIALOGS */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(28, 32, 56, 0.65); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: center; justify-content: center; }
+    .modal-backdrop.show { display: flex; }
+
+    /* ASYNC SAVE / UPLOAD LOADING */
+    #save-loading-overlay { position:fixed; inset:0; z-index:3000; display:none; align-items:center; justify-content:center; background:rgba(28,32,56,.55); backdrop-filter:blur(3px); }
+    #save-loading-overlay.show { display:flex; }
+    .save-loading-box { min-width:240px; padding:24px 28px; background:var(--pink); border:2px solid var(--navy); box-shadow:6px 6px 0 var(--navy); display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center; }
+    .save-loading-spinner { width:34px; height:34px; border:3px solid rgba(28,32,56,.2); border-top-color:var(--navy); border-radius:50%; animation:save-spin .8s linear infinite; }
+    .save-loading-text { font:700 11px var(--mono); letter-spacing:.08em; }
+    .save-loading-sub { font:10px var(--mono); opacity:.7; line-height:1.45; }
+    @keyframes save-spin { to { transform:rotate(360deg); } }
+
+    .login-modal, .admin-edit-modal, .link-view-modal {
+      background: #ECA8B9; border: 2px solid var(--navy); box-shadow: 6px 6px 0px var(--navy); width: min(520px, 92vw); padding: 24px; display: flex; flex-direction: column; gap: 16px; max-height: 90vh; overflow-y: auto;
+    }
+    .admin-edit-modal { width: min(680px, 95vw); }
+
+    .modal-title { font-family: var(--broadway); font-size: 28px; color: var(--navy); }
+    .modal-file { width:100%; background:#F9EBEF; border:1.5px solid var(--navy); padding:9px; font-family:var(--sans); font-size:12px; color:var(--navy); }
+    .upload-help { font-size:10px; opacity:.7; line-height:1.4; margin-top:-8px; }
+    .checkbox-line { display:flex; align-items:center; gap:8px; cursor:pointer; }
+    .checkbox-line input { width:16px; height:16px; accent-color:var(--navy); }
+    .gallery02-admin-group { display:flex; flex-direction:column; gap:8px; padding:12px; margin-bottom:10px; border:1.5px dashed var(--navy); background:rgba(255,255,255,.35); }
+    .char-main-img-box { background:#fff; }
+.modal-input, .modal-textarea { width: 100%; background: #F9EBEF; border: 1.5px solid var(--navy); padding: 10px; font-family: var(--sans); font-size: 13px; color: var(--navy); outline: none; }
+    .modal-textarea { min-height: 80px; resize: vertical; }
+
+    .modal-btn-group { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+    .modal-btn { padding: 8px 16px; font-family: var(--mono); font-weight: bold; font-size: 12px; border: 1.5px solid var(--navy); cursor: pointer; box-shadow: 2px 2px 0 var(--navy); }
+    .modal-btn-save { background: var(--navy); color: var(--pink); }
+    .modal-btn-cancel { background: var(--white); color: var(--navy); }
+
+    /* LIGHTBOX MODAL FOR GALLERY */
+    .lightbox-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; display: none; align-items: center; justify-content: center; flex-direction: column; }
+    .lightbox-modal.show { display: flex; }
+    .lightbox-img-wrapper { position: relative; max-width: 85vw; max-height: 80vh; display: flex; justify-content: center; align-items: center; }
+    .lightbox-img { max-width: 100%; max-height: 80vh; border: 2px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+    .lightbox-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(28,32,56,0.8); color: #fff; border: 1px solid #fff; padding: 12px; font-size: 20px; cursor: pointer; user-select: none; }
+    .lightbox-prev { left: -60px; }
+    .lightbox-next { right: -60px; }
+    .lightbox-close { position: absolute; top: -40px; right: 0; z-index: 3; color: #fff; font-size: 24px; font-weight: bold; cursor: pointer; }
+
+    /* SELECTABLE CARDS IN ADMIN FORM */
+    .char-select-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; max-height: 180px; overflow-y: auto; background: #fff; padding: 8px; border: 1.5px solid var(--navy); }
+    .char-select-card { border: 1px solid #ccc; padding: 4px; text-align: center; font-size: 11px; background: #f9f9f9; }
+    .char-select-card.selected { border: 2px solid var(--navy); background: var(--pink); font-weight: bold; }
+    .admin-list-manager { display:flex; flex-direction:column; gap:10px; }
+    .admin-manager-row { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.55); border:1.5px solid var(--navy); padding:8px; }
+    .admin-upload-status { font:10px var(--mono); opacity:.75; line-height:1.45; padding:8px 10px; border:1px dashed var(--navy); background:rgba(255,255,255,.45); }
+    .links-page { display:flex; flex-direction:column; gap:16px; }
+    .links-page-intro { white-space:pre-wrap; line-height:1.65; font-size:14px; }
+    .archive-link-list { display:flex; flex-direction:column; gap:8px; }
+    .archive-link-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 13px; border:1.5px solid var(--navy); background:var(--white); box-shadow:2px 2px 0 rgba(28,32,56,.1); transition:.15s; }
+    .archive-link-row:hover { transform:translate(-1px,-1px); box-shadow:3px 3px 0 rgba(28,32,56,.14); }
+    .archive-link-category { font:10px var(--mono); opacity:.7; letter-spacing:.08em; min-width:90px; }
+    .archive-link-button { margin-left:auto; display:inline-flex; align-items:center; justify-content:center; min-width:120px; padding:7px 11px; border:1.5px solid var(--navy); background:var(--pink); font:700 11px var(--mono); }
+    .archive-link-button:hover { background:var(--navy); color:var(--pink); }
+    .detail-content-body { min-width:0; overflow:hidden; }
+    .admin-manager-row input { flex:1; }
+    .admin-manager-group-row { display:flex; align-items:center; gap:8px; }
+    .admin-manager-char-row { display:flex; align-items:center; gap:8px; padding:7px 8px; border:1px dashed rgba(28,32,56,.35); background:#fff; }
+    .admin-manager-char-row .drag-handle { cursor:grab; font-size:14px; opacity:.6; }
+    .admin-manager-char-row select { flex:1; }
+    .admin-manager-char-row.dragging { opacity:.45; }
+    .manager-section-title { font-family:var(--mono); font-size:11px; font-weight:800; letter-spacing:.08em; border-bottom:1.5px solid var(--navy); padding-bottom:5px; margin-top:4px; }
+    .manager-small-btn { padding:5px 8px; border:1px solid var(--navy); background:#fff; font:700 10px var(--mono); cursor:pointer; }
+    .manager-small-btn:hover { background:var(--navy); color:var(--pink); }
+
+    /* FOOTER */
+    .slim-footer { background: var(--navy); color: var(--pink); padding: 16px 0; margin-top: 60px; position: relative; z-index: 5; }
+    .footer-content { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; opacity: 0.9; }
+    .top-btn { background: none; border: none; color: var(--pink); font-family: var(--mono); font-size: 10px; }
+
+    #main-bgm-container { position:fixed; width:1px; height:1px; left:-10px; bottom:-10px; opacity:0; pointer-events:none; overflow:hidden; }
+    #main-bgm { width:1px; height:1px; }
+
+    @media (max-width: 820px) {
+      .back-brand-btn { display:none; }
+
+      .split-layout { grid-template-columns: 1fr; }
+      .messenger-list-sidebar { order: -1; max-height: 380px; }
+      .char-main-top { flex-direction:column; }
+      .char-main-img-box { width:100%; height:auto; aspect-ratio:1 / 1; }
+      .lightbox-prev { left: 10px; }
+      .lightbox-next { right: 10px; }
+      .status { display: none; }
+      .hero-visual-wrapper { margin-top: 50px; }
+      .main-navlinks { gap: 18px; font-size: 11px; margin-top: 60px; }
+      .player-minimal { margin-top: 60px; }
+      .sub-navlinks { gap: 16px; font-size: 10px; }
+      .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .full-cal-day { min-height: 60px; padding: 4px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="main-bgm-container" aria-hidden="true"><audio id="main-bgm" preload="auto" loop></audio></div>
+
+  <!-- [MODAL] LOGIN MODAL -->
+  <div class="modal-backdrop" id="modal-login">
+    <div class="login-modal">
+      <div style="font-family:var(--mono); font-size:11px; opacity:0.7;">ARCHIVE / PRIVATE ACCESS</div>
+      <div class="modal-title">ADMIN LOGIN</div>
+      <input type="password" id="admin-pass-input" class="modal-input" placeholder="PASSWORD" onkeydown="if(event.key==='Enter') verifyAdminPassword()">
+      <div class="modal-btn-group">
+        <button class="modal-btn modal-btn-cancel" onclick="closeAdminLogin()">CANCEL</button>
+        <button class="modal-btn modal-btn-save" onclick="verifyAdminPassword()">ENTER</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- [MODAL] LIGHTBOX FOR GALLERY -->
+  <div class="lightbox-modal" id="lightbox-modal" onclick="if(event.target===this) closeLightbox()">
+    <div class="lightbox-img-wrapper">
+      <span class="lightbox-close" onclick="closeLightbox()">✕ CLOSE</span>
+      <button class="lightbox-nav-btn lightbox-prev" onclick="navLightbox(-1)">◀</button>
+      <img id="lightbox-img" class="lightbox-img" src="" alt="Enlarged View">
+      <button class="lightbox-nav-btn lightbox-next" onclick="navLightbox(1)">▶</button>
+    </div>
+  </div>
+
+  <!-- [MODAL] WORK LINKS DISPLAY -->
+  <div class="modal-backdrop" id="modal-links">
+    <div class="link-view-modal">
+      <div class="modal-title" style="font-size:20px;">LINKED WORKS</div>
+      <div id="links-modal-body" style="display:flex; flex-direction:column; gap:8px;"></div>
+      <div class="modal-btn-group">
+        <button class="modal-btn modal-btn-cancel" onclick="document.getElementById('modal-links').classList.remove('show')">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- [MODAL] ADMIN EDIT DIALOG -->
+  <div class="modal-backdrop" id="modal-admin-edit">
+    <div class="admin-edit-modal" id="admin-edit-container"></div>
+  </div>
+
+  <div id="save-loading-overlay" aria-live="polite" aria-busy="true">
+    <div class="save-loading-box">
+      <div class="save-loading-spinner"></div>
+      <div class="save-loading-text" id="save-loading-text">SAVING...</div>
+      <div class="save-loading-sub" id="save-loading-sub">파일을 업로드하고 데이터를 저장하는 중입니다.<br>파일이 많으면 잠시 걸릴 수 있습니다.</div>
+    </div>
+  </div>
+
+  <div class="sticky-header-group">
+    <header>
+      <div class="container nav">
+        <a href="#" class="back-brand-btn" onclick="navigateTo(''); return false;">
+          <span>✦</span> EXTERNAL SIGNAL
+        </a>
+
+        <a class="header-center-logo" href="#" onclick="navigateTo(''); return false;">
+          <svg class="globe-svg" viewBox="0 0 100 50">
+            <ellipse cx="50" cy="25" rx="45" ry="20" />
+            <ellipse cx="50" cy="25" rx="30" ry="20" />
+            <ellipse cx="50" cy="25" rx="14" ry="20" />
+            <line x1="5" y1="25" x2="95" y2="25" />
+          </svg>
+        </a>
+
+        <div class="status" id="header-status"><i></i> SIGNAL ONLINE</div>
+      </div>
+    </header>
+
+    <nav class="sub-navbar" id="sub-navbar">
+      <div class="container sub-navlinks">
+        <a href="#world" onclick="navigateTo('world'); return false;" id="sub-nav-world">WORLD</a>
+        <a href="#characters" onclick="navigateTo('characters'); return false;" id="sub-nav-characters">CHARACTERS</a>
+        <a href="#music" onclick="navigateTo('music'); return false;" id="sub-nav-music">MUSIC</a>
+        <a href="#feed" onclick="navigateTo('feed'); return false;" id="sub-nav-feed">FEED</a>
+        <a href="#notice" onclick="navigateTo('notice'); return false;" id="sub-nav-notice">NOTICE</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="container">
+
+    <!-- 1. SIGNAL (HOME) -->
+    <section id="page-signal" class="page-section active-page">
+      <div class="side-stars-bg">
+        <span class="sparkle-star star-1">✦</span><span class="sparkle-star star-2">✦</span>
+        <span class="sparkle-star star-3">✦</span><span class="sparkle-star star-4">✦</span>
+        <span class="sparkle-star star-5">✦</span><span class="sparkle-star star-6">✦</span>
+        <span class="sparkle-star star-7">✦</span><span class="sparkle-star star-8">✦</span>
+      </div>
+
+      <div class="hero">
+        <div></div>
+        <div class="hero-visual-wrapper">
+          <img src="./images/A02.png" alt="orbit" class="orbit-bg-img">
+          <img src="./images/A01.png" alt="ARCHIVE @ruroon._.g" class="main-title-img">
+        </div>
+
+        <nav class="main-navlinks">
+          <a href="#world" onclick="navigateTo('world'); return false;">WORLD</a>
+          <a href="#characters" onclick="navigateTo('characters'); return false;">CHARACTERS</a>
+          <a href="#music" onclick="navigateTo('music'); return false;">MUSIC</a>
+          <a href="#feed" onclick="navigateTo('feed'); return false;">FEED</a>
+          <a href="#notice" onclick="navigateTo('notice'); return false;">NOTICE</a>
+        </nav>
+
+        <div class="player-minimal">
+          <div class="sound-wave-container" id="sound-wave">
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          </div>
+          <div class="progress-bar-container" id="progress-container" onclick="seekTrack(event)">
+            <div class="progress-bar-fill" id="progress-fill"><div class="progress-thumb"></div></div>
+          </div>
+          <div class="player-controls">
+            <button class="ctrl-btn" onclick="prevBgm()"><svg class="player-svg-icon" viewBox="0 0 24 24"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg></button>
+            <button class="ctrl-btn play-main" id="play-btn" onclick="toggleBgm()"><svg class="player-svg-icon" style="width:18px; height:18px;" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <button class="ctrl-btn" onclick="nextBgm()"><svg class="player-svg-icon" viewBox="0 0 24 24"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg></button>
+          </div>
+        </div>
+
+        <div class="external-signal-bottom">
+          <button class="admin-only manager-small-btn" onclick="openUploadSettings()">GITHUB UPLOAD / TOKEN</button>
+          <button class="admin-trigger-btn" onclick="openAdminLogin()" title="Admin Login">
+            <img src="./images/A04.png" alt="Admin Access" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%231C2038\'><path d=\'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z\'/></svg>'">
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. WORLD -->
+    <section id="page-world" class="page-section">
+      <div class="section-head">
+        <div><p class="section-kicker">01 / WORLDS</p><h2 class="section-title">WORLD</h2></div>
+        <p class="section-note">places, eras and settings<br>where the stories exist.</p>
+      </div>
+
+      <div class="split-layout">
+        <div class="detail-view-box">
+          <div class="detail-header">
+            <div class="detail-title">
+              <span id="world-detail-title">SELECT WORLD</span>
+              <span class="admin-only" id="world-detail-admin-marks"></span>
+            </div>
+            <p class="detail-subtitle" id="world-detail-sub">목록에서 세계관을 선택해 주세요.</p>
+          </div>
+          <div class="detail-content-body" id="world-detail-body">
+            <p>우측 목록에서 항목을 클릭하면 상세 내용이 표시됩니다.</p>
+          </div>
+        </div>
+
+        <aside class="messenger-list-sidebar">
+          <div class="sidebar-title-bar">
+            <span>WORLDS</span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('world')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('world')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+          </div>
+          <div class="sidebar-scroll-area" id="world-sidebar-list"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 3. CHARACTERS -->
+    <section id="page-characters" class="page-section">
+      <div class="section-head">
+        <div><p class="section-kicker">02 / DATABASE</p><h2 class="section-title">CHARACTERS</h2></div>
+        <p class="section-note">selected records<br>from the archive.</p>
+      </div>
+
+      <div class="split-layout">
+        <div class="detail-view-box">
+          <div class="detail-header">
+            <div class="detail-title">
+              <span id="char-detail-title">SELECT CHARACTER</span>
+              <span class="admin-only" id="char-detail-admin-marks"></span>
+            </div>
+            <p class="detail-subtitle" id="char-detail-sub">목록에서 캐릭터를 선택해 주세요.</p>
+          </div>
+          <div class="detail-content-body" id="char-detail-body">
+            <p>우측 목록에서 캐릭터를 클릭하면 상세 프로필이 여기에 표시됩니다.</p>
+          </div>
+        </div>
+
+        <aside class="messenger-list-sidebar">
+          <div class="sidebar-title-bar">
+            <span>CHARACTERS</span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openCharacterListManager()" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('characters')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+          </div>
+          <div class="sidebar-scroll-area" id="char-sidebar-list"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 4. MUSIC -->
+    <section id="page-music" class="page-section">
+      <div class="section-head">
+        <div><p class="section-kicker">03 / SOUND</p><h2 class="section-title">MUSIC</h2></div>
+        <p class="section-note">songs connected to<br>characters and worlds.</p>
+      </div>
+
+      <div class="split-layout">
+        <div class="detail-view-box">
+          <div class="detail-header">
+            <div class="detail-title">
+              <span id="music-detail-title">SELECT MUSIC</span>
+              <span class="admin-only" id="music-detail-admin-marks"></span>
+            </div>
+            <p class="detail-subtitle" id="music-detail-sub">TRACK LIST</p>
+          </div>
+          <div class="detail-content-body" id="music-detail-body">
+            <p>음악을 선택하시면 가사 및 노트 정보가 나타납니다.</p>
+          </div>
+        </div>
+
+        <aside class="messenger-list-sidebar">
+          <div class="sidebar-title-bar">
+            <span>TRACK LIST</span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('music')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('music')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+          </div>
+          <div class="sidebar-scroll-area" id="music-sidebar-list"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 5. FEED -->
+    <section id="page-feed" class="page-section">
+      <div class="section-head">
+        <div><p class="section-kicker">04 / LOG</p><h2 class="section-title">FEED</h2></div>
+        <p class="section-note">latest fragments<br>and image logs.</p>
+      </div>
+
+      <div class="split-layout">
+        <div class="detail-view-box">
+          <div class="detail-header">
+            <div class="detail-title">
+              <span id="feed-detail-title">SELECT LOG</span>
+              <span class="admin-only" id="feed-detail-admin-marks"></span>
+            </div>
+            <p class="detail-subtitle" id="feed-detail-sub">IMAGE &amp; WORK LOG</p>
+          </div>
+          <div class="detail-content-body" id="feed-detail-body">
+            <p>목록에서 피드를 선택해 주세요.</p>
+          </div>
+        </div>
+
+        <aside class="messenger-list-sidebar">
+          <div class="sidebar-title-bar">
+            <span>LOG HISTORY</span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('feed')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('feed')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+          </div>
+          <div class="sidebar-scroll-area" id="feed-sidebar-list"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 6. NOTICE -->
+    <section id="page-notice" class="page-section">
+      <div class="section-head">
+        <div><p class="section-kicker">05 / INFORMATION</p><h2 class="section-title">NOTICE</h2></div>
+        <p class="section-note">archive updates &amp;<br>announcements.</p>
+      </div>
+
+      <div class="split-layout">
+        <div class="detail-view-box">
+          <div class="detail-header">
+            <div class="detail-title">
+              <span id="notice-detail-title">NOTICE &amp; CALENDAR</span>
+              <span class="admin-only" id="notice-detail-admin-marks"></span>
+            </div>
+            <p class="detail-subtitle" id="notice-detail-sub">INFORMATION ARCHIVE</p>
+          </div>
+          <div class="detail-content-body" id="notice-detail-body">
+            <p>오른쪽 목록에서 공지사항 또는 캘린더를 선택하세요.</p>
+          </div>
+        </div>
+
+        <aside class="messenger-list-sidebar">
+          <div class="sidebar-title-bar">
+            <span>SCHEDULE &amp; NOTICES</span>
+            <span class="admin-only" style="display:flex;gap:10px;align-items:center;"><button onclick="openListManager('notice')" style="color:#fff;font-weight:bold;">EDIT LIST</button><button onclick="openAddModal('notice')" style="color:#fff; font-weight:bold;">+ ADD</button></span>
+          </div>
+          <div class="sidebar-scroll-area" id="notice-sidebar-list"></div>
+        </aside>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="slim-footer">
+    <div class="container footer-content">
+      <span style="text-transform:lowercase;">© ruroon._.g</span>
+      <span>PERSONAL ARCHIVE</span>
+      <button onclick="scrollToTop()" class="top-btn">TOP ▲</button>
+    </div>
+  </footer>
+
+  <script>
+    /* ---------- GLOBAL STATE ---------- */
+    let isAdminLoggedIn = false;
+    let activeItemIds = { world: null, characters: null, music: null, feed: null, notice: null };
+    let currentLightboxList = [];
+    let currentLightboxIdx = 0;
+
+    /* ---------- SVG ICONS HTML GENERATOR ---------- */
+    function getAdminSvgMarksHtml(section, id) {
+      if (!id) return '';
+      return `
+        <span class="admin-only" style="margin-left:6px;">
+          <button class="inline-edit-trigger" onclick="event.stopPropagation(); openEditModal('${section}', '${id}')" title="편집">
+            <svg class="admin-svg-icon" viewBox="0 0 24 24" style="width:12px; height:12px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> EDIT
+          </button>
+          <svg class="admin-svg-icon" viewBox="0 0 24 24" onclick="event.stopPropagation(); deleteExistingItem('${section}', '${id}')" title="삭제">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </span>
+      `;
+    }
+
+    const ARCHIVE_STORAGE_KEY='ruroon_archive_v4';
+    const SHARED_ARCHIVE_PATH='data/archive-data.json';
+    const SHARED_ARCHIVE_URL=`https://raw.githubusercontent.com/ruroong/ruroon._.g/main/${SHARED_ARCHIVE_PATH}`;
+    let sharedArchiveLoaded=false;
+    let sharedArchiveMissing=false;
+    let sharedArchiveLoadError=null;
+    let sharedArchiveSyncPromise=Promise.resolve();
+
+    function getArchiveState(){
+      return {
+        version: 1,
+        updatedAt: new Date().toISOString(),
+        database,
+        categoryGroups,
+        characterOrder,
+        mainBgmIds,
+        eventsData: (typeof eventsData!=='undefined'?eventsData:{}),
+        noticeLinks
+      };
+    }
+
+    function applyArchiveState(saved){
+      if(!saved || typeof saved!=='object') return;
+      if(saved.database){
+        Object.keys(database).forEach(k=>{
+          if(Array.isArray(saved.database[k])) database[k].splice(0,database[k].length,...saved.database[k]);
+        });
       }
-    ],
-    "characters": [
-      {
-        "id": "characters_1787637348231",
-        "name": "ㅇㅁㄹㅇㅁㄹㄴㅇ",
-        "group": "성해력(聖海曆) 715",
-        "alias": "ALIAS",
-        "birthday": "",
-        "tags": "",
-        "tmi": "",
-        "links": [],
-        "gallery02": [],
-        "gallery01": [],
-        "musicId": "track_01"
+      if(saved.categoryGroups && typeof saved.categoryGroups==='object') categoryGroups=saved.categoryGroups;
+      if(Array.isArray(saved.characterOrder)) characterOrder=saved.characterOrder;
+      if(Array.isArray(saved.mainBgmIds)) mainBgmIds=saved.mainBgmIds;
+      if(saved.eventsData && typeof eventsData!=='undefined') eventsData=saved.eventsData;
+      if(saved.noticeLinks && typeof saved.noticeLinks==='object') noticeLinks=saved.noticeLinks;
+    }
+
+    function persistArchiveData(){
+      // GitHub archive-data.json is the public source of truth.
+      // Do not overwrite localStorage until the shared save succeeds.
+      if(typeof isAdminLoggedIn!=='undefined' && isAdminLoggedIn){
+        sharedArchiveSyncPromise = sharedArchiveSyncPromise
+          .then(()=>syncArchiveDataToGitHub())
+          .then(()=>{
+            try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(getArchiveState())); }catch(e){ console.warn('archive local storage failed',e); }
+            return true;
+          })
+          .catch(err=>{
+            console.error('Shared archive sync failed:',err);
+            alert(`공용 아카이브 저장에 실패했습니다.\n\n${err.message || err}\n\nGitHub 공용 데이터에는 반영되지 않았습니다.`);
+            return false;
+          });
+        return sharedArchiveSyncPromise;
       }
-    ],
-    "music": [
-      {
-        "id": "track_01",
-        "group": "ALBUM 01",
-        "title": "01. Signal Theme #1",
-        "sub": "TRACK 01 / MAIN THEME",
-        "content": "<p>Signal Theme #1의 가사 및 정보입니다.</p>",
-        "finalContent": "",
-        "playlistUrl": "dddd"
-      },
-      {
-        "id": "music_1787736060056",
-        "title": "00. Main BGM #0",
-        "sub": "사람은 이상하고 사랑은 모르겠어",
-        "content": "",
-        "finalContent": "",
-        "playlistUrl": "",
-        "audio": "https://ruroong.github.io/ruroon._.g/music/1787736094761_naovm5___________________4.mp3"
-      },
-      {
-        "id": "music_1787738275515",
-        "title": "",
-        "sub": "",
-        "content": "",
-        "finalContent": "",
-        "playlistUrl": "",
-        "audio": "https://ruroong.github.io/ruroon._.g/music/1787738281996_e78t2y___________________4.mp3"
-      },
-      {
-        "id": "music_1787738345032",
-        "title": "",
-        "sub": "",
-        "content": "",
-        "finalContent": "",
-        "playlistUrl": "",
-        "audio": "https://ruroong.github.io/ruroon._.g/music/1787738349221_6kdu1k___________________4.mp3"
+      return Promise.resolve(true);
+    }
+
+    function loadArchiveData(){
+      try{
+        const raw=localStorage.getItem(ARCHIVE_STORAGE_KEY);
+        if(!raw)return;
+        applyArchiveState(JSON.parse(raw));
+      }catch(e){ console.warn('archive storage load failed',e); }
+    }
+
+    async function loadSharedArchiveData(){
+      sharedArchiveMissing=false;
+      sharedArchiveLoadError=null;
+      try{
+        const res=await fetch(`${SHARED_ARCHIVE_URL}?v=${Date.now()}`,{cache:'no-store'});
+        if(res.status===404){
+          sharedArchiveMissing=true;
+          console.info('Shared archive data file does not exist yet.');
+          return false;
+        }
+        if(!res.ok) throw new Error(`공용 아카이브 데이터를 불러오지 못했습니다. (${res.status})`);
+        const saved=await res.json();
+        applyArchiveState(saved);
+        sharedArchiveLoaded=true;
+        try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(saved)); }catch(e){}
+        return true;
+      }catch(e){
+        sharedArchiveLoadError=e;
+        console.error('Shared archive load failed. Local data will NOT be used on the public page.',e);
+        return false;
       }
-    ],
-    "feed": [
-      {
-        "id": "feed_1",
-        "date": "2026-08-24",
-        "title": "2026.08.24 Daily Log",
-        "img": "./images/A01.png",
-        "content": "<img src=\"./images/A01.png\" style=\"width:100%; max-height:300px; object-fit:cover; border:1.5px solid var(--navy);\"><p style=\"margin-top:10px;\">최신 기록입니다.</p>"
+    }
+
+    function utf8ToBase64(text){
+      const bytes = new TextEncoder().encode(String(text));
+      let binary = '';
+      const chunk = 0x8000;
+      for(let i=0;i<bytes.length;i+=chunk){
+        binary += String.fromCharCode(...bytes.subarray(i, i+chunk));
       }
-    ],
-    "notice": [
-      {
-        "id": "renewal",
-        "date": "2026-08-24",
-        "title": "Archive Renewal",
-        "pinned": true,
-        "content": "<p>아카이브 시스템이 리뉴얼되었습니다!</p>"
+      return btoa(binary);
+    }
+
+    async function syncArchiveDataToGitHub(){
+      // Robust shared-save path using Git Database API instead of the Contents PUT endpoint.
+      // This avoids stale-file SHA conflicts on archive-data.json and gives us a real commit flow.
+      const encodedPath = SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/');
+      const rawText = JSON.stringify(getArchiveState(), null, 2);
+      const commitMessage = `Update shared archive data (${new Date().toISOString()})`;
+      let lastError = null;
+
+      for(let attempt=1; attempt<=5; attempt++){
+        try{
+          // 1) Get the current branch head.
+          const ref = await githubApi(`/git/ref/heads/${encodeURIComponent(GITHUB_BRANCH)}`, {method:'GET'});
+          const headSha = ref?.object?.sha;
+          if(!headSha) throw new Error('GitHub 브랜치 HEAD SHA를 확인할 수 없습니다.');
+
+          // 2) Get the current commit/tree.
+          const headCommit = await githubApi(`/git/commits/${encodeURIComponent(headSha)}`, {method:'GET'});
+          const baseTreeSha = headCommit?.tree?.sha;
+          if(!baseTreeSha) throw new Error('GitHub 기준 트리를 확인할 수 없습니다.');
+
+          // 3) Create a blob containing the complete shared archive JSON.
+          const blob = await githubApi('/git/blobs', {
+            method:'POST',
+            body:JSON.stringify({content:rawText, encoding:'utf-8'})
+          });
+          if(!blob?.sha) throw new Error('공용 아카이브 Blob 생성에 실패했습니다.');
+
+          // 4) Create a new tree based on the current tree, replacing only archive-data.json.
+          const tree = await githubApi('/git/trees', {
+            method:'POST',
+            body:JSON.stringify({
+              base_tree:baseTreeSha,
+              tree:[{path:SHARED_ARCHIVE_PATH, mode:'100644', type:'blob', sha:blob.sha}]
+            })
+          });
+          if(!tree?.sha) throw new Error('공용 아카이브 Tree 생성에 실패했습니다.');
+
+          // 5) Create the commit.
+          const commit = await githubApi('/git/commits', {
+            method:'POST',
+            body:JSON.stringify({message:commitMessage, tree:tree.sha, parents:[headSha]})
+          });
+          if(!commit?.sha) throw new Error('공용 아카이브 Commit 생성에 실패했습니다.');
+
+          // 6) Move main to the new commit. force=false prevents overwriting a newer commit.
+          try{
+            await githubApi(`/git/refs/heads/${encodeURIComponent(GITHUB_BRANCH)}`, {
+              method:'PATCH',
+              body:JSON.stringify({sha:commit.sha, force:false})
+            });
+          }catch(err){
+            // Another device may have committed between step 1 and 6.
+            if(err?.status===409 || err?.status===422){
+              lastError=err;
+              await new Promise(r=>setTimeout(r,700*attempt));
+              continue;
+            }
+            throw err;
+          }
+
+          sharedArchiveLoaded=true;
+          sharedArchiveMissing=false;
+          sharedArchiveLoadError=null;
+          return true;
+        }catch(err){
+          lastError=err;
+          if(err?.status===409 || err?.status===422){
+            await new Promise(r=>setTimeout(r,700*attempt));
+            continue;
+          }
+          throw err;
+        }
       }
-    ]
-  },
-  "categoryGroups": {
-    "world": [
-      "WORLD DATABASE",
-      "ruroong"
-    ],
-    "characters": [
-      "PERSONA",
-      "성해력(聖海曆) 715"
-    ],
-    "music": [
-      "ALBUM 01"
-    ]
-  },
-  "characterOrder": [
-    "characters_1787637348231"
-  ],
-  "mainBgmIds": [
-    "track_01",
-    "music_1787736060056"
-  ],
-  "eventsData": {},
-  "noticeLinks": {
-    "id": "links",
-    "title": "LINKS & CONTACT",
-    "sub": "CONTACT / LINKS",
-    "content": "",
-    "links": [
-      {
-        "category": "CONTACT",
-        "title": "EMAIL",
-        "url": "mailto:"
-      },
-      {
-        "category": "ARCHIVE",
-        "title": "NOTION",
-        "url": ""
-      },
-      {
-        "category": "WORKS",
-        "title": "POSTYPE",
-        "url": ""
+
+      throw lastError || new Error('공용 아카이브 저장에 실패했습니다.');
+    }
+
+    /* ---------- DATA STORES ---------- */
+    let categoryGroups = {
+      world: ["WORLD DATABASE"],
+      characters: ["EMPECLA", "SUB WORLD"],
+      music: ["ALBUM 01"]
+    };
+    let characterOrder = [];
+
+    /* ---------- FIXED NOTICE LINK PAGE ---------- */
+    let noticeLinks = {
+      id: 'links',
+      title: 'LINKS & CONTACT',
+      sub: 'CONTACT / LINKS',
+      content: '',
+      links: [
+        { category: 'CONTACT', title: 'EMAIL', url: 'mailto:' },
+        { category: 'ARCHIVE', title: 'NOTION', url: '' },
+        { category: 'WORKS', title: 'POSTYPE', url: '' }
+      ]
+    };
+
+    const database = {
+      world: [
+        { 
+          id: 'empecla', 
+          group: 'WORLD DATABASE', 
+          title: 'Empecla (엠페클라)', 
+          sub: 'WORLD DATABASE', 
+          img: './images/A01.png', 
+          desc: '날씨와 기상의 변화가 세계 전체의 흐름을 좌우하는 엠페클라 메인 세계관입니다.',
+          links: [],
+          charIds: ['ruroon', 'char_b']
+        }
+      ],
+      characters: [
+        { 
+          id: 'ruroon', 
+          group: 'EMPECLA', 
+          name: '루룬 (Ruroon)', 
+          sub: 'EMPECLA ARCHIVE', 
+          alias: 'Obsidian Star',
+          birthday: '2026-05-17',
+          tags: ['#핑크헤어', '#제복', '#오드아이', '#금속장식'],
+          img: './images/A01.png', 
+          tmi: '단 음식을 대단히 좋아하며, 별 모양의 장신구를 매일 다르게 수집하는 취미가 있다.',
+          gallery01: [
+            { img: './images/A01.png', links: [{ title: 'Pixiv Artwork', url: 'https://pixiv.net' }, { title: 'Twitter Post', url: 'https://x.com' }] },
+            { img: './images/A02.png', links: [] },
+            { img: './images/A01.png', links: [] }
+          ],
+          gallery02: [
+            {
+              title: '초기 컨셉 시안 & Rough Cuts',
+              desc: '초기 캐릭터 디자인 시안 및 표정 시트 모음입니다.',
+              images: [
+                { img: './images/A02.png', links: [] },
+                { img: './images/A01.png', links: [] }
+              ]
+            }
+          ]
+        },
+        { 
+          id: 'char_b', 
+          group: 'EMPECLA', 
+          name: '캐릭터 B', 
+          sub: 'EMPECLA ARCHIVIST', 
+          alias: 'N/A',
+          birthday: '2026-11-03',
+          tags: ['#안경', '#연구원'],
+          img: './images/A02.png', 
+          tmi: '밤샘 연구가 일상이다.',
+          gallery01: [{ img: './images/A02.png', links: [] }],
+          gallery02: []
+        }
+      ],
+      music: [
+        { id: 'track_01', group: 'ALBUM 01', title: '01. Signal Theme #1', sub: 'TRACK 01 / MAIN THEME', content: '<p>Signal Theme #1의 가사 및 정보입니다.</p>' }
+      ],
+      feed: [
+        { id: 'feed_1', date: '2026-08-24', title: '2026.08.24 Daily Log', img: './images/A01.png', content: '<img src="./images/A01.png" style="width:100%; max-height:300px; object-fit:cover; border:1.5px solid var(--navy);"><p style="margin-top:10px;">최신 기록입니다.</p>' }
+      ],
+      notice: [
+        { id: 'renewal', date: '2026-08-24', title: 'Archive Renewal', pinned: true, content: '<p>아카이브 시스템이 리뉴얼되었습니다!</p>' }
+      ]
+    };
+
+    // 메인 페이지 BGM으로 사용할 MUSIC 항목 ID 목록
+    let mainBgmIds = ['track_01'];
+
+    // Public pages do not automatically load device-local archive data.
+    if (!Array.isArray(mainBgmIds)) mainBgmIds = ['track_01'];
+    if(!characterOrder.length) characterOrder=database.characters.map(c=>c.id);
+    database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
+
+    /* ---------- RENDER SIDEBAR LISTS ---------- */
+    function renderWorldSidebar() {
+      const container = document.getElementById('world-sidebar-list');
+      let html = '';
+      [...new Set([...categoryGroups.world, ...database.world.map(item => item.group).filter(Boolean)])].forEach(groupName => {
+        const items = database.world.filter(item => item.group === groupName);
+        html += `
+          <div class="accordion-group">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>✦ ${groupName}</span><span class="acc-icon">▼</span>
+            </div>
+            <div class="accordion-body">
+              ${items.map(item => `
+                <div class="list-item" id="item-world-${item.id}" onclick="selectWorldItem('${item.id}', this)">
+                  ${item.img ? `<img src="${item.img}" class="item-thumb">` : `<div class="item-thumb"></div>`}
+                  <div class="item-info">
+                    <span class="item-name">
+                      <span>${item.title}</span>
+                      ${getAdminSvgMarksHtml('world', item.id)}
+                    </span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    function renderCharSidebar() {
+      const container = document.getElementById('char-sidebar-list');
+      let html = '';
+      [...new Set([...categoryGroups.characters, ...database.characters.map(item => item.group).filter(Boolean)])].forEach(groupName => {
+        const orderedCharacters = (characterOrder.length ? characterOrder : database.characters.map(c=>c.id));
+        const items = orderedCharacters.map(id => database.characters.find(c=>c.id===id)).filter(Boolean).filter(item => item.group === groupName);
+        html += `
+          <div class="accordion-group">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>✦ ${groupName}</span><span class="acc-icon">▼</span>
+            </div>
+            <div class="accordion-body">
+              ${items.map(item => `
+                <div class="list-item" id="item-characters-${item.id}" onclick="selectCharItem('${item.id}', this)">
+                  ${item.img ? `<img src="${item.img}" class="item-thumb">` : `<div class="item-thumb"></div>`}
+                  <div class="item-info">
+                    <span class="item-name">
+                      <span>${item.name}</span>
+                      ${getAdminSvgMarksHtml('characters', item.id)}
+                    </span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    function renderMusicSidebar() {
+      const container = document.getElementById('music-sidebar-list');
+      let html = '';
+      categoryGroups.music.forEach(groupName => {
+        const items = database.music.filter(item => item.group === groupName);
+        html += `
+          <div class="accordion-group">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>✦ ${groupName}</span><span class="acc-icon">▼</span>
+            </div>
+            <div class="accordion-body">
+              ${items.map(item => `
+                <div class="list-item" id="item-music-${item.id}" onclick="selectMusicItem('${item.id}', this)">
+                  <div class="item-info">
+                    <span class="item-name">
+                      <span>${item.title}</span>
+                      ${getAdminSvgMarksHtml('music', item.id)}
+                    </span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    function renderFeedSidebar() {
+      const container = document.getElementById('feed-sidebar-list');
+      const sortedFeed = [...database.feed].sort((a, b) => new Date(b.date) - new Date(a.date));
+      let html = `
+        <div class="accordion-group">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>✦ ALL LOGS</span><span class="acc-icon">▼</span>
+          </div>
+          <div class="accordion-body">
+            ${sortedFeed.map(item => `
+              <div class="list-item" id="item-feed-${item.id}" onclick="selectFeedItem('${item.id}', this)">
+                <img src="${item.img || './images/A01.png'}" class="item-thumb">
+                <div class="item-info">
+                  <span class="item-name">
+                    <span>${item.title}</span>
+                    ${getAdminSvgMarksHtml('feed', item.id)}
+                  </span>
+                  <span class="item-subtext">${item.date}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      container.innerHTML = html;
+    }
+
+    function renderNoticeSidebar() {
+      const container = document.getElementById('notice-sidebar-list');
+      const sortedNotice = [...database.notice].sort((a, b) => {
+        if (a.pinned !== b.pinned) return b.pinned ? 1 : -1;
+        return new Date(b.date) - new Date(a.date);
+      });
+
+      let html = `
+        <div class="list-item" id="item-notice-calendar" onclick="selectNoticeItem('calendar', this)">
+          <div class="item-info">
+            <span class="item-name" style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <span>CALENDAR</span>
+              <span class="admin-only">
+                <button class="inline-add-trigger" onclick="event.stopPropagation(); openCalendarAddModal()" title="일정 추가">+ ADD</button>
+              </span>
+            </span>
+            <span class="item-subtext">TIME RECORD</span>
+          </div>
+        </div>
+        <div class="list-item" id="item-notice-links" onclick="selectNoticeItem('links', this)">
+          <div class="item-info">
+            <span class="item-name">
+              <span>${noticeLinks.title || 'LINKS & CONTACT'}</span>
+              <span class="admin-only" style="margin-left:auto;">
+                <button class="inline-edit-trigger" onclick="event.stopPropagation(); openNoticeLinksEditor()" title="링크 페이지 편집">EDIT</button>
+              </span>
+            </span>
+            <span class="item-subtext">${noticeLinks.sub || 'CONTACT / LINKS'}</span>
+          </div>
+        </div>
+        <div class="accordion-group">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>✦ ANNOUNCEMENTS</span><span class="acc-icon">▼</span>
+          </div>
+          <div class="accordion-body">
+            ${sortedNotice.map(item => `
+              <div class="list-item" id="item-notice-${item.id}" onclick="selectNoticeItem('${item.id}', this)">
+                <div class="item-info">
+                  <span class="item-name">
+                    <span>${item.pinned ? `<span class="pin-badge">FIX</span>` : ''}${item.title}</span>
+                    ${getAdminSvgMarksHtml('notice', item.id)}
+                  </span>
+                  <span class="item-subtext">${item.date}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      container.innerHTML = html;
+    }
+
+    /* ---------- URL & SELECTION SYSTEM ---------- */
+    function navigateTo(pageId) {
+      location.hash = pageId ? `#${pageId}` : '';
+    }
+
+    function handleHashRoute() {
+      const hash = location.hash.replace('#', '');
+      if (!hash) { switchPageRaw('signal'); return; }
+      const parts = hash.split('/');
+      const pageId = parts[0];
+      const itemId = parts[1];
+
+      switchPageRaw(pageId);
+
+      if (itemId) {
+        setTimeout(() => {
+          const el = document.getElementById(`item-${pageId}-${itemId}`);
+          if (el) {
+            if (pageId === 'world') selectWorldItem(itemId, el);
+            else if (pageId === 'characters') selectCharItem(itemId, el);
+            else if (pageId === 'music') selectMusicItem(itemId, el);
+            else if (pageId === 'feed') selectFeedItem(itemId, el);
+            else if (pageId === 'notice') selectNoticeItem(itemId, el);
+          }
+        }, 50);
       }
-    ]
-  }
-}
+    }
+
+    window.addEventListener('hashchange', handleHashRoute);
+
+    /* 1. 다시 누르면 선택 표시(남색) 풀리도록 수정 */
+    function handleListSelection(element, parentSelector, sectionKey) {
+      const isAlreadyActive = element.classList.contains('active');
+      document.querySelectorAll(`${parentSelector} .list-item`).forEach(i => i.classList.remove('active'));
+      
+      if (isAlreadyActive) {
+        activeItemIds[sectionKey] = null;
+        document.getElementById(`${sectionKey}-detail-title`).innerText = `SELECT ${sectionKey.toUpperCase()}`;
+        document.getElementById(`${sectionKey}-detail-sub`).innerText = '목록에서 항목을 선택해 주세요.';
+        document.getElementById(`${sectionKey}-detail-body`).innerHTML = '<p>선택이 해제되었습니다.</p>';
+        document.getElementById(`${sectionKey}-detail-admin-marks`).innerHTML = '';
+        return false;
+      }
+
+      element.classList.add('active');
+      return true;
+    }
+
+    /* ---------- MAIN BGM MANAGEMENT ---------- */
+    function isMainBgm(id){ return Array.isArray(mainBgmIds) && mainBgmIds.includes(id); }
+    function getMainBgmTracks(){
+      const ids = Array.isArray(mainBgmIds) ? mainBgmIds : [];
+      return ids.map(id => database.music.find(m => m.id === id)).filter(m => m && m.audio);
+    }
+    function getMainBgmOptionsHtml(selectedId){
+      return database.music.map(m => `<option value=\"${m.id}\" ${m.id===selectedId?'selected':''}>${m.title}</option>`).join('');
+    }
+
+    /* ---------- SELECT ITEM HANDLERS ---------- */
+    function getMusicOptionsHtml(selectedId='') {
+      const groups = {};
+      database.music.forEach(m => { const g = m.group || 'MUSIC'; (groups[g] ||= []).push(m); });
+      const groupHtml = Object.entries(groups).map(([group, items]) =>
+        `<optgroup label="${group}">${items.map(m => `<option value="${m.id}" ${m.id===selectedId?'selected':''}>${m.title}</option>`).join('')}</optgroup>`
+      ).join('');
+      return `<option value="">연결하지 않음</option>${groupHtml}`;
+    }
+
+    function getMusicLinkFieldHtml(selectedId='') {
+      return `<select id="edit-music-id" class="modal-input music-link-select">${getMusicOptionsHtml(selectedId)}</select>
+        <div class="upload-help">MUSIC 탭에 등록된 곡만 연결합니다. 여기서는 음원 파일을 업로드하지 않습니다.</div>`;
+    }
+
+    function getLinkedMusicHtml(item) {
+      const ref = item ? (item.musicId || item.music || item.musicTitle || '') : '';
+      const music = ref ? database.music.find(m => m.id === ref || m.title === ref) : null;
+      if (!music) return '';
+      return `<a class="linked-music" href="#music/${music.id}" title="MUSIC: ${music.title}" onclick="event.preventDefault(); event.stopPropagation(); navigateTo('music/${music.id}');">${music.title}<span class="linked-music-arrow">↗</span></a>`;
+    }
+
+    function selectWorldItem(id, el) {
+      if (handleListSelection(el, '#page-world', 'world')) {
+        const item = database.world.find(w => w.id === id);
+        if (item) {
+          activeItemIds.world = id;
+          document.getElementById('world-detail-title').innerText = item.title;
+          document.getElementById('world-detail-sub').innerText = item.sub;
+          
+          let cardsHtml = '';
+          if (item.charIds && item.charIds.length > 0) {
+            cardsHtml = `
+              <div class="gallery-section-title"><span>APPEARING CHARACTERS</span></div>
+              <div class="world-char-cards-grid">
+                ${item.charIds.map(cId => {
+                  const c = database.characters.find(char => char.id === cId);
+                  if(!c) return '';
+                  return `
+                    <div class="world-char-card" onclick="location.hash='#characters/${c.id}'">
+                      <img src="${c.img || './images/A01.png'}">
+                      <div class="card-name">${c.name}</div>
+                      <div class="card-sub">${c.alias || 'N/A'}</div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `;
+          }
+
+          const hasWorldLinks = Array.isArray(item.links) && item.links.some(l => l && l.url);
+          const worldLinkIcon = hasWorldLinks ? `<button class="title-link-icon" onclick="event.stopPropagation(); showWorldLinksModal('${item.id}')" title="WORLD LINKS"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button>` : '';
+
+          document.getElementById('world-detail-body').innerHTML = `
+            ${item.img ? `<img src="${item.img}" style="width:100%; aspect-ratio:16 / 9; height:auto; object-fit:cover; border:1.5px solid var(--navy); margin:0 0 12px;">` : ''}
+            ${item.musicId ? `<div class="char-meta-row" style="margin:0 0 16px; align-items:center;"><span class="char-meta-label">MUSIC</span><span class="char-meta-val">${getLinkedMusicHtml(item)}</span></div>` : ''}
+            <p style="line-height:1.6; font-size:14px; margin-bottom:16px;">${item.desc || ''}</p>
+            ${cardsHtml}
+          `;
+          document.getElementById('world-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('world', id);
+
+          const worldTitleEl = document.getElementById('world-detail-title');
+          const worldTitleParent = worldTitleEl.parentElement;
+          if(worldTitleParent && worldTitleParent.classList.contains('detail-title')) worldTitleParent.classList.add('char-detail-title-row');
+          const oldWorldIcon = worldTitleParent.querySelector('.title-link-icon');
+          if(oldWorldIcon) oldWorldIcon.remove();
+          if(worldLinkIcon) worldTitleParent.insertAdjacentHTML('beforeend', worldLinkIcon);
+        }
+      }
+    }
+
+    function selectCharItem(id, el) {
+      if (!handleListSelection(el, '#page-characters', 'characters')) return;
+      const item = database.characters.find(c => c.id === id);
+      if (!item) return;
+      activeItemIds.characters = id;
+      document.getElementById('char-detail-title').innerText = item.name;
+      document.getElementById('char-detail-sub').innerText = item.sub || 'CHARACTER PROFILE';
+
+      const allGallery01Imgs = (item.gallery01 || []).map(g => typeof g === 'string' ? { img:g, links:[] } : g);
+      let gal01Html = '';
+      if (allGallery01Imgs.length) {
+        gal01Html = `<div class="gallery-section-title"><span>OFFICIAL GALLERY</span></div>
+          <div class="gallery-drag-viewport" id="gal01-scroll-box" data-gallery-drag>
+            <div class="gallery-drag-track">
+              ${allGallery01Imgs.map((gObj, idx) => `<div class="gal-thumb-item" onclick="openLightboxFromData('gal01', ${idx})"><img src="${gObj.img}" class="gal-thumb-img" draggable="false"></div>`).join('')}
+            </div>
+          </div>`;
+      }
+
+      let gal02Html = '';
+      if (item.gallery02 && item.gallery02.length) {
+        gal02Html = `<div class="gal02-section"><div class="gallery-section-title"><span>ARCHIVE GALLERY</span></div><div>
+          ${item.gallery02.map((group, gIdx) => `<div class="gal02-accordion-item">
+            <div class="gal02-acc-header" role="button" tabindex="0" aria-expanded="true" onclick="toggleGallery02Accordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleGallery02Accordion(this)}"><span>✦ ${group.title || 'ARCHIVE'}</span><span class="gal02-acc-arrow">▼</span></div>
+            <div class="gal02-acc-body">
+              ${group.desc ? `<div class="gal02-acc-desc">${group.desc}</div>` : ''}
+              <div class="gallery-drag-viewport" data-gallery-drag>
+                <div class="gallery-drag-track">${(group.images || []).map((imgObj,iIdx) => { const a=typeof imgObj==='string'?{img:imgObj,links:[]}:imgObj; return `<div class="gal-thumb-item" onclick="openLightboxFromData('gal02', ${gIdx}, ${iIdx})"><img src="${a.img}" class="gal-thumb-img" draggable="false"></div>`; }).join('')}</div>
+              </div>
+            </div>
+          </div>`).join('')}
+        </div></div>`;
+      }
+
+      const hasCharacterLinks = Array.isArray(item.links) && item.links.some(l => l && l.url);
+      const linkIcon = hasCharacterLinks ? `<button class="title-link-icon" onclick="event.stopPropagation(); showCharacterLinksModal('${item.id}')" title="LINKED WORKS"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button>` : '';
+
+      document.getElementById('char-detail-body').innerHTML = `
+        <div class="char-profile-container">
+          <div class="char-main-top">
+            <div class="char-main-img-box"><img src="${item.img || './images/A01.png'}" class="char-main-img"></div>
+            <div class="char-meta-table">
+              <div class="char-meta-row"><span class="char-meta-label">NAME</span><span class="char-meta-val">${item.name}</span></div>
+              <div class="char-meta-row"><span class="char-meta-label">KNOWN AS</span><span class="char-meta-val">${item.alias || 'N/A'}</span></div>
+              <div class="char-meta-row"><span class="char-meta-label">BIRTHDAY</span><span class="char-meta-val">${item.birthday || '미정'}</span></div>
+              <div class="char-meta-row" style="align-items:flex-start;"><span class="char-meta-label">PROMPT</span><span class="char-meta-val"><span class="char-tag-block">${item.tags || 'None'}</span></span></div>
+              ${item.musicId ? `<div class="char-meta-row" style="align-items:flex-start;"><span class="char-meta-label">MUSIC</span><span class="char-meta-val">${getLinkedMusicHtml(item)}</span></div>` : ''}
+            </div>
+          </div>
+          ${gal01Html}
+          <div class="gallery-section-title"><span>NOTES &amp; LORE</span></div>
+          <div style="white-space:pre-wrap; line-height:1.7; font-size:13px; background:rgba(255,255,255,0.7); padding:14px; border:1px solid var(--navy); overflow-wrap:anywhere;">${item.tmi || '등록된 기타 정보가 없습니다.'}</div>
+          ${gal02Html}
+        </div>`;
+      initGalleryDragScroll(document.getElementById('char-detail-body'));
+      document.getElementById('char-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('characters', id);
+      const titleEl=document.getElementById('char-detail-title');
+      const titleParent=titleEl.parentElement;
+      if(titleParent && titleParent.classList.contains('detail-title')) titleParent.classList.add('char-detail-title-row');
+      const oldIcon=titleParent.querySelector('.title-link-icon'); if(oldIcon) oldIcon.remove();
+      if(linkIcon) titleParent.insertAdjacentHTML('beforeend', linkIcon);
+    }
+
+    function getMusicPlaylistHtml(item){
+      const url=(item && item.playlistUrl ? String(item.playlistUrl).trim() : '');
+      if(!url) return '';
+      return `<a class="music-playlist-link" href="${url.replace(/"/g,'&quot;')}" target="_blank" rel="noopener noreferrer">PLAYLIST <span class="playlist-arrow">↗</span></a>`;
+    }
+
+    function selectMusicItem(id, el) {
+      if (handleListSelection(el, '#page-music', 'music')) {
+        const item = database.music.find(m => m.id === id);
+        if (item) {
+          activeItemIds.music = id;
+          document.getElementById('music-detail-title').innerText = item.title;
+          document.getElementById('music-detail-sub').innerText = item.sub;
+          document.getElementById('music-detail-body').innerHTML = `${item.content||''}${item.audio ? `<div class="music-inline-player"><audio controls controlsList="nodownload" disableRemotePlayback preload="metadata" src="${item.audio}"></audio></div>` : ''}${getMusicPlaylistHtml(item)}${item.finalContent ? `<div class="music-final-content">${item.finalContent}</div>` : ''}`;
+          document.getElementById('music-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('music', id);
+        }
+      }
+    }
+
+    function selectFeedItem(id, el) {
+      if (handleListSelection(el, '#page-feed', 'feed')) {
+        const item = database.feed.find(f => f.id === id);
+        if (item) {
+          activeItemIds.feed = id;
+          document.getElementById('feed-detail-title').innerText = item.title;
+          document.getElementById('feed-detail-sub').innerText = item.date;
+          document.getElementById('feed-detail-body').innerHTML = `${item.img ? `<img src="${item.img}" style="width:100%; max-height:520px; object-fit:cover; border:1.5px solid var(--navy);">` : ''}${item.content || ''}`;
+          document.getElementById('feed-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('feed', id);
+        }
+      }
+    }
+
+    function selectNoticeItem(id, el) {
+      if (!handleListSelection(el, '#page-notice', 'notice')) return;
+      if (id === 'calendar') {
+        activeItemIds.notice = null;
+        document.getElementById('notice-detail-title').innerText = "ARCHIVE CALENDAR";
+        document.getElementById('notice-detail-sub').innerText = "TIME RECORD";
+        document.getElementById('notice-detail-admin-marks').innerHTML = '';
+        renderCalendarUI();
+      } else if (id === 'links') {
+        activeItemIds.notice = null;
+        document.getElementById('notice-detail-title').innerText = noticeLinks.title || 'LINKS & CONTACT';
+        document.getElementById('notice-detail-sub').innerText = noticeLinks.sub || 'CONTACT / LINKS';
+        document.getElementById('notice-detail-admin-marks').innerHTML = isAdminLoggedIn ? '<button class="inline-edit-trigger" onclick="openNoticeLinksEditor()">EDIT</button>' : '';
+        const intro = noticeLinks.content ? `<div class="links-page-intro">${noticeLinks.content}</div>` : '';
+        const links = Array.isArray(noticeLinks.links) ? noticeLinks.links.filter(l=>l && l.url) : [];
+        const buttons = links.length ? `<div class="archive-link-list">${links.map(l=>`<div class="archive-link-row"><span class="archive-link-category">${l.category||'LINK'}</span><a class="archive-link-button" href="${l.url}" target="_blank" rel="noopener noreferrer">${l.title||'OPEN'} ↗</a></div>`).join('')}</div>` : '<p>등록된 링크가 없습니다.</p>';
+        document.getElementById('notice-detail-body').innerHTML = `<div class="links-page">${intro}${buttons}</div>`;
+      } else {
+        const item = database.notice.find(n => n.id === id);
+        if (item) {
+          activeItemIds.notice = id;
+          document.getElementById('notice-detail-title').innerText = item.title;
+          document.getElementById('notice-detail-sub').innerText = `${item.date} ${item.pinned ? '(고정됨)' : ''}`;
+          document.getElementById('notice-detail-body').innerHTML = item.content;
+          document.getElementById('notice-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('notice', id);
+        }
+      }
+    }
+
+    /* ---------- CALENDAR & BIRTHDAY LINK ---------- */
+    // 생일은 캐릭터 데이터에서 자동으로 캘린더에 표시됩니다. 별도 등록 버튼은 사용하지 않습니다.
+
+    /* ---------- LIGHTBOX & LINKS MODAL ---------- */
+
+    function initGalleryDragScroll(root=document) {
+      root.querySelectorAll('[data-gallery-drag]').forEach(viewport => {
+        if (viewport.dataset.dragReady === '1') return;
+        viewport.dataset.dragReady = '1';
+
+        let pointerId = null;
+        let pointerDown = false;
+        let dragging = false;
+        let moved = false;
+        let startX = 0;
+        let startScroll = 0;
+
+        viewport.addEventListener('pointerdown', e => {
+          if (e.button !== undefined && e.button !== 0) return;
+          pointerDown = true;
+          dragging = false;
+          moved = false;
+          pointerId = e.pointerId;
+          startX = e.clientX;
+          startScroll = viewport.scrollLeft;
+        });
+
+        viewport.addEventListener('pointermove', e => {
+          if (!pointerDown || e.pointerId !== pointerId) return;
+          const dx = e.clientX - startX;
+          if (!dragging && Math.abs(dx) > 6) {
+            dragging = true;
+            moved = true;
+            viewport.classList.add('is-dragging');
+            try { viewport.setPointerCapture(pointerId); } catch (_) {}
+          }
+          if (dragging) {
+            e.preventDefault();
+            viewport.scrollLeft = startScroll - dx;
+          }
+        });
+
+        const endDrag = e => {
+          if (!pointerDown || (pointerId !== null && e.pointerId !== undefined && e.pointerId !== pointerId)) return;
+          pointerDown = false;
+          dragging = false;
+          viewport.classList.remove('is-dragging');
+          if (pointerId !== null) {
+            try { viewport.releasePointerCapture(pointerId); } catch (_) {}
+          }
+          if (moved) {
+            viewport.dataset.suppressClick = '1';
+            setTimeout(() => { delete viewport.dataset.suppressClick; }, 80);
+          }
+          pointerId = null;
+        };
+
+        viewport.addEventListener('pointerup', endDrag);
+        viewport.addEventListener('pointercancel', endDrag);
+        viewport.addEventListener('lostpointercapture', () => {
+          pointerDown = false;
+          dragging = false;
+          viewport.classList.remove('is-dragging');
+          pointerId = null;
+        });
+
+        viewport.addEventListener('click', e => {
+          if (viewport.dataset.suppressClick === '1') {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }, true);
+      });
+    }
+
+    function openLightboxFromData(type, p1, p2) {
+      const char = database.characters.find(c => c.id === activeItemIds.characters);
+      if (!char) return;
+
+      if (type === 'gal01') {
+        currentLightboxList = (char.gallery01 || []).map(g => typeof g === 'string' ? g : g.img).filter(Boolean);
+        currentLightboxIdx = Number(p1) || 0;
+      } else if (type === 'gal02') {
+        const group = (char.gallery02 || [])[Number(p1)];
+        if (!group) return;
+        currentLightboxList = (group.images || []).map(g => typeof g === 'string' ? g : g.img).filter(Boolean);
+        currentLightboxIdx = Number(p2) || 0;
+      } else {
+        return;
+      }
+
+      if (!currentLightboxList.length) return;
+      if (currentLightboxIdx >= currentLightboxList.length) currentLightboxIdx = 0;
+      showLightboxImg();
+    }
+
+    function showLightboxImg() {
+      document.getElementById('lightbox-img').src = currentLightboxList[currentLightboxIdx];
+      document.getElementById('lightbox-modal').classList.add('show');
+    }
+
+    function navLightbox(dir) {
+      currentLightboxIdx += dir;
+      if (currentLightboxIdx < 0) currentLightboxIdx = currentLightboxList.length - 1;
+      if (currentLightboxIdx >= currentLightboxList.length) currentLightboxIdx = 0;
+      showLightboxImg();
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox-modal').classList.remove('show');
+    }
+
+    document.addEventListener('keydown', e => {
+      if (document.getElementById('lightbox-modal').classList.contains('show')) {
+        if (e.key === 'ArrowLeft') navLightbox(-1);
+        if (e.key === 'ArrowRight') navLightbox(1);
+        if (e.key === 'Escape') closeLightbox();
+      }
+    });
+
+    function showCharacterLinksModal(charId) {
+      const char = database.characters.find(c => c.id === charId);
+      if (!char) return;
+      const links = Array.isArray(char.links) ? char.links.filter(l => l && l.url) : [];
+      const body = document.getElementById('links-modal-body');
+      body.innerHTML = links.length ? links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer" style="display:flex;justify-content:space-between;align-items:center;background:#fff;padding:10px 2px;border:none;border-bottom:1px solid rgba(28,32,56,.18);font-weight:bold;font-size:13px;color:var(--navy);text-decoration:none;"><span>${l.title || l.url}</span><span style="font-family:var(--mono);">GO ↗</span></a>`).join('') : '<p style="font-size:13px;">연결된 작품 링크가 없습니다.</p>';
+      document.getElementById('modal-links').classList.add('show');
+    }
+
+    function showWorldLinksModal(worldId) {
+      const world = database.world.find(w => w.id === worldId);
+      if (!world) return;
+      const links = Array.isArray(world.links) ? world.links.filter(l => l && l.url) : [];
+      const body = document.getElementById('links-modal-body');
+      body.innerHTML = links.length ? links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer" style="display:flex;justify-content:space-between;align-items:center;background:#fff;padding:10px 2px;border:none;border-bottom:1px solid rgba(28,32,56,.18);font-weight:bold;font-size:13px;color:var(--navy);text-decoration:none;"><span>${l.title || l.url}</span><span style="font-family:var(--mono);">GO ↗</span></a>`).join('') : '<p style="font-size:13px;">연결된 세계관 링크가 없습니다.</p>';
+      document.getElementById('modal-links').classList.add('show');
+    }
+
+    /* ---------- FULL EDIT & ADD SYSTEM (ADMIN) ---------- */
+    function openEditModal(section, id) {
+      const item = database[section].find(i => i.id === id);
+      if (!item) return;
+      renderAdminEditForm(section, item, false);
+    }
+
+    function openAddModal(section) {
+      const newItem = { id: `${section}_${Date.now()}` };
+      if (section === 'world') newItem.group = categoryGroups.world[0] || 'WORLD DATABASE';
+      if (section === 'characters') newItem.group = categoryGroups.characters[0] || 'CHARACTERS';
+      if (section === 'music') newItem.group = categoryGroups.music[0];
+      renderAdminEditForm(section, newItem, true);
+    }
+
+    function getExistingAudioOptionsHtml(selectedUrl='', currentId=''){
+      const items = (database.music||[]).filter(m=>m && m.audio && m.id!==currentId);
+      const opts = [`<option value="">-- 기존 음원 선택 안 함 --</option>`];
+      items.forEach(m=>{
+        const selected = m.audio===selectedUrl ? ' selected' : '';
+        const value = String(m.audio).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+        const label = String(m.title||m.id).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        opts.push(`<option value="${value}"${selected}>${label}</option>`);
+      });
+      return opts.join('');
+    }
+
+    function renderAdminEditForm(section, item, isNew) {
+      const container = document.getElementById('admin-edit-container');
+      let fieldsHtml='';
+      if(section==='characters'){
+        const groups=[...new Set([...categoryGroups.characters,...database.characters.map(c=>c.group).filter(Boolean)])];
+        const gal02=item.gallery02||[];
+        fieldsHtml=`
+          <label class="modal-label">캐릭터 이름</label><input type="text" id="edit-name" class="modal-input" value="${item.name||''}">
+          <label class="modal-label">분류</label><input type="text" id="edit-group" class="modal-input" list="character-group-options" value="${item.group||groups[0]||''}"><datalist id="character-group-options">${groups.map(g=>`<option value="${g}">`).join('')}</datalist>
+          <label class="modal-label">KNOWN AS</label><input type="text" id="edit-alias" class="modal-input" value="${item.alias||'ALIAS'}">
+          <label class="modal-label">생일 (YYYY-MM-DD)</label><input type="date" id="edit-bday" class="modal-input" value="${item.birthday||''}">
+          <label class="modal-label">PROMPT</label><textarea id="edit-tags" class="modal-textarea" style="min-height:160px;">${item.tags||''}</textarea>
+          <label class="modal-label">전용 음악</label>${getMusicLinkFieldHtml(item.musicId||'')}
+          <label class="modal-label">프로필 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">선택한 파일은 GitHub 업로드 서버를 통해 images/characters 폴더에 저장되고, 사이트에는 URL만 기록됩니다.</div>
+          <label class="modal-label">OFFICIAL GALLERY 이미지</label><input type="file" id="edit-gal01-files" class="modal-file" accept="image/*" multiple><div class="upload-help">여러 장 선택 가능. GitHub의 images/characters/.../gallery 폴더에 실제 파일로 업로드됩니다.</div>
+          <label class="modal-label">공통 작품 링크</label>
+          <div id="character-links-editor">${(item.links||[]).map((l,i)=>`<div class="admin-manager-row character-link-row"><input class="modal-input char-link-title" placeholder="링크 이름" value="${l.title||''}"><input class="modal-input char-link-url" placeholder="https://..." value="${l.url||''}"><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button></div>`).join('')}</div>
+          <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addCharacterLinkEditor()">+ LINK</button>
+          <label class="modal-label">NOTES &amp; LORE</label><textarea id="edit-tmi" class="modal-textarea" style="min-height:180px;">${item.tmi||''}</textarea>
+          <div class="modal-label" style="margin-top:6px;">ARCHIVE GALLERY</div>
+          <div id="gallery02-editor">${gal02.map((g,i)=>`<div class="gallery02-admin-group" data-index="${i}"><input class="modal-input g02-title" placeholder="갤러리 제목" value="${g.title||''}"><textarea class="modal-textarea g02-desc" placeholder="설명">${g.desc||''}</textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">선택한 이미지는 GitHub에 실제 파일로 업로드됩니다.</div></div>`).join('')}</div>
+          <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addGallery02AdminGroup()">+ GALLERY GROUP</button>
+        `;
+      }else if(section==='world'){
+        const groups=[...new Set([...categoryGroups.world,...database.world.map(w=>w.group).filter(Boolean)])]; const selectedCharIds=item.charIds||[];
+        fieldsHtml=`<label class="modal-label">세계관 제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
+          <label class="modal-label">분류</label><input type="text" id="edit-group" class="modal-input" list="world-group-options" value="${item.group||groups[0]||''}"><datalist id="world-group-options">${groups.map(g=>`<option value="${g}">`).join('')}</datalist>
+          <label class="modal-label">서브 타이틀</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||''}">
+          <label class="modal-label">세계관 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">GitHub 업로드 서버를 통해 images/world 폴더에 저장됩니다.</div>
+          <label class="modal-label">전용 음악</label>${getMusicLinkFieldHtml(item.musicId||'')}
+          <label class="modal-label">세계관 링크</label>
+          <div id="world-links-editor">${(item.links||[]).map((l,i)=>`<div class="admin-manager-row world-link-row"><input class="modal-input world-link-title" placeholder="링크 이름" value="${l.title||''}"><input class="modal-input world-link-url" placeholder="https://..." value="${l.url||''}"><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button></div>`).join('')}</div>
+          <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addWorldLinkEditor()">+ LINK</button>
+          <label class="modal-label">세계관 설명</label><textarea id="edit-desc" class="modal-textarea" style="min-height:180px;">${item.desc||''}</textarea>
+          <label class="modal-label">등장 캐릭터 <span style="font-weight:400;opacity:.7;">(클릭으로 선택 · 드래그로 순서 변경)</span></label>
+          <div id="world-char-select-grid" class="char-select-grid world-char-select-scroll">${[...database.characters].sort((a,b)=>{const ai=selectedCharIds.indexOf(a.id),bi=selectedCharIds.indexOf(b.id);return (ai<0?9999:ai)-(bi<0?9999:bi);}).map(c=>`<div class="char-select-card ${selectedCharIds.includes(c.id)?'selected':''}" draggable="true" data-cid="${c.id}" onclick="this.classList.toggle('selected')" ondragstart="worldCharDragStart(event)" ondragover="worldCharDragOver(event)" ondrop="worldCharDrop(event)" ondragend="worldCharDragEnd(event)"><span style="display:block;cursor:grab;">☷</span>${c.name}</div>`).join('')}</div></div>`;
+      }else if(section==='music'){
+        fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
+          <label class="modal-label">서브</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||''}">
+          <label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea" style="min-height:220px;">${item.content||''}</textarea>
+          <label class="modal-label">음원 파일</label><input type="file" id="edit-audio-file" class="modal-file" accept="audio/*"><div class="upload-help">새 파일을 올릴 때 사용합니다. 이미 GitHub에 올라간 음원은 아래에서 기존 음원을 연결할 수 있습니다.</div>
+          <label class="modal-label">기존 음원 연결 (선택)</label><select id="edit-existing-audio" class="modal-input">${getExistingAudioOptionsHtml(item.audio||'', item.id)}</select>
+          <div class="upload-help">다른 MUSIC에 이미 연결된 음원을 그대로 사용하거나, 아래 URL 칸에 GitHub Pages 음원 주소를 직접 넣을 수 있습니다. 새 파일을 선택하면 새 업로드가 우선됩니다.</div>
+          <label class="modal-label">기존 음원 URL (선택)</label><input type="url" id="edit-existing-audio-url" class="modal-input" value="" placeholder="https://ruroong.github.io/ruroon._.g/music/...mp3">
+          <label class="modal-label">플레이리스트 링크 (선택)</label><input type="url" id="edit-playlist-url" class="modal-input" value="${item.playlistUrl||''}" placeholder="https://open.spotify.com/playlist/... 또는 https://www.youtube.com/playlist?...">
+          <div class="upload-help">이 음악과 함께 보여줄 플레이리스트 링크입니다. 입력하지 않으면 표시되지 않습니다.</div>
+          <label class="modal-label checkbox-line"><input type="checkbox" id="edit-main-bgm" ${isMainBgm(item.id)?'checked':''}> <span>메인 페이지 BGM으로 사용</span></label><div class="upload-help">체크하면 메인 페이지에서 이 MUSIC의 실제 음원을 재생합니다. 여러 곡을 체크하면 순서대로 재생됩니다.</div>
+          <label class="modal-label">마지막 내용 (선택)</label><textarea id="edit-final-content" class="modal-textarea" placeholder="음악 플레이어 아래에 표시할 추가 내용을 입력하세요. 비워두면 표시되지 않습니다.">${item.finalContent||''}</textarea>`;
+      }else if(section==='feed'){
+        fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
+          <label class="modal-label">날짜</label><input type="date" id="edit-date" class="modal-input" value="${item.date||''}">
+          <label class="modal-label">대표 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">GitHub의 images/feed 폴더에 실제 파일로 업로드됩니다.</div>
+          <label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea" style="min-height:220px;">${stripImageHtml(item.content||'')}</textarea>`;
+      }else if(section==='notice'){
+        fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
+          <label class="modal-label">날짜</label><input type="date" id="edit-date" class="modal-input" value="${item.date||''}">
+          <label class="modal-label checkbox-line"><input type="checkbox" id="edit-pinned" ${item.pinned?'checked':''}> <span>고정하기</span></label>
+          <label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea" style="min-height:220px;">${item.content||''}</textarea>`;
+      }else{
+        fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||item.name||''}"><label class="modal-label">서브 / 날짜</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||item.date||''}"><label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea">${item.content||''}</textarea>`;
+      }
+      container.innerHTML=`<div class="modal-title">${isNew?'ADD NEW ITEM':'EDIT ITEM'}</div>${fieldsHtml}<div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveAdminEdit('${section}','${item.id}',${isNew})">SAVE</button></div>`;
+      document.getElementById('modal-admin-edit').classList.add('show');
+    }
+
+    function addCharacterLinkEditor(){
+      const box=document.getElementById('character-links-editor'); if(!box)return;
+      const row=document.createElement('div'); row.className='admin-manager-row character-link-row';
+      row.innerHTML='<input class="modal-input char-link-title" placeholder="링크 이름"><input class="modal-input char-link-url" placeholder="https://..."><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button>';
+      box.appendChild(row);
+    }
+
+    function addWorldLinkEditor(){
+      const box=document.getElementById('world-links-editor'); if(!box)return;
+      const row=document.createElement('div'); row.className='admin-manager-row world-link-row';
+      row.innerHTML='<input class="modal-input world-link-title" placeholder="링크 이름"><input class="modal-input world-link-url" placeholder="https://..."><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button>';
+      box.appendChild(row);
+    }
+
+    let worldCharDragEl=null;
+    function worldCharDragStart(e){ worldCharDragEl=e.currentTarget; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
+    function worldCharDragOver(e){ e.preventDefault(); e.dataTransfer.dropEffect='move'; }
+    function worldCharDrop(e){
+      e.preventDefault();
+      const target=e.currentTarget;
+      if(!worldCharDragEl || target===worldCharDragEl)return;
+      const grid=document.getElementById('world-char-select-grid'); if(!grid)return;
+      const rect=target.getBoundingClientRect();
+      const after=e.clientY > rect.top + rect.height/2;
+      grid.insertBefore(worldCharDragEl, after ? target.nextSibling : target);
+    }
+    function worldCharDragEnd(e){ e.currentTarget.classList.remove('dragging'); worldCharDragEl=null; }
+
+    function openNoticeLinksEditor(){
+      const container=document.getElementById('admin-edit-container');
+      const rows=Array.isArray(noticeLinks.links)?noticeLinks.links:[];
+      container.innerHTML=`<div class="modal-title">EDIT LINKS PAGE</div>
+        <label class="modal-label">제목</label><input id="links-page-title" class="modal-input" value="${noticeLinks.title||''}">
+        <label class="modal-label">소제목</label><input id="links-page-sub" class="modal-input" value="${noticeLinks.sub||''}">
+        <label class="modal-label">글 <span style="font-weight:400;opacity:.7;">(비워두면 표시되지 않음)</span></label><textarea id="links-page-content" class="modal-textarea">${noticeLinks.content||''}</textarea>
+        <div class="manager-section-title">분류 - 링크 버튼</div>
+        <div id="notice-links-editor" class="admin-list-manager">${rows.map(l=>`<div class="admin-manager-row notice-link-row">
+          <input class="modal-input notice-link-category" placeholder="분류" value="${l.category||''}">
+          <input class="modal-input notice-link-title" placeholder="버튼 이름" value="${l.title||''}">
+          <input class="modal-input notice-link-url" placeholder="https://..." value="${l.url||''}">
+          <button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button>
+        </div>`).join('')}</div>
+        <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addNoticeLinkEditor()">+ LINK</button>
+        <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveNoticeLinksEditor()">SAVE</button></div>`;
+      document.getElementById('modal-admin-edit').classList.add('show');
+    }
+    function addNoticeLinkEditor(){
+      const box=document.getElementById('notice-links-editor'); if(!box)return;
+      const row=document.createElement('div'); row.className='admin-manager-row notice-link-row';
+      row.innerHTML='<input class="modal-input notice-link-category" placeholder="분류"><input class="modal-input notice-link-title" placeholder="버튼 이름"><input class="modal-input notice-link-url" placeholder="https://..."><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button>';
+      box.appendChild(row);
+    }
+    async function saveNoticeLinksEditor(){
+      noticeLinks.title=document.getElementById('links-page-title').value.trim()||'LINKS & CONTACT';
+      noticeLinks.sub=document.getElementById('links-page-sub').value.trim()||'CONTACT / LINKS';
+      noticeLinks.content=document.getElementById('links-page-content').value;
+      noticeLinks.links=[...document.querySelectorAll('#notice-links-editor .notice-link-row')].map(r=>({
+        category:r.querySelector('.notice-link-category').value.trim(),
+        title:r.querySelector('.notice-link-title').value.trim(),
+        url:r.querySelector('.notice-link-url').value.trim()
+      })).filter(l=>l.url);
+      const sharedSaveOk = await persistArchiveData();
+      if(!sharedSaveOk) return;
+      closeAdminEditModal(); renderAllSidebars();
+      if(document.getElementById('item-notice-links')) selectNoticeItem('links',document.getElementById('item-notice-links'));
+    }
+
+    function openListManager(section){
+      if(section==='characters'){ openCharacterListManager(); return; }
+      const container=document.getElementById('admin-edit-container');
+      const items=[...database[section]];
+      const hasGroups=['world','music'].includes(section);
+      const labels={world:'WORLD LIST',music:'MUSIC LIST',feed:'FEED LIST',notice:'NOTICE LIST'};
+      const title=labels[section]||`${section.toUpperCase()} LIST`;
+      container.innerHTML=`<div class="modal-title">EDIT ${title}</div>
+        ${hasGroups?`<datalist id="generic-group-options">${categoryGroups[section].map(g=>`<option value="${g}">`).join('')}</datalist><div class="manager-section-title">분류 이름 / 순서</div><div id="generic-group-editor" class="admin-list-manager">${[...categoryGroups[section]].map(g=>`<div class="admin-manager-group-row"><input class="modal-input generic-group-name" value="${g}"><button class="manager-small-btn" onclick="moveGenericGroup(this,-1)">▲</button><button class="manager-small-btn" onclick="moveGenericGroup(this,1)">▼</button><button class="manager-small-btn" onclick="removeGenericGroup(this)">삭제</button></div>`).join('')}</div><button class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addGenericGroup()">+ GROUP</button>`:''}
+        <div class="manager-section-title">표시 순서</div>
+        <div id="generic-order-editor" class="admin-list-manager">${items.map(i=>`<div class="admin-manager-char-row" draggable="true" data-id="${i.id}" ondragstart="genericOrderDragStart(event)" ondragover="genericOrderDragOver(event)" ondrop="genericOrderDrop(event)" ondragend="genericOrderDragEnd(event)">
+          <span class="drag-handle">☷</span><span style="flex:1;font-weight:700;">${i.title||i.name||i.date||i.id}</span>
+          ${hasGroups?`<input class="modal-input generic-item-group" list="generic-group-options" value="${i.group||''}" placeholder="분류">`:''}
+        </div>`).join('')}</div>
+        <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveGenericListManager('${section}')">SAVE LIST</button></div>`;
+      document.getElementById('modal-admin-edit').classList.add('show');
+    }
+    function addGenericGroup(){ const box=document.getElementById('generic-group-editor'); if(!box)return; const d=document.createElement('div'); d.className='admin-manager-group-row'; d.innerHTML='<input class="modal-input generic-group-name" placeholder="새 분류 이름"><button class="manager-small-btn" onclick="moveGenericGroup(this,-1)">▲</button><button class="manager-small-btn" onclick="moveGenericGroup(this,1)">▼</button><button class="manager-small-btn" onclick="removeGenericGroup(this)">삭제</button>'; box.appendChild(d); }
+    function moveGenericGroup(btn,dir){ const row=btn.parentElement,box=row.parentElement,rows=[...box.children],idx=rows.indexOf(row),next=idx+dir;if(next<0||next>=rows.length)return;if(dir<0)box.insertBefore(row,rows[next]);else box.insertBefore(rows[next],row); }
+    function removeGenericGroup(btn){ const box=btn.parentElement.parentElement;if(box.children.length<=1){alert('분류는 최소 1개가 필요합니다.');return;}btn.parentElement.remove(); }
+    let genericOrderDragEl=null;
+    function genericOrderDragStart(e){genericOrderDragEl=e.currentTarget;e.currentTarget.classList.add('dragging');e.dataTransfer.effectAllowed='move';}
+    function genericOrderDragOver(e){e.preventDefault();e.dataTransfer.dropEffect='move';}
+    function genericOrderDrop(e){e.preventDefault();const t=e.currentTarget;if(!genericOrderDragEl||t===genericOrderDragEl)return;const b=t.parentElement,r=t.getBoundingClientRect();b.insertBefore(genericOrderDragEl,e.clientY>r.top+r.height/2?t.nextSibling:t);}
+    function genericOrderDragEnd(e){e.currentTarget.classList.remove('dragging');genericOrderDragEl=null;}
+    async function saveGenericListManager(section){
+      const rows=[...document.querySelectorAll('#generic-order-editor .admin-manager-char-row')];
+      const order=rows.map(r=>r.dataset.id);
+      if(['world','music'].includes(section)){
+        const names=[...document.querySelectorAll('#generic-group-editor .generic-group-name')].map(i=>i.value.trim()).filter(Boolean);
+        if(!names.length){alert('분류를 최소 1개 입력해 주세요.');return;}
+        categoryGroups[section]=names;
+        rows.forEach(r=>{const item=database[section].find(x=>x.id===r.dataset.id);const sel=r.querySelector('.generic-item-group');if(item&&sel)item.group=sel.value;});
+      }
+      database[section].sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id));
+      await persistArchiveData();closeAdminEditModal();renderAllSidebars();
+    }
+
+    function openCharacterListManager(){
+      const container=document.getElementById('admin-edit-container');
+      const groups=[...categoryGroups.characters];
+      const order=(characterOrder.length?characterOrder:database.characters.map(c=>c.id)).filter(id=>database.characters.some(c=>c.id===id));
+      database.characters.forEach(c=>{if(!order.includes(c.id))order.push(c.id);});
+      container.innerHTML=`<div class="modal-title">EDIT CHARACTER LIST</div>
+        <div class="manager-section-title">목록 분류 이름 / 순서</div>
+        <div id="character-group-editor" class="admin-list-manager">${groups.map((g,i)=>`
+          <div class="admin-manager-group-row" data-index="${i}">
+            <input class="modal-input character-group-name" value="${g}">
+            <button type="button" class="manager-small-btn" onclick="moveCharacterGroup(this,-1)">▲</button>
+            <button type="button" class="manager-small-btn" onclick="moveCharacterGroup(this,1)">▼</button>
+            <button type="button" class="manager-small-btn" onclick="removeCharacterGroup(this)">삭제</button>
+          </div>`).join('')}</div>
+        <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addCharacterGroupEditor()">+ GROUP</button>
+        <div class="manager-section-title">캐릭터 분류 / 표시 순서</div>
+        <div id="character-order-editor" class="admin-list-manager">${order.map(id=>{
+          const c=database.characters.find(x=>x.id===id); return c?`<div class="admin-manager-char-row" draggable="true" data-cid="${c.id}" ondragstart="charOrderDragStart(event)" ondragover="charOrderDragOver(event)" ondrop="charOrderDrop(event)" ondragend="charOrderDragEnd(event)">
+            <span class="drag-handle">☷</span><span style="min-width:100px;font-weight:700;">${c.name}</span>
+            <select class="character-manager-group">${groups.map(g=>`<option value="${g}" ${c.group===g?'selected':''}>${g}</option>`).join('')}</select>
+          </div>`:'';}).join('')}</div>
+        <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveCharacterListManager()">SAVE LIST</button></div>`;
+      document.getElementById('modal-admin-edit').classList.add('show');
+    }
+    function addCharacterGroupEditor(){
+      const box=document.getElementById('character-group-editor'); if(!box)return;
+      const div=document.createElement('div'); div.className='admin-manager-group-row';
+      div.innerHTML='<input class="modal-input character-group-name" placeholder="새 분류 이름" oninput="syncCharacterGroupOptions(this)"><button type="button" class="manager-small-btn" onclick="moveCharacterGroup(this,-1)">▲</button><button type="button" class="manager-small-btn" onclick="moveCharacterGroup(this,1)">▼</button><button type="button" class="manager-small-btn" onclick="removeCharacterGroup(this)">삭제</button>';
+      box.appendChild(div);
+    }
+    function moveCharacterGroup(btn,dir){ const row=btn.parentElement, box=row.parentElement; const rows=[...box.children], idx=rows.indexOf(row), next=idx+dir; if(next<0||next>=rows.length)return; if(dir<0)box.insertBefore(row,rows[next]); else box.insertBefore(rows[next],row); }
+    function syncCharacterGroupOptions(input){ const name=input.value.trim(); if(!name)return; document.querySelectorAll('.character-manager-group').forEach(sel=>{ if(![...sel.options].some(o=>o.value===name)){ const o=document.createElement('option'); o.value=name; o.textContent=name; sel.appendChild(o); } }); }
+    function removeCharacterGroup(btn){ const box=btn.parentElement.parentElement; if(box.children.length<=1){alert('분류는 최소 1개가 필요합니다.');return;} btn.parentElement.remove(); }
+    let charOrderDragEl=null;
+    function charOrderDragStart(e){ charOrderDragEl=e.currentTarget; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
+    function charOrderDragOver(e){ e.preventDefault(); e.dataTransfer.dropEffect='move'; }
+    function charOrderDrop(e){ e.preventDefault(); const target=e.currentTarget; if(!charOrderDragEl||target===charOrderDragEl)return; const box=target.parentElement, rect=target.getBoundingClientRect(); box.insertBefore(charOrderDragEl,e.clientY>rect.top+rect.height/2?target.nextSibling:target); }
+    function charOrderDragEnd(e){ e.currentTarget.classList.remove('dragging'); charOrderDragEl=null; }
+    async function saveCharacterListManager(){
+      const names=[...document.querySelectorAll('#character-group-editor .character-group-name')].map(i=>i.value.trim()).filter(Boolean);
+      if(!names.length){alert('분류를 최소 1개 입력해 주세요.');return;}
+      const rows=[...document.querySelectorAll('#character-order-editor .admin-manager-char-row')];
+      characterOrder=rows.map(r=>r.dataset.cid);
+      rows.forEach(r=>{ const c=database.characters.find(x=>x.id===r.dataset.cid); if(c)c.group=r.querySelector('.character-manager-group').value; });
+      categoryGroups.characters=names;
+      database.characters.forEach(c=>{if(!names.includes(c.group))c.group=names[0];});
+      await persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
+    }
+
+    function addGallery02AdminGroup(){ const box=document.getElementById('gallery02-editor'); if(!box)return; const i=box.children.length; const div=document.createElement('div'); div.className='gallery02-admin-group'; div.dataset.index=i; div.innerHTML='<input class="modal-input g02-title" placeholder="갤러리 제목"><textarea class="modal-textarea g02-desc" placeholder="설명"></textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">파일을 선택하면 저장 시 GitHub에 실제 파일로 업로드됩니다.</div>'; box.appendChild(div); }
+    function stripImageHtml(html){ return String(html||'').replace(/<img[^>]*>/gi,'').replace(/<[^>]+>/g,'').trim(); }
+    /* ---------- DIRECT GITHUB UPLOAD (NO WORKER) ---------- */
+    /*
+       The site is hosted on GitHub Pages, so uploads can go directly to GitHub's
+       REST API. The token is kept only in sessionStorage, never in the archive
+       data/localStorage, and is cleared when the browser tab/session ends.
+       Repository: ruroong/ruroon._.g, branch: main
+    */
+    const GITHUB_OWNER = 'ruroong';
+    const GITHUB_REPO = 'ruroon._.g';
+    const GITHUB_BRANCH = 'main';
+    const GITHUB_TOKEN_KEY = 'ruroon_github_token_session';
+    const GITHUB_API_BASE = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`;
+    const GITHUB_UPLOAD_TIMEOUT = 120000;
+
+    function getGitHubToken(){
+      return sessionStorage.getItem(GITHUB_TOKEN_KEY) || '';
+    }
+
+    function clearGitHubToken(){
+      sessionStorage.removeItem(GITHUB_TOKEN_KEY);
+    }
+
+    function askForGitHubToken(force=false){
+      if(!force && getGitHubToken()) return getGitHubToken();
+      const token=prompt('GitHub Fine-grained Personal Access Token을 입력하세요.\n\n토큰은 이 브라우저 세션에만 임시 저장되며 사이트 데이터(localStorage)에는 저장하지 않습니다.\n\n※ 토큰 자체를 사이트 코드에 넣지 않습니다.');
+      if(token===null) return '';
+      const value=token.trim();
+      if(!value) return '';
+      sessionStorage.setItem(GITHUB_TOKEN_KEY,value);
+      return value;
+    }
+
+    async function githubApi(path, options={}, retryCount=0){
+      const token=getGitHubToken() || askForGitHubToken();
+      if(!token) throw new Error('GitHub 토큰이 설정되지 않았습니다.');
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),GITHUB_UPLOAD_TIMEOUT);
+      try{
+        const res=await fetch(`${GITHUB_API_BASE}${path}`,{
+          ...options,
+          mode:'cors',
+          cache:'no-store',
+          signal:controller.signal,
+          headers:{
+            'Accept':'application/vnd.github+json',
+            'Authorization':`Bearer ${token}`,
+            'X-GitHub-Api-Version':'2022-11-28',
+            'Content-Type':'application/json',
+            ...(options.headers||{})
+          }
+        });
+        const text=await res.text();
+        let data={};
+        try{ data=text?JSON.parse(text):{}; }catch(e){ data={message:text||''}; }
+        if(!res.ok){
+          if(res.status===401 || res.status===403) clearGitHubToken();
+          const message=data.message || `GitHub API 오류`;
+          const error=new Error(`${message} (${res.status})`);
+          error.status=res.status;
+          error.response=data;
+          throw error;
+        }
+        return data;
+      }catch(err){
+        if(err?.name==='AbortError') throw new Error(`GitHub 요청 시간 초과 (${GITHUB_UPLOAD_TIMEOUT/1000}초)`);
+        if(err?.status) throw err;
+        // Browser-level network failures are reported by fetch as the unhelpful
+        // "Failed to fetch". Retry a couple of times before exposing the error.
+        if(retryCount<2){
+          await new Promise(r=>setTimeout(r,800*(retryCount+1)));
+          return githubApi(path,options,retryCount+1);
+        }
+        throw new Error(`GitHub API 통신 실패: ${err?.message||err}`);
+      }finally{ clearTimeout(timer); }
+    }
+
+    function fileToBase64(file){
+      return new Promise((resolve,reject)=>{
+        const reader=new FileReader();
+        reader.onload=()=>{
+          try{
+            const result=String(reader.result||'');
+            const comma=result.indexOf(',');
+            resolve(comma>=0 ? result.slice(comma+1) : result);
+          }catch(e){ reject(e); }
+        };
+        reader.onerror=()=>reject(reader.error||new Error('파일을 읽을 수 없습니다.'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function makeGitHubFilePath(file, folder){
+      const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+      return `${folder}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safeName}`;
+    }
+
+    function getGitHubPagesUrl(path){
+      return `https://${GITHUB_OWNER}.github.io/${GITHUB_REPO}/${path.split('/').map(encodeURIComponent).join('/')}`;
+    }
+
+    async function uploadFileToGitHub(file, folder){
+      if(!file) return '';
+      if(file.size > 100 * 1024 * 1024){
+        throw new Error(`파일이 너무 큽니다: ${file.name}\nGitHub API는 이 방식으로 100MB 초과 파일을 지원하지 않습니다.`);
+      }
+      const path=makeGitHubFilePath(file,folder);
+      const content=await fileToBase64(file);
+      const data=await githubApi(`/contents/${path.split('/').map(encodeURIComponent).join('/')}`,{
+        method:'PUT',
+        body:JSON.stringify({
+          message:`Upload ${path}`,
+          content,
+          branch:GITHUB_BRANCH
+        })
+      });
+      return getGitHubPagesUrl(path);
+    }
+
+    async function uploadManyFilesToGitHub(files, folder){
+      const list=[...files];
+      const results=[];
+      for(let i=0;i<list.length;i++){
+        const file=list[i];
+        if(!getGitHubToken()) askForGitHubToken();
+        if(!getGitHubToken()) throw new Error('업로드가 취소되었습니다.');
+        results.push(await uploadFileToGitHub(file,folder));
+      }
+      return results;
+    }
+
+    /* 기존 저장 로직에서 호출되므로 유지. 이제 Base64를 DB에 저장하지 않고 GitHub URL을 반환한다. */
+    function readFileAsDataURL(file){
+      return uploadFileToGitHub(file,'images/uploads');
+    }
+
+    function closeAdminEditModal() {
+      document.getElementById('modal-admin-edit').classList.remove('show');
+    }
+
+    function showSaveLoading(message='SAVING...', sub='파일을 업로드하고 데이터를 저장하는 중입니다.<br>파일이 많으면 잠시 걸릴 수 있습니다.'){
+      const overlay=document.getElementById('save-loading-overlay');
+      const text=document.getElementById('save-loading-text');
+      const subEl=document.getElementById('save-loading-sub');
+      if(text) text.textContent=message;
+      if(subEl) subEl.innerHTML=sub;
+      if(overlay) overlay.classList.add('show');
+    }
+    function hideSaveLoading(){
+      const overlay=document.getElementById('save-loading-overlay');
+      if(overlay) overlay.classList.remove('show');
+    }
+
+    async function saveAdminEdit(section,id,isNew){
+      showSaveLoading('SAVING...', '파일을 업로드하고 데이터를 저장하는 중입니다.<br>파일이 많으면 잠시 걸릴 수 있습니다.');
+      try{
+
+      let item=database[section].find(i=>i.id===id);
+      if(isNew){ item={id}; database[section].push(item); }
+      if(section==='characters'){
+        item.name=document.getElementById('edit-name').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'CHARACTERS'; item.alias=document.getElementById('edit-alias').value.trim(); item.birthday=document.getElementById('edit-bday').value; item.tags=document.getElementById('edit-tags').value; item.musicId=document.getElementById('edit-music-id').value || ''; item.tmi=document.getElementById('edit-tmi').value;
+        const linkRows=[...document.querySelectorAll('#character-links-editor .character-link-row')]; item.links=linkRows.map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.title||l.url);
+        item.links=[...document.querySelectorAll('#character-links-editor .character-link-row')].map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.url);
+        const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile) item.img=await uploadFileToGitHub(imgFile, `images/characters/${item.id}`);
+        const galFiles=[...document.getElementById('edit-gal01-files').files]; if(galFiles.length) { const urls=await uploadManyFilesToGitHub(galFiles, `images/characters/${item.id}/gallery`); item.gallery01=urls.map(url=>({img:url})); }
+        const groups=[]; for(const box of document.querySelectorAll('#gallery02-editor .gallery02-admin-group')){ const title=box.querySelector('.g02-title').value.trim(); const desc=box.querySelector('.g02-desc').value; const files=[...box.querySelector('.g02-files').files]; const old=item.gallery02?.[Number(box.dataset.index)]?.images||[]; let images=old; if(files.length) { const urls=await uploadManyFilesToGitHub(files, `images/characters/${item.id}/gallery`); images=urls.map(url=>({img:url})); } if(title||desc||images.length) groups.push({title:title||'ARCHIVE',desc,images}); } item.gallery02=groups;
+        item.gallery01=(item.gallery01||[]).map(g=>typeof g==='string'?{img:g}:{img:g.img});
+        item.gallery02=(item.gallery02||[]).map(g=>({...g,images:(g.images||[]).map(x=>typeof x==='string'?{img:x}:{img:x.img})}));
+      }else if(section==='world'){
+        item.title=document.getElementById('edit-title').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'WORLD DATABASE'; item.sub=document.getElementById('edit-sub').value.trim(); item.desc=document.getElementById('edit-desc').value; item.musicId=document.getElementById('edit-music-id').value || '';
+        const worldLinkRows=[...document.querySelectorAll('#world-links-editor .world-link-row')];
+        item.links=worldLinkRows.map(row=>({title:row.querySelector('.world-link-title').value.trim(),url:row.querySelector('.world-link-url').value.trim()})).filter(l=>l.url);
+        const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/world/${item.id}`); item.charIds=[...document.querySelectorAll('#world-char-select-grid .char-select-card.selected')].map(el=>el.dataset.cid);
+      }else if(section==='music'){
+        item.title=document.getElementById('edit-title').value.trim();
+        item.sub=document.getElementById('edit-sub').value.trim();
+        item.content=document.getElementById('edit-content').value;
+        item.finalContent=document.getElementById('edit-final-content').value;
+        item.playlistUrl=(document.getElementById('edit-playlist-url').value||'').trim();
+        const audioFile=document.getElementById('edit-audio-file').files[0];
+        const existingAudioSelect=document.getElementById('edit-existing-audio');
+        const existingAudioUrl=document.getElementById('edit-existing-audio-url');
+        if(audioFile){
+          item.audio=await uploadFileToGitHub(audioFile, 'music');
+        }else{
+          const selectedExisting=(existingAudioSelect?.value||'').trim();
+          const typedExisting=(existingAudioUrl?.value||'').trim();
+          if(selectedExisting) item.audio=selectedExisting;
+          else if(typedExisting) item.audio=typedExisting;
+        }
+        const mainBgmChecked=document.getElementById('edit-main-bgm').checked;
+        mainBgmIds=Array.isArray(mainBgmIds)?mainBgmIds.filter(x=>x!==item.id):[];
+        if(mainBgmChecked) mainBgmIds.push(item.id);
+      }else if(section==='feed'){
+        item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.content=document.getElementById('edit-content').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/feed/${item.id}`); item.content=item.content || '';
+      }else if(section==='notice'){
+        item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.pinned=document.getElementById('edit-pinned').checked; item.content=document.getElementById('edit-content').value;
+      }else{ item.title=document.getElementById('edit-title').value; item.sub=document.getElementById('edit-sub').value; item.content=document.getElementById('edit-content').value; }
+      categoryGroups.world=[...new Set([...categoryGroups.world,...database.world.map(x=>x.group).filter(Boolean)])];
+      categoryGroups.characters=[...new Set([...categoryGroups.characters,...database.characters.map(x=>x.group).filter(Boolean)])];
+      categoryGroups.music=[...new Set([...categoryGroups.music,...database.music.map(x=>x.group).filter(Boolean)])];
+      characterOrder=(characterOrder.length?characterOrder:database.characters.map(c=>c.id)).filter(id=>database.characters.some(c=>c.id===id)); database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
+      const sharedSaveOk = await persistArchiveData();
+      if(!sharedSaveOk) return;
+      closeAdminEditModal(); renderAllSidebars();
+      if(section==='music' && playerReady) { const currentTracks=getPlayableMainBgmTracks(); if(!currentTracks.length){ player.pause(); player.removeAttribute('src'); player.load(); } else { const currentId=currentTracks[Math.min(mainBgmIndex,currentTracks.length-1)]?.id; const target=currentTracks.findIndex(t=>t.id===currentId); if(target>=0) loadMainBgmTrack(target, !player.paused); else loadMainBgmTrack(0, false); } }
+      setTimeout(()=>{
+        if(section==='characters' && activeItemIds.characters){ const el=document.getElementById('item-characters-'+activeItemIds.characters); if(el)selectCharItem(activeItemIds.characters,el); }
+        if(section==='world' && activeItemIds.world){ const el=document.getElementById('item-world-'+activeItemIds.world); if(el)selectWorldItem(activeItemIds.world,el); }
+      },50);
+    
+      }catch(err){
+        console.error(err);
+        alert(`저장 중 오류가 발생했습니다.\n\n${err.message || err}`);
+      }finally{
+        hideSaveLoading();
+      }
+    }
+
+    async function deleteExistingItem(section, id) {
+      if (confirm('해당 항목을 정말 삭제하시겠습니까?')) {
+        const idx = database[section].findIndex(i => i.id === id);
+        if (idx !== -1) {
+          database[section].splice(idx, 1);
+          if(section==='music') mainBgmIds=(mainBgmIds||[]).filter(x=>x!==id);
+          if(section==='characters') characterOrder=characterOrder.filter(x=>x!==id);
+          await persistArchiveData();
+          renderAllSidebars();
+        }
+      }
+    }
+
+    /* ---------- AUTH SYSTEM ---------- */
+    const SECRET_PASS = "Loversleporineladymart";
+
+    async function openUploadSettings(){
+      if(!isAdminLoggedIn){ alert('관리자 로그인 후 사용할 수 있습니다.'); return; }
+      const has=!!getGitHubToken();
+      const action=prompt(
+        `GitHub 업로드 설정\n\n현재 상태: ${has?'연결됨 (현재 브라우저 세션)':'연결 안 됨'}\n\n1 = GitHub 토큰 입력/교체\n2 = 연결 테스트\n3 = 토큰 지우기\n\n번호를 입력하세요.`,
+        has?'2':'1'
+      );
+      if(action==='1'){
+        const token=askForGitHubToken(true);
+        if(token) alert('GitHub 토큰을 현재 브라우저 세션에 저장했습니다. 이제 파일을 선택하고 SAVE하면 GitHub에 업로드됩니다.');
+      }else if(action==='2'){
+        try{
+          await githubApi('');
+          alert(`GitHub 연결 성공!\n\n저장소: ${GITHUB_OWNER}/${GITHUB_REPO}\n브랜치: ${GITHUB_BRANCH}\n\n이제 관리자에서 이미지/음원을 선택하고 SAVE하면 자동 업로드됩니다.`);
+        }catch(err){
+          alert(`GitHub 연결 실패\n\n${err.message}`);
+        }
+      }else if(action==='3'){
+        clearGitHubToken();
+        alert('GitHub 토큰을 이 브라우저 세션에서 삭제했습니다.');
+      }
+    }
+
+    function openAdminLogin() {
+      document.getElementById('admin-pass-input').value = '';
+      document.getElementById('modal-login').classList.add('show');
+      setTimeout(() => document.getElementById('admin-pass-input').focus(), 100);
+    }
+
+    function closeAdminLogin() {
+      document.getElementById('modal-login').classList.remove('show');
+    }
+
+    async function verifyAdminPassword() {
+      const input = document.getElementById('admin-pass-input').value;
+      if (input === SECRET_PASS) {
+        isAdminLoggedIn = true;
+        closeAdminLogin();
+        // Only migrate this browser's old local data when the shared JSON does not exist yet.
+        if(!sharedArchiveLoaded && sharedArchiveMissing){ loadArchiveData(); }
+        activateAdminMode();
+      } else {
+        alert('비밀번호가 올바르지 않습니다.');
+      }
+    }
+
+    function activateAdminMode() {
+      document.body.classList.add('admin-mode');
+      const headerStatus = document.getElementById('header-status');
+      if (headerStatus) {
+        headerStatus.classList.add('admin-active');
+        headerStatus.innerHTML = `<i></i> SIGNAL ONLINE (ADMIN)`;
+      }
+      renderAllSidebars();
+    }
+
+    function renderAllSidebars() {
+      renderWorldSidebar();
+      renderCharSidebar();
+      renderMusicSidebar();
+      renderFeedSidebar();
+      renderNoticeSidebar();
+    }
+
+    /* ---------- PERSONAL CALENDAR EVENTS ---------- */
+    function openCalendarAddModal() {
+      if (!isAdminLoggedIn) { alert('관리자 로그인 후 사용할 수 있습니다.'); return; }
+      const defaultDate = selectedDateKey || getTodayKey();
+      const container = document.getElementById('admin-edit-container');
+      container.innerHTML = `
+        <div class="modal-title">ADD CALENDAR EVENT</div>
+        <label class="modal-label">날짜</label>
+        <input type="date" id="calendar-add-date" class="modal-input" value="${defaultDate}">
+        <label class="modal-label">일정</label>
+        <input type="text" id="calendar-add-title" class="modal-input" placeholder="예: OPEN / REST / 개인 일정">
+        <div class="upload-help">캐릭터 생일과 별개로 표시되는 개인 일정입니다. 같은 날짜에 여러 개를 추가할 수 있습니다.</div>
+        <div class="modal-btn-group">
+          <button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button>
+          <button class="modal-btn modal-btn-save" onclick="saveCalendarEvent()">SAVE</button>
+        </div>`;
+      document.getElementById('modal-admin-edit').classList.add('show');
+      setTimeout(() => document.getElementById('calendar-add-title')?.focus(), 80);
+    }
+
+    async function saveCalendarEvent() {
+      const date = document.getElementById('calendar-add-date')?.value || '';
+      const title = document.getElementById('calendar-add-title')?.value.trim() || '';
+      if (!date) { alert('날짜를 선택해 주세요.'); return; }
+      if (!title) { alert('일정 이름을 입력해 주세요.'); return; }
+      if (!eventsData[date]) eventsData[date] = [];
+      eventsData[date].push(title);
+      await persistArchiveData();
+      selectedDateKey = date;
+      closeAdminEditModal();
+      renderCalendarUI();
+    }
+
+    /* ---------- CALENDAR UI ---------- */
+    const nowSystemDate = new Date();
+    let currentCalYear = nowSystemDate.getFullYear();
+    let currentCalMonth = nowSystemDate.getMonth();
+    
+    function getTodayKey() {
+      const y = nowSystemDate.getFullYear();
+      const m = String(nowSystemDate.getMonth() + 1).padStart(2, '0');
+      const d = String(nowSystemDate.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    let selectedDateKey = getTodayKey();
+    let eventsData = {};
+
+    function getBirthdayEventsForDate(dateKey) {
+      const targetParts = String(dateKey).split('-');
+      if(targetParts.length !== 3) return [];
+      const targetMonthDay = `${targetParts[1]}-${targetParts[2]}`;
+      return database.characters.filter(c => {
+        if (!c.birthday) return false;
+        const parts = String(c.birthday).split('-');
+        if (parts.length !== 3) return false;
+        return `${parts[1]}-${parts[2]}` === targetMonthDay;
+      }).map(c => ({ text: `${c.name} 생일`, birthday: true, name: c.name }));
+    }
+
+    function renderCalendarUI() {
+      const container = document.getElementById('notice-detail-body');
+      const todayKeyStr = getTodayKey();
+      const formattedMonth = String(currentCalMonth + 1).padStart(2, '0');
+      const monthDisplayStr = `${currentCalYear}.${formattedMonth}`;
+      let html = `<div class="calendar-container-full"><div class="cal-top-bar"><button class="cal-nav-btn" onclick="changeMonth(-1)">◀ PREV</button><span>${monthDisplayStr}</span><button class="cal-nav-btn" onclick="changeMonth(1)">NEXT ▶</button></div><div class="full-cal-grid"><div class="full-cal-head">SUN</div><div class="full-cal-head">MON</div><div class="full-cal-head">TUE</div><div class="full-cal-head">WED</div><div class="full-cal-head">THU</div><div class="full-cal-head">FRI</div><div class="full-cal-head">SAT</div>`;
+      const firstDay = new Date(currentCalYear, currentCalMonth, 1).getDay();
+      const daysInMonth = new Date(currentCalYear, currentCalMonth + 1, 0).getDate();
+      for(let i=0;i<firstDay;i++) html += '<div class="full-cal-day empty"></div>';
+      for(let day=1;day<=daysInMonth;day++){
+        const mStr=String(currentCalMonth+1).padStart(2,'0'), dStr=String(day).padStart(2,'0');
+        const dateKey=`${currentCalYear}-${mStr}-${dStr}`;
+        const birthdayEvents=getBirthdayEventsForDate(dateKey);
+        const manualEvents=(eventsData[dateKey]||[]).map(text=>({text,birthday:false}));
+        const allEvents=[...birthdayEvents,...manualEvents];
+        const isSelected=dateKey===selectedDateKey?'selected':'', isToday=dateKey===todayKeyStr?'today':'';
+        const visibleEvents=allEvents.slice(0,2);
+        const hiddenCount=Math.max(0,allEvents.length-visibleEvents.length);
+        const eventsHtml=allEvents.length?`<div class="event-inline-list">${visibleEvents.map(evt=>`<div class="event-inline-item"><span class="event-dot-icon"></span><span class="event-inline-text">${evt.text}</span></div>`).join('')}${hiddenCount?`<div class="event-more-count">+ ${hiddenCount}건</div>`:''}</div>`:'';
+        html+=`<div class="full-cal-day ${isSelected} ${isToday}" onclick="selectCalDate('${dateKey}')"><span class="day-num">${day}</span>${eventsHtml}</div>`;
+      }
+      const remaining=(7-((firstDay+daysInMonth)%7))%7; for(let i=0;i<remaining;i++) html+='<div class="full-cal-day empty"></div>';
+      html+='</div>';
+      const selectedBirthdays=getBirthdayEventsForDate(selectedDateKey);
+      const currentList=[...selectedBirthdays.map(x=>x.text),...(eventsData[selectedDateKey]||[])];
+      let listHtml=currentList.map((item,idx)=>{ const isBirthday=selectedBirthdays.some(x=>x.text===item); return `<li style="justify-content:space-between;"><div style="display:flex;align-items:center;gap:8px;"><span class="event-dot-icon"></span><span>${item}</span></div>${!isBirthday?`<span class="admin-only"><svg class="admin-svg-icon" viewBox="0 0 24 24" onclick="deleteCalendarEvent('${selectedDateKey}', ${idx-selectedBirthdays.length})" title="삭제"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></span>`:''}</li>`; }).join('');
+      if(!listHtml) listHtml='<li style="opacity:0.6;">등록된 일정이 없습니다.</li>';
+      html+=`<div class="schedule-panel-read"><div class="schedule-panel-title"><span>✦ ${selectedDateKey} SCHEDULE</span></div><ul class="schedule-list-ul">${listHtml}</ul></div></div>`;
+      container.innerHTML=html;
+    }
+
+    function changeMonth(delta) {
+      currentCalMonth += delta;
+      if (currentCalMonth < 0) { currentCalMonth = 11; currentCalYear--; }
+      else if (currentCalMonth > 11) { currentCalMonth = 0; currentCalYear++; }
+      renderCalendarUI();
+    }
+
+    function selectCalDate(dateKey) {
+      selectedDateKey = dateKey;
+      renderCalendarUI();
+    }
+
+    async function deleteCalendarEvent(dateKey, idx) {
+      if (confirm('해당 일정을 삭제하시겠습니까?')) {
+        if (!eventsData[dateKey]) return;
+        eventsData[dateKey].splice(idx, 1);
+        if (!eventsData[dateKey].length) delete eventsData[dateKey];
+        await persistArchiveData();
+        renderCalendarUI();
+      }
+    }
+
+    /* ---------- ACCORDION & PAGE SWITCH ---------- */
+    function toggleGallery02Accordion(headerEl) {
+      const item = headerEl && headerEl.closest ? headerEl.closest('.gal02-accordion-item') : null;
+      if(!item) return;
+      const collapsed = item.classList.toggle('collapsed');
+      headerEl.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    }
+    function toggleAccordion(headerEl) { headerEl.parentElement.classList.toggle('collapsed'); }
+
+    function switchPageRaw(pageId) {
+      document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
+      document.querySelectorAll('.sub-navlinks a').forEach(a => a.classList.remove('active'));
+
+      const targetPage = document.getElementById('page-' + pageId);
+      if (targetPage) targetPage.classList.add('active-page');
+      else document.getElementById('page-signal').classList.add('active-page');
+
+      const subNavbar = document.getElementById('sub-navbar');
+      if (!pageId || pageId === 'signal') subNavbar.classList.remove('show');
+      else {
+        subNavbar.classList.add('show');
+        const activeSubNav = document.getElementById('sub-nav-' + pageId);
+        if (activeSubNav) activeSubNav.classList.add('active');
+      }
+    }
+
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+    /* ---------- MOUSE STAMP & SPARKLE ---------- */
+    document.addEventListener('click', function(e) {
+      const stamp = document.createElement('img');
+      stamp.src = './images/A05.png';
+      stamp.className = 'click-stamp';
+      stamp.style.left = e.clientX + 'px';
+      stamp.style.top = e.clientY + 'px';
+      stamp.onerror = function() {
+        this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ECA8B9" stroke="%231C2038" stroke-width="1.5"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+      };
+      document.body.appendChild(stamp);
+      setTimeout(() => stamp.remove(), 600);
+    });
+
+    let lastStarTime = 0;
+    document.addEventListener('mousemove', function(e) {
+      const now = Date.now();
+      if (now - lastStarTime < 45) return;
+      lastStarTime = now;
+      const star = document.createElement('span');
+      star.className = 'tail-star';
+      star.innerText = '✦';
+      star.style.left = (e.clientX + 16) + 'px';
+      star.style.top = (e.clientY + 18) + 'px';
+      document.body.appendChild(star);
+      setTimeout(() => star.remove(), 700);
+    });
+
+    /* ---------- LOCAL BGM PLAYER ---------- */
+    let player = null, isPlaying = false, progressTimer = null, playerReady = false;
+    let mainBgmIndex = 0;
+
+    function getPlayableMainBgmTracks(){
+      return getMainBgmTracks();
+    }
+
+    function loadMainBgmTrack(index, autoplay=false){
+      const tracks = getPlayableMainBgmTracks();
+      if(!player || !tracks.length) return;
+      if(index < 0) index = tracks.length - 1;
+      if(index >= tracks.length) index = 0;
+      mainBgmIndex = index;
+      const track = tracks[mainBgmIndex];
+      player.src = track.audio;
+      player.volume = 0.30;
+      player.loop = tracks.length === 1;
+      player.load();
+      if(autoplay) player.play().catch(err => console.warn('BGM playback failed:', err));
+    }
+
+    function initBgmPlayer() {
+      player = document.getElementById('main-bgm');
+      if (!player) return;
+      player.volume = 0.30;
+      playerReady = true;
+      player.addEventListener('play', onLocalBgmPlay);
+      player.addEventListener('pause', onLocalBgmPause);
+      player.addEventListener('ended', onLocalBgmEnded);
+      player.addEventListener('error', function(){ console.warn('Main BGM load failed. Check the MUSIC item has an uploaded audio file.'); });
+      loadMainBgmTrack(0, false);
+    }
+
+    function toggleBgm() {
+      if (!player || !playerReady) initBgmPlayer();
+      if (!player) return;
+      if (!player.src) loadMainBgmTrack(mainBgmIndex, false);
+      if (player.paused) player.play().catch(err => console.warn('BGM playback failed:', err));
+      else player.pause();
+    }
+
+    function restartTrack() {
+      if (!player || !playerReady) return;
+      player.currentTime = 0;
+      player.play().catch(()=>{});
+    }
+
+    function prevBgm(){
+      if (!player || !playerReady) initBgmPlayer();
+      const tracks=getPlayableMainBgmTracks();
+      if(!tracks.length || !player) return;
+      loadMainBgmTrack(mainBgmIndex-1, true);
+    }
+
+    function nextBgm(){
+      if (!player || !playerReady) initBgmPlayer();
+      const tracks=getPlayableMainBgmTracks();
+      if(!tracks.length || !player) return;
+      loadMainBgmTrack(mainBgmIndex+1, true);
+    }
+
+    function onLocalBgmEnded(){
+      const tracks=getPlayableMainBgmTracks();
+      if(tracks.length>1) loadMainBgmTrack(mainBgmIndex+1, true);
+      else onLocalBgmPause();
+    }
+
+    function updateProgressBar() {
+      if (!player || player.paused) return;
+      const duration = player.duration;
+      if (Number.isFinite(duration) && duration > 0) {
+        document.getElementById('progress-fill').style.width = ((player.currentTime / duration) * 100) + '%';
+      }
+    }
+
+    function seekTrack(event) {
+      if (!player || !Number.isFinite(player.duration) || player.duration <= 0) return;
+      const container = document.getElementById('progress-container');
+      const rect = container.getBoundingClientRect();
+      const percent = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+      player.currentTime = player.duration * percent;
+      document.getElementById('progress-fill').style.width = (percent * 100) + '%';
+    }
+
+    function onLocalBgmPlay() {
+      const playBtn = document.getElementById('play-btn');
+      const soundWave = document.getElementById('sound-wave');
+      isPlaying = true;
+      if (playBtn) playBtn.innerHTML = '<svg class="player-svg-icon" style="width:18px; height:18px;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+      if (soundWave) soundWave.classList.add('playing');
+      if (!progressTimer) progressTimer = setInterval(updateProgressBar, 500);
+    }
+
+    function onLocalBgmPause() {
+      const playBtn = document.getElementById('play-btn');
+      const soundWave = document.getElementById('sound-wave');
+      isPlaying = false;
+      if (playBtn) playBtn.innerHTML = '<svg class="player-svg-icon" style="width:18px; height:18px;" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+      if (soundWave) soundWave.classList.remove('playing');
+      if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
+    }
+
+    document.addEventListener('DOMContentLoaded', initBgmPlayer);
+
+    /* INIT */
+    window.onload = async function() {
+      // GitHub is the single public source of truth. Device-local stale data is never used as public fallback.
+      const loaded=await loadSharedArchiveData();
+      if(!loaded && !sharedArchiveMissing){
+        console.warn('공용 아카이브 로드 실패: 기기별 임시 데이터는 사용하지 않습니다.');
+      }
+      if(!characterOrder.length) characterOrder=database.characters.map(c=>c.id);
+      database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
+      renderAllSidebars();
+      handleHashRoute();
+      if(playerReady){
+        const tracks=getPlayableMainBgmTracks();
+        if(tracks.length){ loadMainBgmTrack(Math.min(mainBgmIndex,tracks.length-1),false); }
+      }
+    };
+  </script>
+</body>
+</html>
