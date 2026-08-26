@@ -806,6 +806,7 @@
     const ARCHIVE_STORAGE_KEY='ruroon_archive_v4';
     const SHARED_ARCHIVE_PATH='data/archive-data.json';
     const SHARED_ARCHIVE_URL=`https://raw.githubusercontent.com/ruroong/ruroon._.g/main/${SHARED_ARCHIVE_PATH}`;
+    const SHARED_ARCHIVE_WORKER_URL='https://falling-bonus-48d6.tmdmdgudjs2131.workers.dev';
     let sharedArchiveLoaded=false;
     let sharedArchiveMissing=false;
     let sharedArchiveLoadError=null;
@@ -900,34 +901,45 @@
     }
 
     async function syncArchiveDataToGitHub(){
-      const filePath=`/contents/${SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/')}`;
-      const content=utf8ToBase64(JSON.stringify(getArchiveState(),null,2));
-      const getCurrentFile=async()=>{
-        const ref=encodeURIComponent(GITHUB_BRANCH);
-        const current=await githubApi(`${filePath}?ref=${ref}`,{method:'GET',headers:{'Cache-Control':'no-cache'}});
-        return current;
-      };
-      let lastError=null;
-      for(let attempt=1; attempt<=6; attempt++){
-        try{
-          let current=null;
-          try{ current=await getCurrentFile(); }
-          catch(err){ if(err?.status===404) current=null; else throw err; }
-          const body={message:`Update shared archive data (${new Date().toISOString()})`,content,branch:GITHUB_BRANCH};
-          if(current?.sha) body.sha=current.sha;
-          await githubApi(filePath,{method:'PUT',body:JSON.stringify(body)});
-          sharedArchiveLoaded=true; sharedArchiveMissing=false; sharedArchiveLoadError=null;
-          return true;
-        }catch(err){
-          lastError=err;
-          if(err?.status===409 || err?.status===422){
-            await new Promise(r=>setTimeout(r,700*attempt));
-            continue;
-          }
-          throw err;
+      const state=getArchiveState();
+
+      // Public archive data is now saved through the Cloudflare Worker.
+      // The Worker keeps the GitHub token server-side and handles the latest SHA.
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),120000);
+
+      try{
+        const res=await fetch(SHARED_ARCHIVE_WORKER_URL,{
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json'
+          },
+          body:JSON.stringify({data:state}),
+          signal:controller.signal
+        });
+
+        const result=await res.json().catch(()=>({}));
+
+        if(!res.ok || !result.ok){
+          const detail=result.error || result.details || `Worker API 오류 (${res.status})`;
+          throw new Error(detail);
         }
+
+        try{
+          localStorage.setItem(ARCHIVE_STORAGE_KEY,JSON.stringify(state));
+        }catch(e){}
+
+        sharedArchiveLoaded=true;
+        sharedArchiveMissing=false;
+        sharedArchiveLoadError=null;
+        return true;
+      }catch(err){
+        sharedArchiveLoadError=err;
+        console.error('Cloudflare Worker archive save failed.',err);
+        throw err;
+      }finally{
+        clearTimeout(timer);
       }
-      throw lastError || new Error('공용 아카이브 저장에 실패했습니다.');
     }
 
     /* ---------- DATA STORES ---------- */
@@ -1862,7 +1874,7 @@
       return value;
     }
 
-    async function githubApi(path, options={}, retryCount=0){
+    async function githubApi(path, options={}){
       const token=getGitHubToken() || askForGitHubToken();
       if(!token) throw new Error('GitHub 토큰이 설정되지 않았습니다.');
       const controller=new AbortController();
@@ -1870,39 +1882,23 @@
       try{
         const res=await fetch(`${GITHUB_API_BASE}${path}`,{
           ...options,
-          mode:'cors',
-          cache:'no-store',
           signal:controller.signal,
           headers:{
             'Accept':'application/vnd.github+json',
             'Authorization':`Bearer ${token}`,
-            'X-GitHub-Api-Version':'2022-11-28',
             'Content-Type':'application/json',
             ...(options.headers||{})
           }
         });
-        const text=await res.text();
-        let data={};
-        try{ data=text?JSON.parse(text):{}; }catch(e){ data={message:text||''}; }
+        const data=await res.json().catch(()=>({}));
         if(!res.ok){
           if(res.status===401 || res.status===403) clearGitHubToken();
           const message=data.message || `GitHub API 오류`;
           const error=new Error(`${message} (${res.status})`);
           error.status=res.status;
-          error.response=data;
           throw error;
         }
         return data;
-      }catch(err){
-        if(err?.name==='AbortError') throw new Error(`GitHub 요청 시간 초과 (${GITHUB_UPLOAD_TIMEOUT/1000}초)`);
-        if(err?.status) throw err;
-        // Browser-level network failures are reported by fetch as the unhelpful
-        // "Failed to fetch". Retry a couple of times before exposing the error.
-        if(retryCount<2){
-          await new Promise(r=>setTimeout(r,800*(retryCount+1)));
-          return githubApi(path,options,retryCount+1);
-        }
-        throw new Error(`GitHub API 통신 실패: ${err?.message||err}`);
       }finally{ clearTimeout(timer); }
     }
 
