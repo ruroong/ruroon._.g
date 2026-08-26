@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-26T09:58:28.647Z",
+  "updatedAt": "2026-08-26T10:05:34.997Z",
   "database": {
     "world": [
       {
@@ -10,7 +10,9 @@
         "sub": "WORLD DATABASE",
         "img": "./images/A01.png",
         "desc": "날씨와 기상의 변화가 세계 전체의 흐름을 좌우하는 엠페클라 메인 세계관입니다.",
-        "charIds": [],
+        "charIds": [
+          "characters_1787637348231"
+        ],
         "musicId": "track_01",
         "links": []
       },
@@ -73,6 +75,15 @@
         "finalContent": "",
         "playlistUrl": "",
         "audio": "https://ruroong.github.io/ruroon._.g/music/1787738281996_e78t2y___________________4.mp3"
+      },
+      {
+        "id": "music_1787738345032",
+        "title": "",
+        "sub": "",
+        "content": "",
+        "finalContent": "",
+        "playlistUrl": "",
+        "audio": "https://ruroong.github.io/ruroon._.g/music/1787738349221_6kdu1k___________________4.mp3"
       }
     ],
     "feed": [
