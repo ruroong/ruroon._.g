@@ -876,8 +876,13 @@
         const existing=await githubApi(`/contents/${SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/')}?ref=${encodeURIComponent(GITHUB_BRANCH)}`);
         sha=existing.sha||'';
       }catch(err){
-        // 404 means the shared JSON has not been created yet; other errors must surface.
-        if(!String(err.message||'').includes('(404)')) throw err;
+        // 404 means the shared JSON has not been created yet; that is normal on the first SAVE.
+        // Any other error (bad token, permission, repository/path problem, etc.) must surface.
+        if(err && err.status===404) {
+          sha='';
+        } else {
+          throw err;
+        }
       }
       const body={message:'Update shared archive data',content,branch:GITHUB_BRANCH};
       if(sha) body.sha=sha;
@@ -1813,7 +1818,10 @@
         const data=await res.json().catch(()=>({}));
         if(!res.ok){
           if(res.status===401 || res.status===403) clearGitHubToken();
-          throw new Error(data.message || `GitHub API 오류 (${res.status})`);
+          const message=data.message || `GitHub API 오류`;
+          const error=new Error(`${message} (${res.status})`);
+          error.status=res.status;
+          throw error;
         }
         return data;
       }finally{ clearTimeout(timer); }
