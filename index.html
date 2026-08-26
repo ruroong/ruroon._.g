@@ -344,6 +344,16 @@
     .linked-music-arrow { font-size:12px; line-height:1; flex:0 0 auto; }
     .linked-music:hover { opacity:.65; }
     .music-final-content { margin-top:12px; line-height:1.65; }
+    .music-playlist-link {
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      margin-top:12px; padding:11px 14px;
+      border:1.5px solid var(--navy); background:rgba(255,255,255,.55);
+      color:var(--navy); text-decoration:none; font-family:var(--mono);
+      font-size:11px; font-weight:800; letter-spacing:.04em;
+      transition:opacity .15s ease, transform .15s ease;
+    }
+    .music-playlist-link:hover { opacity:.72; transform:translateY(-1px); }
+    .music-playlist-link .playlist-arrow { font-size:14px; line-height:1; flex:0 0 auto; }
 
     /* RETRO CALENDAR */
     .calendar-container-full { display: flex; flex-direction: column; gap: 16px; }
@@ -1357,6 +1367,12 @@
       if(linkIcon) titleParent.insertAdjacentHTML('beforeend', linkIcon);
     }
 
+    function getMusicPlaylistHtml(item){
+      const url=(item && item.playlistUrl ? String(item.playlistUrl).trim() : '');
+      if(!url) return '';
+      return `<a class="music-playlist-link" href="${url.replace(/"/g,'&quot;')}" target="_blank" rel="noopener noreferrer">PLAYLIST <span class="playlist-arrow">↗</span></a>`;
+    }
+
     function selectMusicItem(id, el) {
       if (handleListSelection(el, '#page-music', 'music')) {
         const item = database.music.find(m => m.id === id);
@@ -1364,7 +1380,7 @@
           activeItemIds.music = id;
           document.getElementById('music-detail-title').innerText = item.title;
           document.getElementById('music-detail-sub').innerText = item.sub;
-          document.getElementById('music-detail-body').innerHTML = `${item.content||''}${item.audio ? `<div class="music-inline-player"><audio controls controlsList="nodownload" disableRemotePlayback preload="metadata" src="${item.audio}"></audio></div>` : ''}${item.finalContent ? `<div class="music-final-content">${item.finalContent}</div>` : ''}`;
+          document.getElementById('music-detail-body').innerHTML = `${item.content||''}${item.audio ? `<div class="music-inline-player"><audio controls controlsList="nodownload" disableRemotePlayback preload="metadata" src="${item.audio}"></audio></div>` : ''}${getMusicPlaylistHtml(item)}${item.finalContent ? `<div class="music-final-content">${item.finalContent}</div>` : ''}`;
           document.getElementById('music-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('music', id);
         }
       }
@@ -1606,6 +1622,8 @@
           <label class="modal-label">서브</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||''}">
           <label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea" style="min-height:220px;">${item.content||''}</textarea>
           <label class="modal-label">음원 파일</label><input type="file" id="edit-audio-file" class="modal-file" accept="audio/*"><div class="upload-help">MP3, WAV 등은 GitHub의 music 폴더에 실제 파일로 업로드되고 URL만 저장됩니다.</div>
+          <label class="modal-label">플레이리스트 링크 (선택)</label><input type="url" id="edit-playlist-url" class="modal-input" value="${item.playlistUrl||''}" placeholder="https://open.spotify.com/playlist/... 또는 https://www.youtube.com/playlist?...">
+          <div class="upload-help">이 음악과 함께 보여줄 플레이리스트 링크입니다. 입력하지 않으면 표시되지 않습니다.</div>
           <label class="modal-label checkbox-line"><input type="checkbox" id="edit-main-bgm" ${isMainBgm(item.id)?'checked':''}> <span>메인 페이지 BGM으로 사용</span></label><div class="upload-help">체크하면 메인 페이지에서 이 MUSIC의 실제 음원을 재생합니다. 여러 곡을 체크하면 순서대로 재생됩니다.</div>
           <label class="modal-label">마지막 내용 (선택)</label><textarea id="edit-final-content" class="modal-textarea" placeholder="음악 플레이어 아래에 표시할 추가 내용을 입력하세요. 비워두면 표시되지 않습니다.">${item.finalContent||''}</textarea>`;
       }else if(section==='feed'){
@@ -1940,6 +1958,7 @@
         item.sub=document.getElementById('edit-sub').value.trim();
         item.content=document.getElementById('edit-content').value;
         item.finalContent=document.getElementById('edit-final-content').value;
+        item.playlistUrl=(document.getElementById('edit-playlist-url').value||'').trim();
         const audioFile=document.getElementById('edit-audio-file').files[0];
         if(audioFile) item.audio=await uploadFileToGitHub(audioFile, 'music');
         const mainBgmChecked=document.getElementById('edit-main-bgm').checked;
