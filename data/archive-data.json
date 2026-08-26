@@ -900,80 +900,59 @@
     }
 
     async function syncArchiveDataToGitHub(){
-      // Robust shared-save path using Git Database API instead of the Contents PUT endpoint.
-      // This avoids stale-file SHA conflicts on archive-data.json and gives us a real commit flow.
-      const encodedPath = SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/');
-      const rawText = JSON.stringify(getArchiveState(), null, 2);
-      const commitMessage = `Update shared archive data (${new Date().toISOString()})`;
-      let lastError = null;
+      const state=getArchiveState();
+      const content=btoa(unescape(encodeURIComponent(JSON.stringify(state,null,2))));
+      const filePath=`/contents/${SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/')}`;
 
-      for(let attempt=1; attempt<=5; attempt++){
+      const getCurrentSha=async()=>{
         try{
-          // 1) Get the current branch head.
-          const ref = await githubApi(`/git/ref/heads/${encodeURIComponent(GITHUB_BRANCH)}`, {method:'GET'});
-          const headSha = ref?.object?.sha;
-          if(!headSha) throw new Error('GitHub 브랜치 HEAD SHA를 확인할 수 없습니다.');
-
-          // 2) Get the current commit/tree.
-          const headCommit = await githubApi(`/git/commits/${encodeURIComponent(headSha)}`, {method:'GET'});
-          const baseTreeSha = headCommit?.tree?.sha;
-          if(!baseTreeSha) throw new Error('GitHub 기준 트리를 확인할 수 없습니다.');
-
-          // 3) Create a blob containing the complete shared archive JSON.
-          const blob = await githubApi('/git/blobs', {
-            method:'POST',
-            body:JSON.stringify({content:rawText, encoding:'utf-8'})
-          });
-          if(!blob?.sha) throw new Error('공용 아카이브 Blob 생성에 실패했습니다.');
-
-          // 4) Create a new tree based on the current tree, replacing only archive-data.json.
-          const tree = await githubApi('/git/trees', {
-            method:'POST',
-            body:JSON.stringify({
-              base_tree:baseTreeSha,
-              tree:[{path:SHARED_ARCHIVE_PATH, mode:'100644', type:'blob', sha:blob.sha}]
-            })
-          });
-          if(!tree?.sha) throw new Error('공용 아카이브 Tree 생성에 실패했습니다.');
-
-          // 5) Create the commit.
-          const commit = await githubApi('/git/commits', {
-            method:'POST',
-            body:JSON.stringify({message:commitMessage, tree:tree.sha, parents:[headSha]})
-          });
-          if(!commit?.sha) throw new Error('공용 아카이브 Commit 생성에 실패했습니다.');
-
-          // 6) Move main to the new commit. force=false prevents overwriting a newer commit.
-          try{
-            await githubApi(`/git/refs/heads/${encodeURIComponent(GITHUB_BRANCH)}`, {
-              method:'PATCH',
-              body:JSON.stringify({sha:commit.sha, force:false})
-            });
-          }catch(err){
-            // Another device may have committed between step 1 and 6.
-            if(err?.status===409 || err?.status===422){
-              lastError=err;
-              await new Promise(r=>setTimeout(r,700*attempt));
-              continue;
-            }
-            throw err;
-          }
-
-          sharedArchiveLoaded=true;
-          sharedArchiveMissing=false;
-          sharedArchiveLoadError=null;
-          return true;
+          const existing=await githubApi(`${filePath}?ref=${encodeURIComponent(GITHUB_BRANCH)}`);
+          return existing.sha||'';
         }catch(err){
-          lastError=err;
-          if(err?.status===409 || err?.status===422){
-            await new Promise(r=>setTimeout(r,700*attempt));
-            continue;
-          }
+          // 404 = archive-data.json has not been created yet.
+          if(err && err.status===404) return '';
+          throw err;
+        }
+      };
+
+      let sha=await getCurrentSha();
+      let body={
+        message:'Update shared archive data',
+        content,
+        branch:GITHUB_BRANCH
+      };
+      if(sha) body.sha=sha;
+
+      try{
+        await githubApi(filePath,{
+          method:'PUT',
+          body:JSON.stringify(body)
+        });
+      }catch(err){
+        // Preserve the V5 behavior: only refresh SHA and retry on a real 409 conflict.
+        if(err && err.status===409){
+          const latestSha=await getCurrentSha();
+          if(!latestSha) throw err;
+
+          body.sha=latestSha;
+
+          await githubApi(filePath,{
+            method:'PUT',
+            body:JSON.stringify(body)
+          });
+        }else{
           throw err;
         }
       }
 
-      throw lastError || new Error('공용 아카이브 저장에 실패했습니다.');
+      try{
+        localStorage.setItem(ARCHIVE_STORAGE_KEY,JSON.stringify(state));
+      }catch(e){}
+
+      sharedArchiveLoaded=true;
+      sharedArchiveMissing=false;
+      sharedArchiveLoadError=null;
+      return true;
     }
 
     /* ---------- DATA STORES ---------- */
@@ -1908,7 +1887,7 @@
       return value;
     }
 
-    async function githubApi(path, options={}, retryCount=0){
+    async function githubApi(path, options={}){
       const token=getGitHubToken() || askForGitHubToken();
       if(!token) throw new Error('GitHub 토큰이 설정되지 않았습니다.');
       const controller=new AbortController();
@@ -1916,39 +1895,23 @@
       try{
         const res=await fetch(`${GITHUB_API_BASE}${path}`,{
           ...options,
-          mode:'cors',
-          cache:'no-store',
           signal:controller.signal,
           headers:{
             'Accept':'application/vnd.github+json',
             'Authorization':`Bearer ${token}`,
-            'X-GitHub-Api-Version':'2022-11-28',
             'Content-Type':'application/json',
             ...(options.headers||{})
           }
         });
-        const text=await res.text();
-        let data={};
-        try{ data=text?JSON.parse(text):{}; }catch(e){ data={message:text||''}; }
+        const data=await res.json().catch(()=>({}));
         if(!res.ok){
           if(res.status===401 || res.status===403) clearGitHubToken();
           const message=data.message || `GitHub API 오류`;
           const error=new Error(`${message} (${res.status})`);
           error.status=res.status;
-          error.response=data;
           throw error;
         }
         return data;
-      }catch(err){
-        if(err?.name==='AbortError') throw new Error(`GitHub 요청 시간 초과 (${GITHUB_UPLOAD_TIMEOUT/1000}초)`);
-        if(err?.status) throw err;
-        // Browser-level network failures are reported by fetch as the unhelpful
-        // "Failed to fetch". Retry a couple of times before exposing the error.
-        if(retryCount<2){
-          await new Promise(r=>setTimeout(r,800*(retryCount+1)));
-          return githubApi(path,options,retryCount+1);
-        }
-        throw new Error(`GitHub API 통신 실패: ${err?.message||err}`);
       }finally{ clearTimeout(timer); }
     }
 
