@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-26T12:42:43.422Z",
+  "updatedAt": "2026-08-26T12:42:44.847Z",
   "database": {
     "world": [
       {
@@ -80,16 +80,6 @@
         "playlistUrl": "",
         "audio": "https://ruroong.github.io/ruroon._.g/music/1787736094761_naovm5___________________4.mp3",
         "group": "ALBUM 00"
-      },
-      {
-        "id": "music_1787738345032",
-        "title": "",
-        "sub": "",
-        "content": "",
-        "finalContent": "",
-        "playlistUrl": "",
-        "audio": "https://ruroong.github.io/ruroon._.g/music/1787738349221_6kdu1k___________________4.mp3",
-        "group": "ALBUM 01"
       },
       {
         "id": "music_1787747968107",
