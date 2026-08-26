@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-26T12:41:55.674Z",
+  "updatedAt": "2026-08-26T12:42:21.136Z",
   "database": {
     "world": [
       {
@@ -151,7 +151,8 @@
       "성해력(聖海曆) 715"
     ],
     "music": [
-      "ALBUM 01"
+      "ALBUM 01",
+      "ALBUM 00"
     ]
   },
   "characterOrder": [
