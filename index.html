@@ -314,7 +314,9 @@
     .link-svg-badge svg { width:15px; height:15px; stroke:var(--navy); fill:none; stroke-width:2.4; filter:drop-shadow(0 1px 0 rgba(255,255,255,.65)); }
     .gal02-section { width:100%; min-width:0; max-width:100%; overflow:hidden; }
     .gal02-accordion-item { width:100%; min-width:0; box-sizing:border-box; border:1.5px solid var(--navy); background:#fff; margin-bottom:10px; overflow:hidden; }
-    .gal02-acc-header { background:rgba(28,32,56,.06); padding:10px 12px; font-weight:700; font-size:13px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
+    .gal02-acc-header { background:rgba(28,32,56,.06); padding:10px 12px; font-weight:700; font-size:13px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; user-select:none; }
+    .gal02-acc-arrow { transition:transform .18s ease; }
+    .gal02-accordion-item.collapsed .gal02-acc-arrow { transform:rotate(-90deg); }
     .gal02-acc-desc { font-size:11px; opacity:.75; padding:6px 12px; border-bottom:1px dashed rgba(28,32,56,.2); background:rgba(255,255,255,.8); }
     .gal02-acc-body { width:100%; min-width:0; box-sizing:border-box; padding:12px 0 12px 0; overflow:hidden; }
     .gal02-accordion-item.collapsed .gal02-acc-body { display:none; }
@@ -887,42 +889,51 @@
       }
     }
 
+    function utf8ToBase64(text){
+      const bytes = new TextEncoder().encode(String(text));
+      let binary = '';
+      const chunk = 0x8000;
+      for(let i=0;i<bytes.length;i+=chunk){
+        binary += String.fromCharCode(...bytes.subarray(i, i+chunk));
+      }
+      return btoa(binary);
+    }
+
     async function syncArchiveDataToGitHub(){
       const state=getArchiveState();
-      const content=btoa(unescape(encodeURIComponent(JSON.stringify(state,null,2))));
+      const content=utf8ToBase64(JSON.stringify(state,null,2));
       const filePath=`/contents/${SHARED_ARCHIVE_PATH.split('/').map(encodeURIComponent).join('/')}`;
       const getCurrentSha=async()=>{
         try{
-          const existing=await githubApi(`${filePath}?ref=${encodeURIComponent(GITHUB_BRANCH)}`);
+          const cacheBust=`?ref=${encodeURIComponent(GITHUB_BRANCH)}&_=${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+          const existing=await githubApi(filePath+cacheBust,{method:'GET',headers:{'Cache-Control':'no-cache','Pragma':'no-cache'}});
           return existing.sha||'';
         }catch(err){
-          // 404 means the shared JSON has not been created yet; that is normal on the first SAVE.
           if(err && err.status===404) return '';
           throw err;
         }
       };
-
-      let sha=await getCurrentSha();
-      let body={message:'Update shared archive data',content,branch:GITHUB_BRANCH};
-      if(sha) body.sha=sha;
-
-      try{
-        await githubApi(filePath,{method:'PUT',body:JSON.stringify(body)});
-      }catch(err){
-        // GitHub returns 409 when another device/tab changed the same file after our SHA lookup.
-        // Refresh the SHA once and retry so normal simultaneous saves do not fail.
-        if(err && err.status===409){
-          const latestSha=await getCurrentSha();
-          if(!latestSha) throw err;
-          body.sha=latestSha;
+      let lastError=null;
+      for(let attempt=1; attempt<=8; attempt++){
+        try{
+          const sha=await getCurrentSha();
+          const body={message:`Update shared archive data (attempt ${attempt})`,content,branch:GITHUB_BRANCH};
+          if(sha) body.sha=sha;
           await githubApi(filePath,{method:'PUT',body:JSON.stringify(body)});
-        }else{
+          sharedArchiveLoaded=true;
+          sharedArchiveMissing=false;
+          sharedArchiveLoadError=null;
+          return true;
+        }catch(err){
+          lastError=err;
+          if(err && (err.status===409 || err.status===404) && attempt<8){
+            await new Promise(resolve=>setTimeout(resolve,300*attempt));
+            continue;
+          }
           throw err;
         }
       }
-
-      try{ localStorage.setItem(ARCHIVE_STORAGE_KEY, JSON.stringify(state)); }catch(e){}
-      return true;
+      throw lastError || new Error('공용 아카이브 저장에 실패했습니다.');
     }
 
     /* ---------- DATA STORES ---------- */
@@ -1338,10 +1349,12 @@
       if (item.gallery02 && item.gallery02.length) {
         gal02Html = `<div class="gal02-section"><div class="gallery-section-title"><span>ARCHIVE GALLERY</span></div><div>
           ${item.gallery02.map((group, gIdx) => `<div class="gal02-accordion-item">
-            <div class="gal02-acc-header" onclick="this.parentElement.classList.toggle('collapsed')"><span>✦ ${group.title || 'ARCHIVE'}</span><span>▼</span></div>
-            ${group.desc ? `<div class="gal02-acc-desc">${group.desc}</div>` : ''}
-            <div class="gallery-drag-viewport" data-gallery-drag>
-              <div class="gallery-drag-track">${(group.images || []).map((imgObj,iIdx) => { const a=typeof imgObj==='string'?{img:imgObj,links:[]}:imgObj; return `<div class="gal-thumb-item" onclick="openLightboxFromData('gal02', ${gIdx}, ${iIdx})"><img src="${a.img}" class="gal-thumb-img" draggable="false"></div>`; }).join('')}</div>
+            <div class="gal02-acc-header" role="button" tabindex="0" aria-expanded="true" onclick="toggleGallery02Accordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleGallery02Accordion(this)}"><span>✦ ${group.title || 'ARCHIVE'}</span><span class="gal02-acc-arrow">▼</span></div>
+            <div class="gal02-acc-body">
+              ${group.desc ? `<div class="gal02-acc-desc">${group.desc}</div>` : ''}
+              <div class="gallery-drag-viewport" data-gallery-drag>
+                <div class="gallery-drag-track">${(group.images || []).map((imgObj,iIdx) => { const a=typeof imgObj==='string'?{img:imgObj,links:[]}:imgObj; return `<div class="gal-thumb-item" onclick="openLightboxFromData('gal02', ${gIdx}, ${iIdx})"><img src="${a.img}" class="gal-thumb-img" draggable="false"></div>`; }).join('')}</div>
+              </div>
             </div>
           </div>`).join('')}
         </div></div>`;
@@ -1590,6 +1603,18 @@
       renderAdminEditForm(section, newItem, true);
     }
 
+    function getExistingAudioOptionsHtml(selectedUrl='', currentId=''){
+      const items = (database.music||[]).filter(m=>m && m.audio && m.id!==currentId);
+      const opts = [`<option value="">-- 기존 음원 선택 안 함 --</option>`];
+      items.forEach(m=>{
+        const selected = m.audio===selectedUrl ? ' selected' : '';
+        const value = String(m.audio).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+        const label = String(m.title||m.id).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        opts.push(`<option value="${value}"${selected}>${label}</option>`);
+      });
+      return opts.join('');
+    }
+
     function renderAdminEditForm(section, item, isNew) {
       const container = document.getElementById('admin-edit-container');
       let fieldsHtml='';
@@ -1630,7 +1655,10 @@
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
           <label class="modal-label">서브</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||''}">
           <label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea" style="min-height:220px;">${item.content||''}</textarea>
-          <label class="modal-label">음원 파일</label><input type="file" id="edit-audio-file" class="modal-file" accept="audio/*"><div class="upload-help">MP3, WAV 등은 GitHub의 music 폴더에 실제 파일로 업로드되고 URL만 저장됩니다.</div>
+          <label class="modal-label">음원 파일</label><input type="file" id="edit-audio-file" class="modal-file" accept="audio/*"><div class="upload-help">새 파일을 올릴 때 사용합니다. 이미 GitHub에 올라간 음원은 아래에서 기존 음원을 연결할 수 있습니다.</div>
+          <label class="modal-label">기존 음원 연결 (선택)</label><select id="edit-existing-audio" class="modal-input">${getExistingAudioOptionsHtml(item.audio||'', item.id)}</select>
+          <div class="upload-help">다른 MUSIC에 이미 연결된 음원을 그대로 사용하거나, 아래 URL 칸에 GitHub Pages 음원 주소를 직접 넣을 수 있습니다. 새 파일을 선택하면 새 업로드가 우선됩니다.</div>
+          <label class="modal-label">기존 음원 URL (선택)</label><input type="url" id="edit-existing-audio-url" class="modal-input" value="" placeholder="https://ruroong.github.io/ruroon._.g/music/...mp3">
           <label class="modal-label">플레이리스트 링크 (선택)</label><input type="url" id="edit-playlist-url" class="modal-input" value="${item.playlistUrl||''}" placeholder="https://open.spotify.com/playlist/... 또는 https://www.youtube.com/playlist?...">
           <div class="upload-help">이 음악과 함께 보여줄 플레이리스트 링크입니다. 입력하지 않으면 표시되지 않습니다.</div>
           <label class="modal-label checkbox-line"><input type="checkbox" id="edit-main-bgm" ${isMainBgm(item.id)?'checked':''}> <span>메인 페이지 BGM으로 사용</span></label><div class="upload-help">체크하면 메인 페이지에서 이 MUSIC의 실제 음원을 재생합니다. 여러 곡을 체크하면 순서대로 재생됩니다.</div>
@@ -1713,7 +1741,9 @@
         title:r.querySelector('.notice-link-title').value.trim(),
         url:r.querySelector('.notice-link-url').value.trim()
       })).filter(l=>l.url);
-      await persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
+      const sharedSaveOk = await persistArchiveData();
+      if(!sharedSaveOk) return;
+      closeAdminEditModal(); renderAllSidebars();
       if(document.getElementById('item-notice-links')) selectNoticeItem('links',document.getElementById('item-notice-links'));
     }
 
@@ -1969,7 +1999,16 @@
         item.finalContent=document.getElementById('edit-final-content').value;
         item.playlistUrl=(document.getElementById('edit-playlist-url').value||'').trim();
         const audioFile=document.getElementById('edit-audio-file').files[0];
-        if(audioFile) item.audio=await uploadFileToGitHub(audioFile, 'music');
+        const existingAudioSelect=document.getElementById('edit-existing-audio');
+        const existingAudioUrl=document.getElementById('edit-existing-audio-url');
+        if(audioFile){
+          item.audio=await uploadFileToGitHub(audioFile, 'music');
+        }else{
+          const selectedExisting=(existingAudioSelect?.value||'').trim();
+          const typedExisting=(existingAudioUrl?.value||'').trim();
+          if(selectedExisting) item.audio=selectedExisting;
+          else if(typedExisting) item.audio=typedExisting;
+        }
         const mainBgmChecked=document.getElementById('edit-main-bgm').checked;
         mainBgmIds=Array.isArray(mainBgmIds)?mainBgmIds.filter(x=>x!==item.id):[];
         if(mainBgmChecked) mainBgmIds.push(item.id);
@@ -2191,6 +2230,12 @@
     }
 
     /* ---------- ACCORDION & PAGE SWITCH ---------- */
+    function toggleGallery02Accordion(headerEl) {
+      const item = headerEl && headerEl.closest ? headerEl.closest('.gal02-accordion-item') : null;
+      if(!item) return;
+      const collapsed = item.classList.toggle('collapsed');
+      headerEl.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    }
     function toggleAccordion(headerEl) { headerEl.parentElement.classList.toggle('collapsed'); }
 
     function switchPageRaw(pageId) {
