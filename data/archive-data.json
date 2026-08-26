@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-26T00:53:10.632Z",
+  "updatedAt": "2026-08-26T00:53:34.317Z",
   "database": {
     "world": [
       {
@@ -32,50 +32,7 @@
         "charIds": []
       }
     ],
-    "characters": [
-      {
-        "id": "char_b",
-        "group": "PERSONA",
-        "name": "캐릭터 B",
-        "sub": "EMPECLA ARCHIVIST",
-        "alias": "N/A",
-        "birthday": "2026-11-03",
-        "tags": "#안경,#연구원",
-        "img": "./images/A02.png",
-        "tmi": "밤샘 연구가 일상이다.",
-        "gallery01": [
-          {
-            "img": "./images/A02.png"
-          }
-        ],
-        "gallery02": [
-          {
-            "title": "ㅇ",
-            "desc": "ㅇ",
-            "images": []
-          }
-        ],
-        "links": [
-          {
-            "title": "크랙",
-            "url": "https://share.crack.wrtn.ai/50wvu5"
-          }
-        ]
-      },
-      {
-        "id": "characters_1787637348231",
-        "name": "ㅇㅁㄹㅇㅁㄹㄴㅇ",
-        "group": "성해력(聖海曆) 715",
-        "alias": "ALIAS",
-        "birthday": "",
-        "tags": "",
-        "tmi": "",
-        "links": [],
-        "gallery02": [],
-        "gallery01": [],
-        "musicId": "track_01"
-      }
-    ],
+    "characters": [],
     "music": [
       {
         "id": "track_01",
@@ -117,10 +74,7 @@
       "ALBUM 01"
     ]
   },
-  "characterOrder": [
-    "char_b",
-    "characters_1787637348231"
-  ],
+  "characterOrder": [],
   "mainBgmIds": [
     "track_01"
   ],
