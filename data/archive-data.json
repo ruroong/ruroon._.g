@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T06:13:14.819Z",
+  "updatedAt": "2026-08-27T06:17:29.675Z",
   "database": {
     "world": [
       {
@@ -155,6 +155,7 @@
       "ALBUM 00"
     ]
   },
+  "workOptions": [],
   "characterOrder": [
     "characters_1787637348231",
     "characters_1787807863284",
