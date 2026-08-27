@@ -255,9 +255,9 @@
     .char-main-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
     
     .char-meta-table { display: flex; flex-direction: column; gap: 8px; font-size: 13px; justify-content: center; }
-    .char-meta-row { display: flex; border-bottom: 1px dashed rgba(28, 32, 56, 0.2); padding-bottom: 6px; align-items: center; }
-    .char-meta-label { width: 100px; font-family: var(--mono); font-weight: 700; font-size: 11px; opacity: 0.8; }
-    .char-meta-val { flex-grow: 1; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .char-meta-row { display: grid; grid-template-columns: 100px minmax(0, 1fr); width: 100%; box-sizing: border-box; border-bottom: 1px dashed rgba(28, 32, 56, 0.2); padding-bottom: 6px; align-items: start; }
+    .char-meta-label { width: 100px; min-width: 100px; box-sizing: border-box; font-family: var(--mono); font-weight: 700; font-size: 11px; opacity: 0.8; padding-top: 1px; }
+    .char-meta-val { min-width: 0; width: 100%; font-weight: 600; display: flex; align-items: flex-start; gap: 8px; overflow-wrap: anywhere; word-break: break-word; }
     
     .tag-pill { display: block; width: 100%; background: rgba(255,255,255,0.7); border: 1px solid var(--navy); padding: 12px; border-radius: 0; font-size: 12px; line-height: 1.55; font-family: var(--mono); margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
     .char-tag-block { white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--mono); font-size: 12px; line-height: 1.55; font-weight: 500; }
@@ -266,6 +266,8 @@
     .title-link-icon:hover { transform:scale(1.12); }
     .title-link-icon:hover svg { stroke:var(--navy); }
     .char-detail-title-row { display:flex; align-items:center; gap:8px; width:100%; }
+    .char-work-list { display:flex; flex-wrap:wrap; gap:5px; min-width:0; }
+    .char-work-pill { display:inline-flex; align-items:center; padding:3px 7px; border:1px solid rgba(28,32,56,.35); background:rgba(249,235,239,.7); font-family:var(--mono); font-size:10px; line-height:1.3; font-weight:600; white-space:normal; }
 
     /* GALLERY — contained drag-scroll viewport */
     .gallery-drag-viewport {
@@ -408,6 +410,10 @@
     .upload-help { font-size:10px; opacity:.7; line-height:1.4; margin-top:-8px; }
     .checkbox-line { display:flex; align-items:center; gap:8px; cursor:pointer; }
     .checkbox-line input { width:16px; height:16px; accent-color:var(--navy); }
+    .work-selector { display:flex; flex-wrap:wrap; gap:7px; padding:10px; border:1.5px solid var(--navy); background:rgba(255,255,255,.35); min-height:42px; }
+    .work-option { display:inline-flex; align-items:center; gap:6px; padding:6px 9px; border:1px solid rgba(28,32,56,.3); background:#fff; font-size:11px; cursor:pointer; user-select:none; }
+    .work-option input { width:14px; height:14px; accent-color:var(--navy); margin:0; }
+    .work-add-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:7px; margin-top:6px; }
     .gallery02-admin-group { display:flex; flex-direction:column; gap:8px; padding:12px; margin-bottom:10px; border:1.5px dashed var(--navy); background:rgba(255,255,255,.35); }
     .char-main-img-box { background:#fff; }
 .modal-input, .modal-textarea { width: 100%; background: #F9EBEF; border: 1.5px solid var(--navy); padding: 10px; font-family: var(--sans); font-size: 13px; color: var(--navy); outline: none; }
@@ -832,7 +838,7 @@
           if(Array.isArray(saved.database[k])) database[k].splice(0,database[k].length,...saved.database[k]);
         });
       }
-      if(saved.categoryGroups && typeof saved.categoryGroups==='object') categoryGroups=saved.categoryGroups;
+      if(saved.categoryGroups && typeof saved.categoryGroups==='object') categoryGroups=saved.categoryGroups; if(Array.isArray(saved.workOptions)) workOptions=saved.workOptions;
       if(Array.isArray(saved.characterOrder)) characterOrder=saved.characterOrder;
       if(Array.isArray(saved.mainBgmIds)) mainBgmIds=saved.mainBgmIds;
       if(saved.eventsData && typeof eventsData!=='undefined') eventsData=saved.eventsData;
@@ -961,6 +967,9 @@
         { category: 'WORKS', title: 'POSTYPE', url: '' }
       ]
     };
+
+    // 캐릭터 작품 목록 — 노션의 다중 선택처럼 캐릭터마다 여러 작품을 선택할 수 있습니다.
+    let workOptions = ['EMPECLA'];
 
     const database = {
       world: [
@@ -1374,6 +1383,7 @@
             <div class="char-main-img-box"><img src="${item.img || './images/A01.png'}" class="char-main-img"></div>
             <div class="char-meta-table">
               <div class="char-meta-row"><span class="char-meta-label">NAME</span><span class="char-meta-val">${item.name}</span></div>
+              <div class="char-meta-row"><span class="char-meta-label">WORKS</span><span class="char-meta-val"><span class="char-work-list">${(Array.isArray(item.works)?item.works:[]).map(w=>`<span class="char-work-pill">${w}</span>`).join('') || 'N/A'}</span></span></div>
               <div class="char-meta-row"><span class="char-meta-label">KNOWN AS</span><span class="char-meta-val">${item.alias || 'N/A'}</span></div>
               <div class="char-meta-row"><span class="char-meta-label">BIRTHDAY</span><span class="char-meta-val">${item.birthday || '미정'}</span></div>
               <div class="char-meta-row" style="align-items:flex-start;"><span class="char-meta-label">PROMPT</span><span class="char-meta-val"><span class="char-tag-block">${item.tags || 'None'}</span></span></div>
@@ -1629,6 +1639,10 @@
         fieldsHtml=`
           <label class="modal-label">캐릭터 이름</label><input type="text" id="edit-name" class="modal-input" value="${item.name||''}">
           <label class="modal-label">분류</label><input type="text" id="edit-group" class="modal-input" list="character-group-options" value="${item.group||groups[0]||''}"><datalist id="character-group-options">${groups.map(g=>`<option value="${g}">`).join('')}</datalist>
+          <label class="modal-label">작품</label>
+          <div class="work-selector" id="work-selector">${workOptions.map((w,i)=>`<label class="work-option"><input type="checkbox" class="edit-work-checkbox" value="${w.replace(/"/g,'&quot;')}" ${(Array.isArray(item.works)?item.works:[]).includes(w)?'checked':''}><span>${w}</span></label>`).join('')}</div>
+          <div class="work-add-row"><input type="text" id="new-work-option" class="modal-input" placeholder="새 작품명 추가"><button type="button" class="manager-small-btn" onclick="addWorkOptionFromEditor()">+ 작품</button></div>
+          <div class="upload-help">여러 작품을 동시에 선택할 수 있습니다. 선택한 작품은 캐릭터 이름 아래에 표시됩니다.</div>
           <label class="modal-label">KNOWN AS</label><input type="text" id="edit-alias" class="modal-input" value="${item.alias||'ALIAS'}">
           <label class="modal-label">생일 (YYYY-MM-DD)</label><input type="date" id="edit-bday" class="modal-input" value="${item.birthday||''}">
           <label class="modal-label">PROMPT</label><textarea id="edit-tags" class="modal-textarea" style="min-height:160px;">${item.tags||''}</textarea>
@@ -1839,6 +1853,18 @@
       await persistArchiveData(); closeAdminEditModal(); renderAllSidebars();
     }
 
+    function addWorkOptionFromEditor(){
+      const input=document.getElementById('new-work-option'); if(!input)return;
+      const name=input.value.trim(); if(!name)return;
+      if(!workOptions.includes(name)) workOptions.push(name);
+      const box=document.getElementById('work-selector');
+      if(box && ![...box.querySelectorAll('.edit-work-checkbox')].some(x=>x.value===name)){
+        const label=document.createElement('label'); label.className='work-option';
+        label.innerHTML=`<input type="checkbox" class="edit-work-checkbox" value="${name.replace(/"/g,'&quot;')}" checked><span>${name}</span>`; box.appendChild(label);
+      } else if(box){ const cb=[...box.querySelectorAll('.edit-work-checkbox')].find(x=>x.value===name); if(cb)cb.checked=true; }
+      input.value='';
+    }
+
     function addGallery02AdminGroup(){ const box=document.getElementById('gallery02-editor'); if(!box)return; const i=box.children.length; const div=document.createElement('div'); div.className='gallery02-admin-group'; div.dataset.index=i; div.innerHTML='<input class="modal-input g02-title" placeholder="갤러리 제목"><textarea class="modal-textarea g02-desc" placeholder="설명"></textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">파일을 선택하면 저장 시 GitHub에 실제 파일로 업로드됩니다.</div>'; box.appendChild(div); }
     function stripImageHtml(html){ return String(html||'').replace(/<img[^>]*>/gi,'').replace(/<[^>]+>/g,'').trim(); }
     /* ---------- DIRECT GITHUB UPLOAD (NO WORKER) ---------- */
@@ -1984,7 +2010,7 @@
       let item=database[section].find(i=>i.id===id);
       if(isNew){ item={id}; database[section].push(item); }
       if(section==='characters'){
-        item.name=document.getElementById('edit-name').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'CHARACTERS'; item.alias=document.getElementById('edit-alias').value.trim(); item.birthday=document.getElementById('edit-bday').value; item.tags=document.getElementById('edit-tags').value; item.musicId=document.getElementById('edit-music-id').value || ''; item.tmi=document.getElementById('edit-tmi').value;
+        item.name=document.getElementById('edit-name').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'CHARACTERS'; item.works=[...document.querySelectorAll('#work-selector .edit-work-checkbox:checked')].map(x=>x.value).filter(Boolean); workOptions=[...new Set([...workOptions,...item.works])]; item.alias=document.getElementById('edit-alias').value.trim(); item.birthday=document.getElementById('edit-bday').value; item.tags=document.getElementById('edit-tags').value; item.musicId=document.getElementById('edit-music-id').value || ''; item.tmi=document.getElementById('edit-tmi').value;
         const linkRows=[...document.querySelectorAll('#character-links-editor .character-link-row')]; item.links=linkRows.map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.title||l.url);
         item.links=[...document.querySelectorAll('#character-links-editor .character-link-row')].map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.url);
         const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile) item.img=await uploadFileToGitHub(imgFile, `images/characters/${item.id}`);
@@ -2098,7 +2124,8 @@
         isAdminLoggedIn = true;
         closeAdminLogin();
         // Only migrate this browser's old local data when the shared JSON does not exist yet.
-        if(!sharedArchiveLoaded && sharedArchiveMissing){ loadArchiveData(); }
+        if(!sharedArchiveLoaded && sharedArchiveMissing){ loadArchiveData();
+    workOptions=[...new Set([...(Array.isArray(workOptions)?workOptions:[]), ...database.characters.flatMap(c=>Array.isArray(c.works)?c.works:[]).filter(Boolean)])]; }
         activateAdminMode();
       } else {
         alert('비밀번호가 올바르지 않습니다.');
