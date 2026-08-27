@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T07:44:43.373Z",
+  "updatedAt": "2026-08-27T07:45:06.935Z",
   "database": {
     "world": [
       {
@@ -122,7 +122,7 @@
         "works": [
           "연상이 아니면 소용없어"
         ],
-        "alias": "-",
+        "alias": "NAM-GUNWOO",
         "birthday": "",
         "tags": "",
         "musicId": "",
