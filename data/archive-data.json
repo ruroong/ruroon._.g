@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T06:01:02.123Z",
+  "updatedAt": "2026-08-27T06:01:24.025Z",
   "database": {
     "world": [
       {
@@ -93,7 +93,10 @@
           }
         ],
         "gallery02": [],
-        "gallery01": []
+        "gallery01": [],
+        "works": [
+          "말랑말랑 선장님！"
+        ]
       }
     ],
     "music": [
