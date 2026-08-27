@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T07:42:37.453Z",
+  "updatedAt": "2026-08-27T07:42:47.364Z",
   "database": {
     "world": [
       {
@@ -106,7 +106,7 @@
           "비상！전남친 긴급 관리 발령 ？！",
           "너의 눈물을 위해"
         ],
-        "alias": "ALIAS",
+        "alias": "-",
         "birthday": "2001-12-21",
         "tags": "",
         "musicId": "",
