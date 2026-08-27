@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T08:01:45.476Z",
+  "updatedAt": "2026-08-27T08:02:22.486Z",
   "database": {
     "world": [
       {
@@ -130,6 +130,23 @@
         "links": [],
         "gallery02": [],
         "gallery01": []
+      },
+      {
+        "id": "characters_1787817654680",
+        "name": "체시아레 모로 : Cesiare Moro",
+        "group": "VELATO : 벨라토",
+        "works": [
+          "NUOVA CARTA：긴 밤의 서막",
+          "죄와 구원의 혼배성사"
+        ],
+        "alias": "네로 NERO",
+        "birthday": "",
+        "tags": "boy, aged up, mature male, fully white hair, short hair, slicked back, clear white skin, pale skin, 3::black head veil, blindfold::, three-piece suit, black suit, formal, vest, necktie, luxury, aesthetic, dark atmosphere, black coat over shoulders,black shirt, white necktie,",
+        "musicId": "",
+        "tmi": "",
+        "links": [],
+        "gallery02": [],
+        "gallery01": []
       }
     ],
     "music": [
@@ -194,14 +211,17 @@
     "말랑말랑 선장님！",
     "비상！전남친 긴급 관리 발령 ？！",
     "너의 눈물을 위해",
-    "연상이 아니면 소용없어"
+    "연상이 아니면 소용없어",
+    "NUOVA CARTA：긴 밤의 서막",
+    "죄와 구원의 혼배성사"
   ],
   "characterOrder": [
     "characters_1787637348231",
     "characters_1787807863284",
     "characters_1787747958748",
     "characters_1787815493165",
-    "characters_1787816536950"
+    "characters_1787816536950",
+    "characters_1787817654680"
   ],
   "mainBgmIds": [
     "track_01",
