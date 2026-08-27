@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T06:00:38.651Z",
+  "updatedAt": "2026-08-27T06:00:54.344Z",
   "database": {
     "world": [
       {
@@ -68,9 +68,7 @@
         "links": [],
         "gallery02": [],
         "gallery01": [],
-        "works": [
-          "해적은 물고기를 싫어해？"
-        ]
+        "works": []
       },
       {
         "id": "characters_1787807863284",
