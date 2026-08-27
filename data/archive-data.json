@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T05:17:21.135Z",
+  "updatedAt": "2026-08-27T05:19:31.113Z",
   "database": {
     "world": [
       {
@@ -68,6 +68,28 @@
         "links": [],
         "gallery02": [],
         "gallery01": []
+      },
+      {
+        "id": "characters_1787807863284",
+        "name": "래프 : RAFF",
+        "group": "PERSONA",
+        "alias": "래프 : RAFF",
+        "birthday": "0685-02-04",
+        "tags": "",
+        "musicId": "",
+        "tmi": "*작품*\n[ 말랑말랑 선장님！ ]",
+        "links": [
+          {
+            "title": "크랙 세이프티",
+            "url": "https://crack.wrtn.ai/detail/6a7b0b4cacc2cde335598b2f"
+          },
+          {
+            "title": "크랙 언세이프티",
+            "url": "https://crack.wrtn.ai/detail/6a7800e7311f736756d795d0"
+          }
+        ],
+        "gallery02": [],
+        "gallery01": []
       }
     ],
     "music": [
@@ -126,7 +148,8 @@
   },
   "characterOrder": [
     "characters_1787637348231",
-    "characters_1787747958748"
+    "characters_1787747958748",
+    "characters_1787807863284"
   ],
   "mainBgmIds": [
     "track_01",
