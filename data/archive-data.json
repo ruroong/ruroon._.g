@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T05:20:35.871Z",
+  "updatedAt": "2026-08-27T05:22:56.041Z",
   "database": {
     "world": [
       {
@@ -58,13 +58,13 @@
       },
       {
         "id": "characters_1787747958748",
-        "name": "",
+        "name": "루루",
         "group": "PERSONA",
-        "alias": "ALIAS",
-        "birthday": "",
-        "tags": "",
+        "alias": "ROO-ROO",
+        "birthday": "2020-02-29",
+        "tags": "girl, aged up, delicate build, long straight silky black hair, waist-length hair, full bangs, 1.5::cat eyes::, delicate facial features, purple eyes, slightly sharp eyes, long eyelashes, porcelain skin, soft lips, gentle mysterious expression, elegant,\n\nwhite oversized dress, sleeveless,",
         "musicId": "",
-        "tmi": "",
+        "tmi": "루룽찌 페르소나입니다 (っ´Ι`)っ",
         "links": [],
         "gallery02": [],
         "gallery01": []
