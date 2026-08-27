@@ -428,6 +428,12 @@
     }
     .work-option input { width:14px; height:14px; flex:0 0 14px; accent-color:var(--navy); margin:0; }
     .work-option span { min-width:0; overflow-wrap:anywhere; }
+    .work-option .work-delete-btn {
+      flex:0 0 auto; margin-left:2px; padding:0; border:0; background:transparent;
+      color:rgba(28,32,56,.45); font-size:13px; line-height:1; cursor:pointer;
+      font-family:var(--sans);
+    }
+    .work-option .work-delete-btn:hover { color:#b85f78; }
     .work-add-row {
       display:grid; grid-template-columns:minmax(0,1fr) auto; gap:7px;
       margin-top:6px; width:100%; box-sizing:border-box; clear:both;
@@ -844,6 +850,7 @@
         updatedAt: new Date().toISOString(),
         database,
         categoryGroups,
+        workOptions,
         characterOrder,
         mainBgmIds,
         eventsData: (typeof eventsData!=='undefined'?eventsData:{}),
@@ -1661,7 +1668,7 @@
           <label class="modal-label">분류</label><input type="text" id="edit-group" class="modal-input" list="character-group-options" value="${item.group||groups[0]||''}"><datalist id="character-group-options">${groups.map(g=>`<option value="${g}">`).join('')}</datalist>
           <label class="modal-label">작품</label>
           <div class="work-selector-block">
-            <div class="work-selector" id="work-selector">${workOptions.map((w,i)=>`<label class="work-option"><input type="checkbox" class="edit-work-checkbox" value="${w.replace(/"/g,'&quot;')}" ${(Array.isArray(item.works)?item.works:[]).includes(w)?'checked':''}><span>${w}</span></label>`).join('')}</div>
+            <div class="work-selector" id="work-selector">${workOptions.map((w,i)=>`<label class="work-option"><input type="checkbox" class="edit-work-checkbox" value="${w.replace(/"/g,'&quot;')}" ${(Array.isArray(item.works)?item.works:[]).includes(w)?'checked':''}><span>${w}</span><button type="button" class="work-delete-btn" title="작품 목록에서 삭제" onclick="event.preventDefault();event.stopPropagation();deleteWorkOption(decodeURIComponent('${encodeURIComponent(w)}'))">×</button></label>`).join('')}</div>
             <div class="work-add-row"><input type="text" id="new-work-option" class="modal-input" placeholder="새 작품명 추가"><button type="button" class="manager-small-btn" onclick="addWorkOptionFromEditor()">+ 작품</button></div>
           </div>
           <div class="upload-help">여러 작품을 동시에 선택할 수 있습니다. 선택한 작품은 캐릭터 이름 아래에 표시됩니다.</div>
@@ -1882,9 +1889,30 @@
       const box=document.getElementById('work-selector');
       if(box && ![...box.querySelectorAll('.edit-work-checkbox')].some(x=>x.value===name)){
         const label=document.createElement('label'); label.className='work-option';
-        label.innerHTML=`<input type="checkbox" class="edit-work-checkbox" value="${name.replace(/"/g,'&quot;')}" checked><span>${name}</span>`; box.appendChild(label);
+        label.innerHTML=`<input type="checkbox" class="edit-work-checkbox" value="${name.replace(/"/g,'&quot;')}" checked><span>${name}</span><button type="button" class="work-delete-btn" title="작품 목록에서 삭제" onclick="event.preventDefault();event.stopPropagation();deleteWorkOption(decodeURIComponent('${encodeURIComponent(name)}'))">×</button>`; box.appendChild(label);
       } else if(box){ const cb=[...box.querySelectorAll('.edit-work-checkbox')].find(x=>x.value===name); if(cb)cb.checked=true; }
       input.value='';
+    }
+
+    async function deleteWorkOption(name){
+      const workName=String(name||'').trim();
+      if(!workName)return;
+      if(!workOptions.includes(workName))return;
+      const affected=database.characters.filter(c=>Array.isArray(c.works)&&c.works.includes(workName)).length;
+      const message=affected
+        ? `작품 목록에서 '${workName}'을 삭제할까요?\n\n현재 ${affected}명의 캐릭터에 선택되어 있습니다.\n삭제하면 해당 작품이 모든 캐릭터의 작품 목록에서도 함께 제거됩니다.`
+        : `작품 목록에서 '${workName}'을 삭제할까요?`;
+      if(!confirm(message))return;
+      workOptions=workOptions.filter(w=>w!==workName);
+      database.characters.forEach(c=>{ if(Array.isArray(c.works)) c.works=c.works.filter(w=>w!==workName); });
+      const box=document.getElementById('work-selector');
+      if(box){
+        [...box.querySelectorAll('.work-option')].forEach(row=>{
+          const cb=row.querySelector('.edit-work-checkbox');
+          if(cb && cb.value===workName) row.remove();
+        });
+      }
+      await persistArchiveData();
     }
 
     function addGallery02AdminGroup(){ const box=document.getElementById('gallery02-editor'); if(!box)return; const i=box.children.length; const div=document.createElement('div'); div.className='gallery02-admin-group'; div.dataset.index=i; div.innerHTML='<input class="modal-input g02-title" placeholder="갤러리 제목"><textarea class="modal-textarea g02-desc" placeholder="설명"></textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">파일을 선택하면 저장 시 GitHub에 실제 파일로 업로드됩니다.</div>'; box.appendChild(div); }
