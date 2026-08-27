@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T06:19:58.532Z",
+  "updatedAt": "2026-08-27T06:22:29.312Z",
   "database": {
     "world": [
       {
@@ -154,7 +154,8 @@
     ]
   },
   "workOptions": [
-    "해적은 물고기를 싫어해？"
+    "해적은 물고기를 싫어해？",
+    "말랑말랑 선장님！"
   ],
   "characterOrder": [
     "characters_1787637348231",
