@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T05:20:13.010Z",
+  "updatedAt": "2026-08-27T05:20:35.871Z",
   "database": {
     "world": [
       {
@@ -41,7 +41,7 @@
         "alias": "바트 : Bart",
         "birthday": "0685-10-24",
         "tags": "",
-        "tmi": "",
+        "tmi": "[ 해적은 물고기를 싫어해？ ]",
         "links": [
           {
             "title": "크랙 세이프",
