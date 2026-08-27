@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T05:15:34.708Z",
+  "updatedAt": "2026-08-27T05:17:21.135Z",
   "database": {
     "world": [
       {
@@ -36,16 +36,25 @@
     "characters": [
       {
         "id": "characters_1787637348231",
-        "name": "바트 : 바르톨로, Bartolo",
+        "name": "바르톨로 : Bartolo",
         "group": "성해력(聖海曆) 715",
-        "alias": "ALIAS",
-        "birthday": "",
+        "alias": "바트 : Bart",
+        "birthday": "0685-10-24",
         "tags": "",
         "tmi": "",
-        "links": [],
+        "links": [
+          {
+            "title": "크랙 세이프",
+            "url": "https://crack.wrtn.ai/detail/6a5b1fcb2f8b63652d93c393"
+          },
+          {
+            "title": "크랙 언세이프",
+            "url": "https://crack.wrtn.ai/detail/6a558aeabacb2f2162d7caa8"
+          }
+        ],
         "gallery02": [],
         "gallery01": [],
-        "musicId": "track_01"
+        "musicId": ""
       },
       {
         "id": "characters_1787747958748",
