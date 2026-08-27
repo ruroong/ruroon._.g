@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-26T12:43:02.722Z",
+  "updatedAt": "2026-08-27T05:15:34.708Z",
   "database": {
     "world": [
       {
@@ -36,7 +36,7 @@
     "characters": [
       {
         "id": "characters_1787637348231",
-        "name": "ㅇㅁㄹㅇㅁㄹㄴㅇ",
+        "name": "바트 : 바르톨로, Bartolo",
         "group": "성해력(聖海曆) 715",
         "alias": "ALIAS",
         "birthday": "",
