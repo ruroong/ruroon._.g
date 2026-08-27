@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T06:12:26.663Z",
+  "updatedAt": "2026-08-27T06:13:14.819Z",
   "database": {
     "world": [
       {
@@ -71,7 +71,9 @@
         "links": [],
         "gallery02": [],
         "gallery01": [],
-        "works": []
+        "works": [
+          "NONE"
+        ]
       },
       {
         "id": "characters_1787807863284",
