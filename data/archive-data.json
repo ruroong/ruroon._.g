@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T07:08:56.358Z",
+  "updatedAt": "2026-08-27T07:25:07.513Z",
   "database": {
     "world": [
       {
@@ -97,6 +97,20 @@
         "works": [
           "말랑말랑 선장님！"
         ]
+      },
+      {
+        "id": "characters_1787815493165",
+        "name": "류온",
+        "group": "한국대학교",
+        "works": [],
+        "alias": "ALIAS",
+        "birthday": "",
+        "tags": "",
+        "musicId": "",
+        "tmi": "",
+        "links": [],
+        "gallery02": [],
+        "gallery01": []
       }
     ],
     "music": [
@@ -163,7 +177,8 @@
   "characterOrder": [
     "characters_1787637348231",
     "characters_1787807863284",
-    "characters_1787747958748"
+    "characters_1787747958748",
+    "characters_1787815493165"
   ],
   "mainBgmIds": [
     "track_01",
