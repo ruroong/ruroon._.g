@@ -1,20 +1,25 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T08:07:03.908Z",
+  "updatedAt": "2026-08-27T08:07:40.260Z",
   "database": {
     "world": [
       {
         "id": "empecla",
         "group": "WORLD DATABASE",
-        "title": "Empecla (엠페클라)",
+        "title": "VELATO : 벨라토",
         "sub": "WORLD DATABASE",
         "img": "./images/A01.png",
-        "desc": "날씨와 기상의 변화가 세계 전체의 흐름을 좌우하는 엠페클라 메인 세계관입니다.",
+        "desc": "",
         "charIds": [
-          "characters_1787637348231"
+          "characters_1787817654680"
         ],
-        "musicId": "track_01",
-        "links": []
+        "musicId": "",
+        "links": [
+          {
+            "title": "벨라토 세계관 페이지",
+            "url": "https://velato.creatorlink.net/"
+          }
+        ]
       }
     ],
     "characters": [
