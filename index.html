@@ -410,10 +410,30 @@
     .upload-help { font-size:10px; opacity:.7; line-height:1.4; margin-top:-8px; }
     .checkbox-line { display:flex; align-items:center; gap:8px; cursor:pointer; }
     .checkbox-line input { width:16px; height:16px; accent-color:var(--navy); }
-    .work-selector { display:flex; flex-wrap:wrap; gap:7px; padding:10px; border:1.5px solid var(--navy); background:rgba(255,255,255,.35); min-height:42px; }
-    .work-option { display:inline-flex; align-items:center; gap:6px; padding:6px 9px; border:1px solid rgba(28,32,56,.3); background:#fff; font-size:11px; cursor:pointer; user-select:none; }
-    .work-option input { width:14px; height:14px; accent-color:var(--navy); margin:0; }
-    .work-add-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:7px; margin-top:6px; }
+    /* WORK SELECTOR — grows naturally; never overlaps the add row below */
+    .work-selector-block { display:block; width:100%; min-width:0; height:auto; overflow:visible; }
+    .work-selector {
+      display:flex; flex-wrap:wrap; align-items:flex-start; align-content:flex-start;
+      gap:7px; padding:10px; border:1.5px solid var(--navy);
+      background:rgba(255,255,255,.35); min-height:42px; height:auto !important;
+      max-height:none !important; overflow:visible !important; box-sizing:border-box;
+      width:100%; clear:both;
+    }
+    .work-option {
+      display:inline-flex; flex:0 0 auto; width:auto; max-width:100%;
+      align-items:center; gap:6px; padding:6px 9px;
+      border:1px solid rgba(28,32,56,.3); background:#fff;
+      font-size:11px; line-height:1.35; cursor:pointer; user-select:none;
+      box-sizing:border-box; white-space:normal; overflow-wrap:anywhere;
+    }
+    .work-option input { width:14px; height:14px; flex:0 0 14px; accent-color:var(--navy); margin:0; }
+    .work-option span { min-width:0; overflow-wrap:anywhere; }
+    .work-add-row {
+      display:grid; grid-template-columns:minmax(0,1fr) auto; gap:7px;
+      margin-top:6px; width:100%; box-sizing:border-box; clear:both;
+      position:relative; z-index:1;
+    }
+    .work-add-row .modal-input { min-width:0; box-sizing:border-box; }
     .gallery02-admin-group { display:flex; flex-direction:column; gap:8px; padding:12px; margin-bottom:10px; border:1.5px dashed var(--navy); background:rgba(255,255,255,.35); }
     .char-main-img-box { background:#fff; }
 .modal-input, .modal-textarea { width: 100%; background: #F9EBEF; border: 1.5px solid var(--navy); padding: 10px; font-family: var(--sans); font-size: 13px; color: var(--navy); outline: none; }
@@ -1640,8 +1660,10 @@
           <label class="modal-label">캐릭터 이름</label><input type="text" id="edit-name" class="modal-input" value="${item.name||''}">
           <label class="modal-label">분류</label><input type="text" id="edit-group" class="modal-input" list="character-group-options" value="${item.group||groups[0]||''}"><datalist id="character-group-options">${groups.map(g=>`<option value="${g}">`).join('')}</datalist>
           <label class="modal-label">작품</label>
-          <div class="work-selector" id="work-selector">${workOptions.map((w,i)=>`<label class="work-option"><input type="checkbox" class="edit-work-checkbox" value="${w.replace(/"/g,'&quot;')}" ${(Array.isArray(item.works)?item.works:[]).includes(w)?'checked':''}><span>${w}</span></label>`).join('')}</div>
-          <div class="work-add-row"><input type="text" id="new-work-option" class="modal-input" placeholder="새 작품명 추가"><button type="button" class="manager-small-btn" onclick="addWorkOptionFromEditor()">+ 작품</button></div>
+          <div class="work-selector-block">
+            <div class="work-selector" id="work-selector">${workOptions.map((w,i)=>`<label class="work-option"><input type="checkbox" class="edit-work-checkbox" value="${w.replace(/"/g,'&quot;')}" ${(Array.isArray(item.works)?item.works:[]).includes(w)?'checked':''}><span>${w}</span></label>`).join('')}</div>
+            <div class="work-add-row"><input type="text" id="new-work-option" class="modal-input" placeholder="새 작품명 추가"><button type="button" class="manager-small-btn" onclick="addWorkOptionFromEditor()">+ 작품</button></div>
+          </div>
           <div class="upload-help">여러 작품을 동시에 선택할 수 있습니다. 선택한 작품은 캐릭터 이름 아래에 표시됩니다.</div>
           <label class="modal-label">KNOWN AS</label><input type="text" id="edit-alias" class="modal-input" value="${item.alias||'ALIAS'}">
           <label class="modal-label">생일 (YYYY-MM-DD)</label><input type="date" id="edit-bday" class="modal-input" value="${item.birthday||''}">
