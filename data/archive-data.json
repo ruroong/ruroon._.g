@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-27T06:17:32.395Z",
+  "updatedAt": "2026-08-27T06:19:58.532Z",
   "database": {
     "world": [
       {
@@ -153,7 +153,9 @@
       "ALBUM 00"
     ]
   },
-  "workOptions": [],
+  "workOptions": [
+    "해적은 물고기를 싫어해？"
+  ],
   "characterOrder": [
     "characters_1787637348231",
     "characters_1787807863284",
