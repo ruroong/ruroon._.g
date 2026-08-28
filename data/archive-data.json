@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-28T19:17:31.492Z",
+  "updatedAt": "2026-08-28T19:21:10.486Z",
   "database": {
     "world": [
       {
@@ -456,6 +456,99 @@
           }
         ],
         "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787817654680/1787944558729_n6xq79______01.jpg"
+      },
+      {
+        "id": "characters_1787944692445",
+        "name": "리오 그라말디 : Rio Grimaldi",
+        "group": "VELATO : 벨라토",
+        "works": [
+          "NUOVA CARTA：긴 밤의 서막"
+        ],
+        "alias": "리오 : Rio",
+        "birthday": "1979-06-07",
+        "tags": "",
+        "musicId": "",
+        "tmi": "",
+        "links": [],
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/1787944823537_reg9jc______02.jpg",
+        "gallery01": [
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944825592_a2sjh0______.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944827714_txrz6x______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944829735_hci6z8______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944831704_rwfskn______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944833800_5gufya______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944835859_nuajlc______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944837883_he796k______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944839416_ucgc5a_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944841276_4ptkkj______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944843285_n49ri5______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944844982_2myjfr______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944846967_42c16a______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944848265_6o1iim______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944849623_gcvctm______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944851138_07618l______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944853166_8xgfnh______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944854657_xlg6zt______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944856664_yiphcz______01D.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944858449_kb3xvq______02D.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944860546_bc3zaf______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944862010_mxfnly______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944863281_1vrgt5______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944865530_ncx2ll______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944867725_9786wi______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787944692445/gallery/1787944869176_lnp5kn______03.jpg"
+          }
+        ],
+        "gallery02": []
       }
     ],
     "music": [
@@ -529,7 +622,8 @@
     "characters_1787747958748",
     "characters_1787815493165",
     "characters_1787816536950",
-    "characters_1787817654680"
+    "characters_1787817654680",
+    "characters_1787944692445"
   ],
   "mainBgmIds": [
     "track_01",
