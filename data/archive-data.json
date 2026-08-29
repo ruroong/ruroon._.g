@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T02:58:47.429Z",
+  "updatedAt": "2026-08-29T03:33:30.281Z",
   "database": {
     "world": [
       {
@@ -638,18 +638,8 @@
     "links": [
       {
         "category": "CONTACT",
-        "title": "EMAIL",
-        "url": "mailto:"
-      },
-      {
-        "category": "ARCHIVE",
-        "title": "NOTION",
-        "url": ""
-      },
-      {
-        "category": "WORKS",
-        "title": "POSTYPE",
-        "url": ""
+        "title": "OPEN KAKAO",
+        "url": "https://open.kakao.com/o/sGr2xS9b"
       }
     ]
   }
