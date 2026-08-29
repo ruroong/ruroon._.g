@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T12:14:13.849Z",
+  "updatedAt": "2026-08-29T15:24:05.587Z",
   "database": {
     "world": [
       {
@@ -1414,7 +1414,7 @@
         "group": "ALBUM 01",
         "title": "01. Signal Theme #1",
         "sub": "TRACK 01 / MAIN THEME",
-        "content": "<p>Signal Theme #1의 가사 및 정보입니다.</p>",
+        "content": "사실 아직 아무것도 없습니다 꾸벅. 무언가 생긴다면 업데이트 할게요! ",
         "finalContent": "",
         "playlistUrl": "dddd"
       },
@@ -1490,8 +1490,8 @@
     "characters_1788004008050"
   ],
   "mainBgmIds": [
-    "track_01",
-    "music_1787736060056"
+    "music_1787736060056",
+    "track_01"
   ],
   "eventsData": {},
   "noticeLinks": {
