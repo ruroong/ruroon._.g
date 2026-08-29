@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T11:35:00.426Z",
+  "updatedAt": "2026-08-29T11:41:10.398Z",
   "database": {
     "world": [
       {
@@ -1060,6 +1060,93 @@
           }
         ],
         "gallery02": []
+      },
+      {
+        "id": "characters_1788003539611",
+        "name": "크럼블 : Crumble",
+        "group": "ETC",
+        "works": [
+          "내 머리 돌려줘！"
+        ],
+        "alias": "빵봉",
+        "birthday": "",
+        "tags": "",
+        "musicId": "",
+        "tmi": "",
+        "links": [],
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/1788003628815_zllkxl________01.jpg",
+        "gallery01": [
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003630511_dvtpuv_________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003632729_hf11ax_________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003634905_br0nkv_________03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003636843_ozblk3_________04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003638048_nn4ph5_________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003640270_xjpw2m_________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003641577_mjrbv3_________03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003642914_v7nhcl_________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003644152_p79zoe_________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003645350_7myj3n_________03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003647200_p3jvfg_________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003649130_2hv7nt_________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003651017_pqor3j_________03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003652926_5fpgpd_________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003654787_lkp9yy_________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003656753_9w5rlp_________03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003658105_yo95wq_________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003659783_ljcdv0_________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003661058_6ruvke_________03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003662934_zr40q2_________04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003664583_4o8wlo_________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003666538_spm4lf_________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003539611/gallery/1788003668419_uhshp3_________03.jpg"
+          }
+        ],
+        "gallery02": []
       }
     ],
     "music": [
@@ -1125,7 +1212,8 @@
     "너의 눈물을 위해",
     "연상이 아니면 소용없어",
     "NUOVA CARTA：긴 밤의 서막",
-    "죄와 구원의 혼배성사"
+    "죄와 구원의 혼배성사",
+    "내 머리 돌려줘！"
   ],
   "characterOrder": [
     "characters_1787637348231",
@@ -1136,7 +1224,8 @@
     "characters_1787817654680",
     "characters_1787944692445",
     "characters_1787992313563",
-    "characters_1787992883765"
+    "characters_1787992883765",
+    "characters_1788003539611"
   ],
   "mainBgmIds": [
     "track_01",
