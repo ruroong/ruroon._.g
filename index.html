@@ -511,7 +511,11 @@
       .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
       .full-cal-day { min-height: 60px; padding: 4px; }
     }
-  </style>
+  
+    .notice-image-gallery { display:flex; flex-direction:column; gap:12px; margin-bottom:16px; }
+    .notice-image-gallery img { display:block; width:100%; max-height:720px; object-fit:contain; background:#fff; border:0; }
+    .archive-text-block { white-space:pre-wrap; overflow-wrap:anywhere; }
+</style>
 </head>
 
 <body>
@@ -1352,7 +1356,7 @@
           document.getElementById('world-detail-body').innerHTML = `
             ${item.img ? `<img src="${item.img}" style="width:100%; aspect-ratio:16 / 9; height:auto; object-fit:cover; border:1.5px solid var(--navy); margin:0 0 12px;">` : ''}
             ${item.musicId ? `<div class="char-meta-row" style="margin:0 0 16px; align-items:center;"><span class="char-meta-label">MUSIC</span><span class="char-meta-val">${getLinkedMusicHtml(item)}</span></div>` : ''}
-            <p style="line-height:1.6; font-size:14px; margin-bottom:16px;">${item.desc || ''}</p>
+            <div class="archive-text-block" style="line-height:1.7; font-size:14px; margin-bottom:16px; white-space:pre-wrap; overflow-wrap:anywhere;">${item.desc || ''}</div>
             ${cardsHtml}
           `;
           document.getElementById('world-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('world', id);
@@ -1444,7 +1448,7 @@
           activeItemIds.music = id;
           document.getElementById('music-detail-title').innerText = item.title;
           document.getElementById('music-detail-sub').innerText = item.sub;
-          document.getElementById('music-detail-body').innerHTML = `${item.content||''}${item.audio ? `<div class="music-inline-player"><audio controls controlsList="nodownload" disableRemotePlayback preload="metadata" src="${item.audio}"></audio></div>` : ''}${getMusicPlaylistHtml(item)}${item.finalContent ? `<div class="music-final-content">${item.finalContent}</div>` : ''}`;
+          document.getElementById('music-detail-body').innerHTML = `<div class="archive-text-block" style="white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.7;">${item.content||''}</div>${item.audio ? `<div class="music-inline-player"><audio controls controlsList="nodownload" disableRemotePlayback preload="metadata" src="${item.audio}"></audio></div>` : ''}${getMusicPlaylistHtml(item)}${item.finalContent ? `<div class="music-final-content archive-text-block" style="white-space:pre-wrap; overflow-wrap:anywhere;">${item.finalContent}</div>` : ''}`;
           document.getElementById('music-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('music', id);
         }
       }
@@ -1457,7 +1461,7 @@
           activeItemIds.feed = id;
           document.getElementById('feed-detail-title').innerText = item.title;
           document.getElementById('feed-detail-sub').innerText = item.date;
-          document.getElementById('feed-detail-body').innerHTML = `${item.img ? `<img src="${item.img}" style="width:100%; max-height:520px; object-fit:cover; border:1.5px solid var(--navy);">` : ''}${item.content || ''}`;
+          document.getElementById('feed-detail-body').innerHTML = `${item.img ? `<img src="${item.img}" style="width:100%; max-height:520px; object-fit:cover; border:1.5px solid var(--navy);">` : ''}<div class="archive-text-block" style="white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.7;">${item.content || ''}</div>`;
           document.getElementById('feed-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('feed', id);
         }
       }
@@ -1486,7 +1490,9 @@
           activeItemIds.notice = id;
           document.getElementById('notice-detail-title').innerText = item.title;
           document.getElementById('notice-detail-sub').innerText = `${item.date} ${item.pinned ? '(고정됨)' : ''}`;
-          document.getElementById('notice-detail-body').innerHTML = item.content;
+          const noticeImgs = Array.isArray(item.images) ? item.images : (item.img ? [item.img] : []);
+          const noticeImgHtml = noticeImgs.length ? `<div class="notice-image-gallery">${noticeImgs.map(src=>`<img src="${src}" alt="" loading="lazy">`).join('')}</div>` : '';
+          document.getElementById('notice-detail-body').innerHTML = `${noticeImgHtml}<div class="archive-text-block" style="white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.7;">${item.content || ''}</div>`;
           document.getElementById('notice-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('notice', id);
         }
       }
@@ -1720,6 +1726,7 @@
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
           <label class="modal-label">날짜</label><input type="date" id="edit-date" class="modal-input" value="${item.date||''}">
           <label class="modal-label checkbox-line"><input type="checkbox" id="edit-pinned" ${item.pinned?'checked':''}> <span>고정하기</span></label>
+          <label class="modal-label">공지 이미지</label><input type="file" id="edit-notice-images" class="modal-file" accept="image/*" multiple><div class="upload-help">여러 장 선택 가능. 기존 공지 이미지는 유지되고 새 이미지가 뒤에 추가됩니다.</div>
           <label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea" style="min-height:220px;">${item.content||''}</textarea>`;
       }else{
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||item.name||''}"><label class="modal-label">서브 / 날짜</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||item.date||''}"><label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea">${item.content||''}</textarea>`;
@@ -1931,6 +1938,9 @@
     const GITHUB_API_BASE = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`;
     const GITHUB_UPLOAD_TIMEOUT = 120000;
 
+    // Calendar data must exist before any archive load/apply routine can reference it.
+    let eventsData = {};
+
     function getGitHubToken(){
       return sessionStorage.getItem(GITHUB_TOKEN_KEY) || '';
     }
@@ -2064,8 +2074,8 @@
         const linkRows=[...document.querySelectorAll('#character-links-editor .character-link-row')]; item.links=linkRows.map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.title||l.url);
         item.links=[...document.querySelectorAll('#character-links-editor .character-link-row')].map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.url);
         const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile) item.img=await uploadFileToGitHub(imgFile, `images/characters/${item.id}`);
-        const galFiles=[...document.getElementById('edit-gal01-files').files]; if(galFiles.length) { const urls=await uploadManyFilesToGitHub(galFiles, `images/characters/${item.id}/gallery`); item.gallery01=urls.map(url=>({img:url})); }
-        const groups=[]; for(const box of document.querySelectorAll('#gallery02-editor .gallery02-admin-group')){ const title=box.querySelector('.g02-title').value.trim(); const desc=box.querySelector('.g02-desc').value; const files=[...box.querySelector('.g02-files').files]; const old=item.gallery02?.[Number(box.dataset.index)]?.images||[]; let images=old; if(files.length) { const urls=await uploadManyFilesToGitHub(files, `images/characters/${item.id}/gallery`); images=urls.map(url=>({img:url})); } if(title||desc||images.length) groups.push({title:title||'ARCHIVE',desc,images}); } item.gallery02=groups;
+        const galFiles=[...document.getElementById('edit-gal01-files').files]; if(galFiles.length) { const urls=await uploadManyFilesToGitHub(galFiles, `images/characters/${item.id}/gallery`); const existingGallery=(item.gallery01||[]).map(g=>typeof g==='string'?{img:g,links:[]}:g).filter(g=>g&&g.img); item.gallery01=[...existingGallery, ...urls.map(url=>({img:url,links:[]}))]; }
+        const groups=[]; for(const box of document.querySelectorAll('#gallery02-editor .gallery02-admin-group')){ const title=box.querySelector('.g02-title').value.trim(); const desc=box.querySelector('.g02-desc').value; const files=[...box.querySelector('.g02-files').files]; const old=(item.gallery02?.[Number(box.dataset.index)]?.images||[]).map(x=>typeof x==='string'?{img:x}:{img:x.img}).filter(x=>x&&x.img); let images=old; if(files.length) { const urls=await uploadManyFilesToGitHub(files, `images/characters/${item.id}/gallery`); images=[...old, ...urls.map(url=>({img:url}))]; } if(title||desc||images.length) groups.push({title:title||'ARCHIVE',desc,images}); } item.gallery02=groups;
         item.gallery01=(item.gallery01||[]).map(g=>typeof g==='string'?{img:g}:{img:g.img});
         item.gallery02=(item.gallery02||[]).map(g=>({...g,images:(g.images||[]).map(x=>typeof x==='string'?{img:x}:{img:x.img})}));
       }else if(section==='world'){
@@ -2096,7 +2106,7 @@
       }else if(section==='feed'){
         item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.content=document.getElementById('edit-content').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/feed/${item.id}`); item.content=item.content || '';
       }else if(section==='notice'){
-        item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.pinned=document.getElementById('edit-pinned').checked; item.content=document.getElementById('edit-content').value;
+        item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.pinned=document.getElementById('edit-pinned').checked; item.content=document.getElementById('edit-content').value; const noticeFiles=[...document.getElementById('edit-notice-images').files]; const existingNoticeImages=Array.isArray(item.images)?item.images.slice():(item.img?[item.img]:[]); if(noticeFiles.length){ const urls=await uploadManyFilesToGitHub(noticeFiles, `images/notice/${item.id}`); item.images=[...existingNoticeImages,...urls]; } else if(existingNoticeImages.length){ item.images=existingNoticeImages; }
       }else{ item.title=document.getElementById('edit-title').value; item.sub=document.getElementById('edit-sub').value; item.content=document.getElementById('edit-content').value; }
       categoryGroups.world=[...new Set([...categoryGroups.world,...database.world.map(x=>x.group).filter(Boolean)])];
       categoryGroups.characters=[...new Set([...categoryGroups.characters,...database.characters.map(x=>x.group).filter(Boolean)])];
@@ -2246,7 +2256,7 @@
     }
 
     let selectedDateKey = getTodayKey();
-    let eventsData = {};
+    // eventsData is initialized above so archive loading can safely restore it.
 
     function getBirthdayEventsForDate(dateKey) {
       const targetParts = String(dateKey).split('-');
