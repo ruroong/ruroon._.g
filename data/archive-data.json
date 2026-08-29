@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T11:41:10.398Z",
+  "updatedAt": "2026-08-29T11:44:27.286Z",
   "database": {
     "world": [
       {
@@ -1147,6 +1147,84 @@
           }
         ],
         "gallery02": []
+      },
+      {
+        "id": "characters_1788003698624",
+        "name": "크럼블 : Crumble",
+        "group": "ETC",
+        "works": [
+          "내 머리 돌려줘！"
+        ],
+        "alias": "크럼블",
+        "birthday": "",
+        "tags": "boy, 2::aged up, mature male::,\n\n3::ash skin,dark grey skin::, messy black hair, unkempt hair, green eyes, slit pupils, slit pupil eyes, shark teeth, monster boy\n\n4::bara::, 3::muscular::, broad shoulders, muscular chest, Crocodile tail, nude,",
+        "musicId": "",
+        "tmi": "",
+        "links": [],
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/1788003832450_gg2zph________02.jpg",
+        "gallery01": [
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003834099_q3cgvo__________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003835839_mriacj__________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003837596_lssxm0__________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003839027_py02i5__________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003840272_bjv94u__________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003842029_w927zv__________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003843752_tc3w37__________03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003844937_34wf7q__________04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003846643_vizrvo__________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003847846_mcaxl1__________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003849504_vngl02__________03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003851345_por1gk__________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003853830_6lc2pm__________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003855971_cdw47x__________03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003857176_y7y75w__________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003858911_c8v4ro__________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003860357_gacgyv__________03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003862064_9p5l8t__________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003863783_ef50gk__________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788003698624/gallery/1788003865525_i5npnc__________03.jpg"
+          }
+        ],
+        "gallery02": []
       }
     ],
     "music": [
@@ -1225,7 +1303,8 @@
     "characters_1787944692445",
     "characters_1787992313563",
     "characters_1787992883765",
-    "characters_1788003539611"
+    "characters_1788003539611",
+    "characters_1788003698624"
   ],
   "mainBgmIds": [
     "track_01",
