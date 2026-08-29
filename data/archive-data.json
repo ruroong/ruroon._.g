@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T09:13:55.745Z",
+  "updatedAt": "2026-08-29T09:17:32.275Z",
   "database": {
     "world": [
       {
@@ -1083,10 +1083,10 @@
     "feed": [
       {
         "id": "feed_1",
-        "date": "2026-08-24",
-        "title": "2026.08.24 Daily Log",
-        "img": "./images/A01.png",
-        "content": "<img src=\"./images/A01.png\" style=\"width:100%; max-height:300px; object-fit:cover; border:1.5px solid var(--navy);\"><p style=\"margin-top:10px;\">최신 기록입니다.</p>"
+        "date": "2026-09-01",
+        "title": "2026.09.01 Daily Log",
+        "img": "https://ruroong.github.io/ruroon._.g/images/feed/feed_1/1787995050923_66wv84_A01.png",
+        "content": "루룽찌 아카이브를 개설했습니다. \n\n캐릭터들 B컷이나 정보 신작 예고 등등 다양하게 올라올 예정이에요!"
       }
     ],
     "notice": [
