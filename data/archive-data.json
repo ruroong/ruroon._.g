@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T11:50:18.810Z",
+  "updatedAt": "2026-08-29T11:52:56.756Z",
   "database": {
     "world": [
       {
@@ -22,6 +22,20 @@
             "title": "벨라토 세계관 페이지",
             "url": "https://velato.creatorlink.net/"
           }
+        ]
+      },
+      {
+        "id": "world_1788004310003",
+        "title": "2024, 대한민국",
+        "group": "WORLD DATABASE",
+        "sub": "2024년 현대 대한민국",
+        "desc": "2024년 대한민국 ",
+        "musicId": "",
+        "links": [],
+        "img": "https://ruroong.github.io/ruroon._.g/images/world/world_1788004310003/1788004374642_sat1ik______.jpg",
+        "charIds": [
+          "characters_1787815493165",
+          "characters_1787816536950"
         ]
       }
     ],
