@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T08:48:36.344Z",
+  "updatedAt": "2026-08-29T09:13:55.745Z",
   "database": {
     "world": [
       {
@@ -8,10 +8,13 @@
         "group": "WORLD DATABASE",
         "title": "VELATO : 벨라토",
         "sub": "WORLD DATABASE",
-        "img": "./images/A01.png",
+        "img": "https://ruroong.github.io/ruroon._.g/images/world/empecla/1787994833879_11pnc5_00.jpg",
         "desc": "",
         "charIds": [
-          "characters_1787817654680"
+          "characters_1787817654680",
+          "characters_1787944692445",
+          "characters_1787992313563",
+          "characters_1787992883765"
         ],
         "musicId": "",
         "links": [
