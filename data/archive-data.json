@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T11:46:31.770Z",
+  "updatedAt": "2026-08-29T11:50:18.810Z",
   "database": {
     "world": [
       {
@@ -1225,6 +1225,141 @@
           }
         ],
         "gallery02": []
+      },
+      {
+        "id": "characters_1788004008050",
+        "name": "로완 애시크로프트 : Rowan Ashcroft",
+        "group": "ETC",
+        "works": [
+          "그 꽃집을 조심하세요！"
+        ],
+        "alias": "로완 : Rowan",
+        "birthday": "1880-02-29",
+        "tags": "2::boy, aged up, mature male::, Bishonen, 2::long black hair, curtained hair::, exposed forehead::, 3::jet black hair ::, cat eyes, tsurime, 2::burgundy eyes::, oversized white dress shirt, rolled-up sleeves, ivory linen apron, subtle sage green vertical stripes, front pocket, ::muscular::, 0.4::thin scar arm::, ",
+        "musicId": "",
+        "tmi": "",
+        "links": [],
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/1788004145799_0fvhsc_____01.gif",
+        "gallery01": [
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004148682_e06df3______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004150654_9wpnz6______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004152487_4ugh0s______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004154259_1uo8q8______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004156211_uj3lau______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004157720_ndu6pm______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004159650_95yytl______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004161417_8g257o______06.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004163329_kq3t1r______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004165557_kehpog______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004166700_wjqqfq______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004168602_2qmzwl_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004170740_maecxy_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004172502_6hoyrq______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004175017_sg2eep______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004176759_a1na8b______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004178367_zfux4l______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004179752_q5d1j9______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004181685_c5xutf______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004183730_7d34yn______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004185646_yvi1pd______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004186900_do1u2a______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004188918_w45xio______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004190930_3v32et______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004192963_tyrglo______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004194486_93x4ax______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004195853_79t7s8______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004197209_tyerc4______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004199442_ba4h8p______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004200696_i7klo1______06.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004202383_786grk______01D.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004203713_our7xw______02D.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004205630_pu5nyo______03D.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004207520_9pxc2u______04D.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004208813_xgw05a______05D.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004210734_0haytr______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004212991_gsgl9u______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004214886_x7tbtd______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788004008050/gallery/1788004216787_wqnohl______02.jpg"
+          }
+        ],
+        "gallery02": []
       }
     ],
     "music": [
@@ -1291,7 +1426,8 @@
     "연상이 아니면 소용없어",
     "NUOVA CARTA：긴 밤의 서막",
     "죄와 구원의 혼배성사",
-    "내 머리 돌려줘！"
+    "내 머리 돌려줘！",
+    "그 꽃집을 조심하세요！"
   ],
   "characterOrder": [
     "characters_1787637348231",
@@ -1304,7 +1440,8 @@
     "characters_1787992313563",
     "characters_1787992883765",
     "characters_1788003539611",
-    "characters_1788003698624"
+    "characters_1788003698624",
+    "characters_1788004008050"
   ],
   "mainBgmIds": [
     "track_01",
