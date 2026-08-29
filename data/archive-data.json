@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T11:46:13.588Z",
+  "updatedAt": "2026-08-29T11:46:31.770Z",
   "database": {
     "world": [
       {
@@ -148,7 +148,7 @@
         "birthday": "0685-02-04",
         "tags": "boy, 4::aged up::, 2::mature male::, pale skin, 2::very short black hair, crew cut::, tsurime, jitome, sanpaku, 1.2::red bandana::, oversized black poet shirt,  black eyepatch over one eye, gold eye, broad shoulders, muscular, leather pirate coat draped over shoulders, -5::facial hair, wrinkles::, expressionless, -3::bangs, hair::,closed mouth",
         "musicId": "",
-        "tmi": "[ 말랑말랑 선장님！ ]",
+        "tmi": "",
         "links": [
           {
             "title": "크랙 세이프티",
