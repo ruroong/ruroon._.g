@@ -477,6 +477,17 @@
     .archive-link-button:hover { background:var(--navy); color:var(--pink); }
     .detail-content-body { min-width:0; overflow:hidden; }
     .admin-manager-row input { flex:1; }
+    /* Long names stay inside their row; controls never get pushed off-screen. */
+    .item-name > span:first-child { min-width:0; flex:1 1 auto; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .admin-manager-char-row > .manager-name { min-width:0; flex:1 1 auto; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .admin-manager-char-row > .drag-handle, .admin-manager-char-row > select { flex:0 0 auto; }
+    .existing-media-list { display:flex; flex-direction:column; gap:7px; margin:7px 0 4px; }
+    .existing-media-item { display:flex; align-items:center; gap:8px; min-width:0; padding:7px 8px; border:1px dashed rgba(28,32,56,.35); background:#fff; }
+    .existing-media-item.is-removed { opacity:.42; text-decoration:line-through; }
+    .existing-media-thumb { width:54px; height:54px; object-fit:cover; flex:0 0 54px; border:1px solid rgba(28,32,56,.22); background:#eee; }
+    .existing-media-name { min-width:0; flex:1 1 auto; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:10px var(--mono); }
+    .existing-media-remove { flex:0 0 auto; padding:5px 8px; border:1px solid var(--navy); background:#fff; color:var(--navy); font:700 10px var(--mono); cursor:pointer; }
+    .existing-media-remove:hover { background:var(--navy); color:var(--pink); }
     .admin-manager-group-row { display:flex; align-items:center; gap:8px; }
     .admin-manager-char-row { display:flex; align-items:center; gap:8px; padding:7px 8px; border:1px dashed rgba(28,32,56,.35); background:#fff; }
     .admin-manager-char-row .drag-handle { cursor:grab; font-size:14px; opacity:.6; }
@@ -511,11 +522,7 @@
       .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
       .full-cal-day { min-height: 60px; padding: 4px; }
     }
-  
-    .notice-image-gallery { display:flex; flex-direction:column; gap:12px; margin-bottom:16px; }
-    .notice-image-gallery img { display:block; width:100%; max-height:720px; object-fit:contain; background:#fff; border:0; }
-    .archive-text-block { white-space:pre-wrap; overflow-wrap:anywhere; }
-</style>
+  </style>
 </head>
 
 <body>
@@ -1356,7 +1363,7 @@
           document.getElementById('world-detail-body').innerHTML = `
             ${item.img ? `<img src="${item.img}" style="width:100%; aspect-ratio:16 / 9; height:auto; object-fit:cover; border:1.5px solid var(--navy); margin:0 0 12px;">` : ''}
             ${item.musicId ? `<div class="char-meta-row" style="margin:0 0 16px; align-items:center;"><span class="char-meta-label">MUSIC</span><span class="char-meta-val">${getLinkedMusicHtml(item)}</span></div>` : ''}
-            <div class="archive-text-block" style="line-height:1.7; font-size:14px; margin-bottom:16px; white-space:pre-wrap; overflow-wrap:anywhere;">${item.desc || ''}</div>
+            <p style="line-height:1.6; font-size:14px; margin-bottom:16px;">${item.desc || ''}</p>
             ${cardsHtml}
           `;
           document.getElementById('world-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('world', id);
@@ -1448,7 +1455,7 @@
           activeItemIds.music = id;
           document.getElementById('music-detail-title').innerText = item.title;
           document.getElementById('music-detail-sub').innerText = item.sub;
-          document.getElementById('music-detail-body').innerHTML = `<div class="archive-text-block" style="white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.7;">${item.content||''}</div>${item.audio ? `<div class="music-inline-player"><audio controls controlsList="nodownload" disableRemotePlayback preload="metadata" src="${item.audio}"></audio></div>` : ''}${getMusicPlaylistHtml(item)}${item.finalContent ? `<div class="music-final-content archive-text-block" style="white-space:pre-wrap; overflow-wrap:anywhere;">${item.finalContent}</div>` : ''}`;
+          document.getElementById('music-detail-body').innerHTML = `${item.content||''}${item.audio ? `<div class="music-inline-player"><audio controls controlsList="nodownload" disableRemotePlayback preload="metadata" src="${item.audio}"></audio></div>` : ''}${getMusicPlaylistHtml(item)}${item.finalContent ? `<div class="music-final-content">${item.finalContent}</div>` : ''}`;
           document.getElementById('music-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('music', id);
         }
       }
@@ -1461,7 +1468,7 @@
           activeItemIds.feed = id;
           document.getElementById('feed-detail-title').innerText = item.title;
           document.getElementById('feed-detail-sub').innerText = item.date;
-          document.getElementById('feed-detail-body').innerHTML = `${item.img ? `<img src="${item.img}" style="width:100%; max-height:520px; object-fit:cover; border:1.5px solid var(--navy);">` : ''}<div class="archive-text-block" style="white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.7;">${item.content || ''}</div>`;
+          document.getElementById('feed-detail-body').innerHTML = `${item.img ? `<img src="${item.img}" style="width:100%; max-height:520px; object-fit:cover; border:1.5px solid var(--navy);">` : ''}${item.content || ''}`;
           document.getElementById('feed-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('feed', id);
         }
       }
@@ -1490,9 +1497,7 @@
           activeItemIds.notice = id;
           document.getElementById('notice-detail-title').innerText = item.title;
           document.getElementById('notice-detail-sub').innerText = `${item.date} ${item.pinned ? '(고정됨)' : ''}`;
-          const noticeImgs = Array.isArray(item.images) ? item.images : (item.img ? [item.img] : []);
-          const noticeImgHtml = noticeImgs.length ? `<div class="notice-image-gallery">${noticeImgs.map(src=>`<img src="${src}" alt="" loading="lazy">`).join('')}</div>` : '';
-          document.getElementById('notice-detail-body').innerHTML = `${noticeImgHtml}<div class="archive-text-block" style="white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.7;">${item.content || ''}</div>`;
+          document.getElementById('notice-detail-body').innerHTML = `${item.img ? `<img src="${item.img}" style="width:100%; max-height:520px; object-fit:cover; border:0; display:block; margin-bottom:14px;">` : ''}${item.content || ''}`;
           document.getElementById('notice-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('notice', id);
         }
       }
@@ -1663,6 +1668,28 @@
       return opts.join('');
     }
 
+    function mediaAttrUrl(url){ return String(url||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function renderExistingMedia(label, url, kind='image'){
+      if(!url) return '';
+      const safe=mediaAttrUrl(url);
+      const thumb=kind==='image' ? `<img class="existing-media-thumb" src="${safe}" alt="">` : `<div class="existing-media-thumb" style="display:flex;align-items:center;justify-content:center;font:9px var(--mono);">AUDIO</div>`;
+      return `<div class="existing-media-item" data-existing-media data-url="${safe}">${thumb}<span class="existing-media-name" title="${safe}">${safe}</span><button type="button" class="existing-media-remove" onclick="markExistingMediaRemoved(this)">삭제</button></div>`;
+    }
+    function markExistingMediaRemoved(btn){
+      const row=btn?.closest('[data-existing-media]'); if(!row)return;
+      row.classList.add('is-removed'); row.dataset.removed='1'; btn.textContent='복구'; btn.onclick=()=>restoreExistingMedia(btn);
+    }
+    function restoreExistingMedia(btn){
+      const row=btn?.closest('[data-existing-media]'); if(!row)return;
+      row.classList.remove('is-removed'); row.dataset.removed='0'; btn.textContent='삭제'; btn.onclick=()=>markExistingMediaRemoved(btn);
+    }
+    function getKeptExistingMedia(selector){
+      return [...document.querySelectorAll(selector+' [data-existing-media]')].filter(row=>row.dataset.removed!=='1').map(row=>row.dataset.url||'').filter(Boolean);
+    }
+    function getKeptExistingGallery(selector){
+      return [...document.querySelectorAll(selector+' [data-existing-media]')].filter(row=>row.dataset.removed!=='1').map(row=>({img:row.dataset.url||''})).filter(x=>x.img);
+    }
+
     function renderAdminEditForm(section, item, isNew) {
       const container = document.getElementById('admin-edit-container');
       let fieldsHtml='';
@@ -1682,14 +1709,14 @@
           <label class="modal-label">생일 (YYYY-MM-DD)</label><input type="date" id="edit-bday" class="modal-input" value="${item.birthday||''}">
           <label class="modal-label">PROMPT</label><textarea id="edit-tags" class="modal-textarea" style="min-height:160px;">${item.tags||''}</textarea>
           <label class="modal-label">전용 음악</label>${getMusicLinkFieldHtml(item.musicId||'')}
-          <label class="modal-label">프로필 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">선택한 파일은 GitHub 업로드 서버를 통해 images/characters 폴더에 저장되고, 사이트에는 URL만 기록됩니다.</div>
-          <label class="modal-label">OFFICIAL GALLERY 이미지</label><input type="file" id="edit-gal01-files" class="modal-file" accept="image/*" multiple><div class="upload-help">여러 장 선택 가능. GitHub의 images/characters/.../gallery 폴더에 실제 파일로 업로드됩니다.</div>
+          <label class="modal-label">프로필 이미지</label>${item.img ? `<div id="profile-existing-media" class="existing-media-list">${renderExistingMedia('현재 프로필',item.img)}</div>` : ''}<input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">새 파일을 선택하면 업로드 후 교체됩니다. 기존 파일은 사이트에서 삭제할 수 있으며 GitHub 원본 파일은 건드리지 않습니다.</div>
+          <label class="modal-label">OFFICIAL GALLERY 이미지</label>${(item.gallery01||[]).length ? `<div id="gal01-existing-media" class="existing-media-list">${(item.gallery01||[]).map(g=>renderExistingMedia('갤러리',typeof g==='string'?g:g.img)).join('')}</div>` : ''}<input type="file" id="edit-gal01-files" class="modal-file" accept="image/*" multiple><div class="upload-help">기존 이미지는 유지한 채 새 이미지를 추가할 수 있습니다. 위에서 개별 삭제도 가능합니다.</div>
           <label class="modal-label">공통 작품 링크</label>
           <div id="character-links-editor">${(item.links||[]).map((l,i)=>`<div class="admin-manager-row character-link-row"><input class="modal-input char-link-title" placeholder="링크 이름" value="${l.title||''}"><input class="modal-input char-link-url" placeholder="https://..." value="${l.url||''}"><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button></div>`).join('')}</div>
           <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addCharacterLinkEditor()">+ LINK</button>
           <label class="modal-label">NOTES &amp; LORE</label><textarea id="edit-tmi" class="modal-textarea" style="min-height:180px;">${item.tmi||''}</textarea>
           <div class="modal-label" style="margin-top:6px;">ARCHIVE GALLERY</div>
-          <div id="gallery02-editor">${gal02.map((g,i)=>`<div class="gallery02-admin-group" data-index="${i}"><input class="modal-input g02-title" placeholder="갤러리 제목" value="${g.title||''}"><textarea class="modal-textarea g02-desc" placeholder="설명">${g.desc||''}</textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">선택한 이미지는 GitHub에 실제 파일로 업로드됩니다.</div></div>`).join('')}</div>
+          <div id="gallery02-editor">${gal02.map((g,i)=>`<div class="gallery02-admin-group" data-index="${i}"><input class="modal-input g02-title" placeholder="갤러리 제목" value="${g.title||''}"><textarea class="modal-textarea g02-desc" placeholder="설명">${g.desc||''}</textarea>${(g.images||[]).length ? `<div class="existing-media-list g02-existing-media">${(g.images||[]).map(x=>renderExistingMedia('아카이브',typeof x==='string'?x:x.img)).join('')}</div>` : ''}<input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">기존 이미지는 유지하고 새 이미지만 추가할 수 있습니다. 삭제는 사이트에서만 반영됩니다.</div></div>`).join('')}</div>
           <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addGallery02AdminGroup()">+ GALLERY GROUP</button>
         `;
       }else if(section==='world'){
@@ -1697,7 +1724,7 @@
         fieldsHtml=`<label class="modal-label">세계관 제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
           <label class="modal-label">분류</label><input type="text" id="edit-group" class="modal-input" list="world-group-options" value="${item.group||groups[0]||''}"><datalist id="world-group-options">${groups.map(g=>`<option value="${g}">`).join('')}</datalist>
           <label class="modal-label">서브 타이틀</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||''}">
-          <label class="modal-label">세계관 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">GitHub 업로드 서버를 통해 images/world 폴더에 저장됩니다.</div>
+          <label class="modal-label">세계관 이미지</label>${item.img ? `<div id="world-existing-media" class="existing-media-list">${renderExistingMedia('세계관',item.img)}</div>` : ''}<input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">새 파일을 선택하면 교체됩니다. 기존 이미지는 사이트에서만 삭제할 수 있습니다.</div>
           <label class="modal-label">전용 음악</label>${getMusicLinkFieldHtml(item.musicId||'')}
           <label class="modal-label">세계관 링크</label>
           <div id="world-links-editor">${(item.links||[]).map((l,i)=>`<div class="admin-manager-row world-link-row"><input class="modal-input world-link-title" placeholder="링크 이름" value="${l.title||''}"><input class="modal-input world-link-url" placeholder="https://..." value="${l.url||''}"><button type="button" class="manager-small-btn" onclick="this.parentElement.remove()">삭제</button></div>`).join('')}</div>
@@ -1720,13 +1747,13 @@
       }else if(section==='feed'){
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
           <label class="modal-label">날짜</label><input type="date" id="edit-date" class="modal-input" value="${item.date||''}">
-          <label class="modal-label">대표 이미지</label><input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">GitHub의 images/feed 폴더에 실제 파일로 업로드됩니다.</div>
+          <label class="modal-label">대표 이미지</label>${item.img ? `<div id="feed-existing-media" class="existing-media-list">${renderExistingMedia('피드',item.img)}</div>` : ''}<input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">새 파일을 선택하면 교체됩니다. 기존 이미지는 사이트에서만 삭제할 수 있습니다.</div>
           <label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea" style="min-height:220px;">${stripImageHtml(item.content||'')}</textarea>`;
       }else if(section==='notice'){
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||''}">
           <label class="modal-label">날짜</label><input type="date" id="edit-date" class="modal-input" value="${item.date||''}">
           <label class="modal-label checkbox-line"><input type="checkbox" id="edit-pinned" ${item.pinned?'checked':''}> <span>고정하기</span></label>
-          <label class="modal-label">공지 이미지</label><input type="file" id="edit-notice-images" class="modal-file" accept="image/*" multiple><div class="upload-help">여러 장 선택 가능. 기존 공지 이미지는 유지되고 새 이미지가 뒤에 추가됩니다.</div>
+          <label class="modal-label">공지 이미지</label>${item.img ? `<div id="notice-existing-media" class="existing-media-list">${renderExistingMedia('공지',item.img)}</div>` : ''}<input type="file" id="edit-img-file" class="modal-file" accept="image/*"><div class="upload-help">기존 이미지는 유지하거나 삭제할 수 있고, 새 이미지를 선택하면 교체됩니다.</div>
           <label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea" style="min-height:220px;">${item.content||''}</textarea>`;
       }else{
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||item.name||''}"><label class="modal-label">서브 / 날짜</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||item.date||''}"><label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea">${item.content||''}</textarea>`;
@@ -1813,7 +1840,7 @@
         ${hasGroups?`<datalist id="generic-group-options">${categoryGroups[section].map(g=>`<option value="${g}">`).join('')}</datalist><div class="manager-section-title">분류 이름 / 순서</div><div id="generic-group-editor" class="admin-list-manager">${[...categoryGroups[section]].map(g=>`<div class="admin-manager-group-row"><input class="modal-input generic-group-name" value="${g}"><button class="manager-small-btn" onclick="moveGenericGroup(this,-1)">▲</button><button class="manager-small-btn" onclick="moveGenericGroup(this,1)">▼</button><button class="manager-small-btn" onclick="removeGenericGroup(this)">삭제</button></div>`).join('')}</div><button class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addGenericGroup()">+ GROUP</button>`:''}
         <div class="manager-section-title">표시 순서</div>
         <div id="generic-order-editor" class="admin-list-manager">${items.map(i=>`<div class="admin-manager-char-row" draggable="true" data-id="${i.id}" ondragstart="genericOrderDragStart(event)" ondragover="genericOrderDragOver(event)" ondrop="genericOrderDrop(event)" ondragend="genericOrderDragEnd(event)">
-          <span class="drag-handle">☷</span><span style="flex:1;font-weight:700;">${i.title||i.name||i.date||i.id}</span>
+          <span class="drag-handle">☷</span><span class="manager-name">${i.title||i.name||i.date||i.id}</span>
           ${hasGroups?`<input class="modal-input generic-item-group" list="generic-group-options" value="${i.group||''}" placeholder="분류">`:''}
         </div>`).join('')}</div>
         <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveGenericListManager('${section}')">SAVE LIST</button></div>`;
@@ -1858,7 +1885,7 @@
         <div class="manager-section-title">캐릭터 분류 / 표시 순서</div>
         <div id="character-order-editor" class="admin-list-manager">${order.map(id=>{
           const c=database.characters.find(x=>x.id===id); return c?`<div class="admin-manager-char-row" draggable="true" data-cid="${c.id}" ondragstart="charOrderDragStart(event)" ondragover="charOrderDragOver(event)" ondrop="charOrderDrop(event)" ondragend="charOrderDragEnd(event)">
-            <span class="drag-handle">☷</span><span style="min-width:100px;font-weight:700;">${c.name}</span>
+            <span class="drag-handle">☷</span><span class="manager-name">${c.name}</span>
             <select class="character-manager-group">${groups.map(g=>`<option value="${g}" ${c.group===g?'selected':''}>${g}</option>`).join('')}</select>
           </div>`:'';}).join('')}</div>
         <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveCharacterListManager()">SAVE LIST</button></div>`;
@@ -1922,7 +1949,7 @@
       await persistArchiveData();
     }
 
-    function addGallery02AdminGroup(){ const box=document.getElementById('gallery02-editor'); if(!box)return; const i=box.children.length; const div=document.createElement('div'); div.className='gallery02-admin-group'; div.dataset.index=i; div.innerHTML='<input class="modal-input g02-title" placeholder="갤러리 제목"><textarea class="modal-textarea g02-desc" placeholder="설명"></textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">파일을 선택하면 저장 시 GitHub에 실제 파일로 업로드됩니다.</div>'; box.appendChild(div); }
+    function addGallery02AdminGroup(){ const box=document.getElementById('gallery02-editor'); if(!box)return; const i=box.children.length; const div=document.createElement('div'); div.className='gallery02-admin-group'; div.dataset.index=i; div.innerHTML='<input class="modal-input g02-title" placeholder="갤러리 제목"><textarea class="modal-textarea g02-desc" placeholder="설명"></textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">기존 이미지는 유지하고 새 이미지만 추가할 수 있습니다.</div>'; box.appendChild(div); }
     function stripImageHtml(html){ return String(html||'').replace(/<img[^>]*>/gi,'').replace(/<[^>]+>/g,'').trim(); }
     /* ---------- DIRECT GITHUB UPLOAD (NO WORKER) ---------- */
     /*
@@ -1937,9 +1964,6 @@
     const GITHUB_TOKEN_KEY = 'ruroon_github_token_session';
     const GITHUB_API_BASE = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`;
     const GITHUB_UPLOAD_TIMEOUT = 120000;
-
-    // Calendar data must exist before any archive load/apply routine can reference it.
-    let eventsData = {};
 
     function getGitHubToken(){
       return sessionStorage.getItem(GITHUB_TOKEN_KEY) || '';
@@ -2073,16 +2097,30 @@
         item.name=document.getElementById('edit-name').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'CHARACTERS'; item.works=[...document.querySelectorAll('#work-selector .edit-work-checkbox:checked')].map(x=>x.value).filter(Boolean); workOptions=[...new Set([...workOptions,...item.works])]; item.alias=document.getElementById('edit-alias').value.trim(); item.birthday=document.getElementById('edit-bday').value; item.tags=document.getElementById('edit-tags').value; item.musicId=document.getElementById('edit-music-id').value || ''; item.tmi=document.getElementById('edit-tmi').value;
         const linkRows=[...document.querySelectorAll('#character-links-editor .character-link-row')]; item.links=linkRows.map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.title||l.url);
         item.links=[...document.querySelectorAll('#character-links-editor .character-link-row')].map(row=>({title:row.querySelector('.char-link-title').value.trim(),url:row.querySelector('.char-link-url').value.trim()})).filter(l=>l.url);
-        const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile) item.img=await uploadFileToGitHub(imgFile, `images/characters/${item.id}`);
-        const galFiles=[...document.getElementById('edit-gal01-files').files]; if(galFiles.length) { const urls=await uploadManyFilesToGitHub(galFiles, `images/characters/${item.id}/gallery`); const existingGallery=(item.gallery01||[]).map(g=>typeof g==='string'?{img:g,links:[]}:g).filter(g=>g&&g.img); item.gallery01=[...existingGallery, ...urls.map(url=>({img:url,links:[]}))]; }
-        const groups=[]; for(const box of document.querySelectorAll('#gallery02-editor .gallery02-admin-group')){ const title=box.querySelector('.g02-title').value.trim(); const desc=box.querySelector('.g02-desc').value; const files=[...box.querySelector('.g02-files').files]; const old=(item.gallery02?.[Number(box.dataset.index)]?.images||[]).map(x=>typeof x==='string'?{img:x}:{img:x.img}).filter(x=>x&&x.img); let images=old; if(files.length) { const urls=await uploadManyFilesToGitHub(files, `images/characters/${item.id}/gallery`); images=[...old, ...urls.map(url=>({img:url}))]; } if(title||desc||images.length) groups.push({title:title||'ARCHIVE',desc,images}); } item.gallery02=groups;
+        const imgFile=document.getElementById('edit-img-file').files[0];
+        const keptProfile=getKeptExistingMedia('#profile-existing-media');
+        if(imgFile) item.img=await uploadFileToGitHub(imgFile, `images/characters/${item.id}`);
+        else if(!keptProfile.length) item.img='';
+        const keptGal01=getKeptExistingGallery('#gal01-existing-media');
+        const galFiles=[...document.getElementById('edit-gal01-files').files];
+        if(galFiles.length) { const urls=await uploadManyFilesToGitHub(galFiles, `images/characters/${item.id}/gallery`); item.gallery01=[...keptGal01,...urls.map(url=>({img:url}))]; }
+        else item.gallery01=keptGal01;
+        const groups=[];
+        for(const box of document.querySelectorAll('#gallery02-editor .gallery02-admin-group')){
+          const title=box.querySelector('.g02-title').value.trim(); const desc=box.querySelector('.g02-desc').value;
+          const kept=[...box.querySelectorAll('[data-existing-media]')].filter(row=>row.dataset.removed!=='1').map(row=>({img:row.dataset.url||''})).filter(x=>x.img);
+          const files=[...box.querySelector('.g02-files').files]; let images=kept;
+          if(files.length) { const urls=await uploadManyFilesToGitHub(files, `images/characters/${item.id}/gallery`); images=[...kept,...urls.map(url=>({img:url}))]; }
+          if(title||desc||images.length) groups.push({title:title||'ARCHIVE',desc,images});
+        }
+        item.gallery02=groups;
         item.gallery01=(item.gallery01||[]).map(g=>typeof g==='string'?{img:g}:{img:g.img});
         item.gallery02=(item.gallery02||[]).map(g=>({...g,images:(g.images||[]).map(x=>typeof x==='string'?{img:x}:{img:x.img})}));
       }else if(section==='world'){
         item.title=document.getElementById('edit-title').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'WORLD DATABASE'; item.sub=document.getElementById('edit-sub').value.trim(); item.desc=document.getElementById('edit-desc').value; item.musicId=document.getElementById('edit-music-id').value || '';
         const worldLinkRows=[...document.querySelectorAll('#world-links-editor .world-link-row')];
         item.links=worldLinkRows.map(row=>({title:row.querySelector('.world-link-title').value.trim(),url:row.querySelector('.world-link-url').value.trim()})).filter(l=>l.url);
-        const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/world/${item.id}`); item.charIds=[...document.querySelectorAll('#world-char-select-grid .char-select-card.selected')].map(el=>el.dataset.cid);
+        const imgFile=document.getElementById('edit-img-file').files[0]; const keptWorld=getKeptExistingMedia('#world-existing-media'); if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/world/${item.id}`); else if(!keptWorld.length)item.img=''; item.charIds=[...document.querySelectorAll('#world-char-select-grid .char-select-card.selected')].map(el=>el.dataset.cid);
       }else if(section==='music'){
         item.title=document.getElementById('edit-title').value.trim();
         item.sub=document.getElementById('edit-sub').value.trim();
@@ -2104,9 +2142,9 @@
         mainBgmIds=Array.isArray(mainBgmIds)?mainBgmIds.filter(x=>x!==item.id):[];
         if(mainBgmChecked) mainBgmIds.push(item.id);
       }else if(section==='feed'){
-        item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.content=document.getElementById('edit-content').value; const imgFile=document.getElementById('edit-img-file').files[0]; if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/feed/${item.id}`); item.content=item.content || '';
+        item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.content=document.getElementById('edit-content').value; const imgFile=document.getElementById('edit-img-file').files[0]; const keptFeed=getKeptExistingMedia('#feed-existing-media'); if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/feed/${item.id}`); else if(!keptFeed.length)item.img=''; item.content=item.content || '';
       }else if(section==='notice'){
-        item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.pinned=document.getElementById('edit-pinned').checked; item.content=document.getElementById('edit-content').value; const noticeFiles=[...document.getElementById('edit-notice-images').files]; const existingNoticeImages=Array.isArray(item.images)?item.images.slice():(item.img?[item.img]:[]); if(noticeFiles.length){ const urls=await uploadManyFilesToGitHub(noticeFiles, `images/notice/${item.id}`); item.images=[...existingNoticeImages,...urls]; } else if(existingNoticeImages.length){ item.images=existingNoticeImages; }
+        item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.pinned=document.getElementById('edit-pinned').checked; item.content=document.getElementById('edit-content').value; const imgFile=document.getElementById('edit-img-file').files[0]; const keptNotice=getKeptExistingMedia('#notice-existing-media'); if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/notice/${item.id}`); else if(!keptNotice.length)item.img='';
       }else{ item.title=document.getElementById('edit-title').value; item.sub=document.getElementById('edit-sub').value; item.content=document.getElementById('edit-content').value; }
       categoryGroups.world=[...new Set([...categoryGroups.world,...database.world.map(x=>x.group).filter(Boolean)])];
       categoryGroups.characters=[...new Set([...categoryGroups.characters,...database.characters.map(x=>x.group).filter(Boolean)])];
@@ -2256,7 +2294,7 @@
     }
 
     let selectedDateKey = getTodayKey();
-    // eventsData is initialized above so archive loading can safely restore it.
+    let eventsData = {};
 
     function getBirthdayEventsForDate(dateKey) {
       const targetParts = String(dateKey).split('-');
