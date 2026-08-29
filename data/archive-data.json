@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T11:52:56.756Z",
+  "updatedAt": "2026-08-29T11:53:32.105Z",
   "database": {
     "world": [
       {
@@ -26,10 +26,10 @@
       },
       {
         "id": "world_1788004310003",
-        "title": "2024, 대한민국",
+        "title": "한국대학교",
         "group": "WORLD DATABASE",
         "sub": "2024년 현대 대한민국",
-        "desc": "2024년 대한민국 ",
+        "desc": "2024년 대한민국, [ 한국대학교 ]",
         "musicId": "",
         "links": [],
         "img": "https://ruroong.github.io/ruroon._.g/images/world/world_1788004310003/1788004374642_sat1ik______.jpg",
