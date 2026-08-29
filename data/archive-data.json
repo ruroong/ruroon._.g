@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-28T19:21:10.486Z",
+  "updatedAt": "2026-08-29T02:58:47.429Z",
   "database": {
     "world": [
       {
@@ -584,10 +584,10 @@
     "notice": [
       {
         "id": "renewal",
-        "date": "2026-08-24",
+        "date": "2026-09-01",
         "title": "Archive Renewal",
         "pinned": true,
-        "content": "<p>아카이브 시스템이 리뉴얼되었습니다!</p>"
+        "content": "루룽찌 아카이브 시스템이 개설되었습니다!"
       }
     ]
   },
