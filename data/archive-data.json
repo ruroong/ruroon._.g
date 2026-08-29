@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T12:11:14.126Z",
+  "updatedAt": "2026-08-29T12:12:36.299Z",
   "database": {
     "world": [
       {
@@ -309,7 +309,23 @@
             "url": "https://crack.wrtn.ai/detail/6a863d1a45d903d4a9a41c94"
           }
         ],
-        "gallery02": [],
+        "gallery02": [
+          {
+            "title": "묘연 동아리 친구들",
+            "desc": "✪ ω ✪",
+            "images": [
+              {
+                "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787815493165/gallery/1788005551052_372k5h________.jpg"
+              },
+              {
+                "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787815493165/gallery/1788005553109_ere85v_______.jpg"
+              },
+              {
+                "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787815493165/gallery/1788005555052_klm1dl________.jpg"
+              }
+            ]
+          }
+        ],
         "gallery01": [
           {
             "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787815493165/gallery/1787942151356_8alqrh______01.jpg"
