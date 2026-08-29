@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T03:56:45.742Z",
+  "updatedAt": "2026-08-29T03:58:29.860Z",
   "database": {
     "world": [
       {
@@ -30,7 +30,7 @@
         "alias": "바트 : Bart",
         "birthday": "0685-10-24",
         "tags": "",
-        "tmi": "[ 해적은 물고기를 싫어해？ ]",
+        "tmi": "",
         "links": [
           {
             "title": "크랙 세이프",
@@ -42,11 +42,85 @@
           }
         ],
         "gallery02": [],
-        "gallery01": [],
+        "gallery01": [
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975866533_opu8g6______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975868506_pdy9dv______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975869959_rblttl______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975871941_uqcfhh______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975874103_thjfcj______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975875515_i8nauw______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975877487_e1mcqu______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975879422_urerq3______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975881312_r7kabe_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975883295_ym31a8______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975885219_0fsotv______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975887138_tip5ml______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975889374_i57dvo______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975891298_fkf0b3______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975892761_osoa6j______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975894431_nsmvog______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975896860_n7wp3n______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975898203_nbqcs2______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975899425_5myutc______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975901360_z2asoy______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975903363_8999ex______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975905328_1xxpqm______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975906597_cwfdpa______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/gallery/1787975908505_mcjrhs______03.jpg"
+          }
+        ],
         "musicId": "",
         "works": [
           "해적은 물고기를 싫어해？"
-        ]
+        ],
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/1787975864626_sijf9c______01.jpg"
       },
       {
         "id": "characters_1787747958748",
