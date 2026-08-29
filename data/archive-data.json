@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T03:43:30.383Z",
+  "updatedAt": "2026-08-29T03:56:45.742Z",
   "database": {
     "world": [
       {
@@ -60,7 +60,8 @@
         "links": [],
         "gallery02": [],
         "gallery01": [],
-        "works": []
+        "works": [],
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787747958748/1787975804047_e189mu___-___.jpg"
       },
       {
         "id": "characters_1787807863284",
