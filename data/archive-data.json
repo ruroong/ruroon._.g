@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-29T15:24:44.016Z",
+  "updatedAt": "2026-08-31T14:45:30.069Z",
   "database": {
     "world": [
       {
@@ -1406,6 +1406,21 @@
           }
         ],
         "gallery02": []
+      },
+      {
+        "id": "characters_1788187421807",
+        "name": "은하담",
+        "group": "한국대학교",
+        "works": [],
+        "alias": "은하담",
+        "birthday": "2001-01-22",
+        "tags": "boy, 1.5::aged up, mature male::, light yellow eyes, 0.6::tsurime, sanpaku::, light beige hair, short hair, messy hair, 1.2::curtained hair, long bangs, forehead::, brown flight jacket, oversize jacket, white Sleeveless shirt, thin black cord necklace, brushed silver rings, silver ring pendant, casual necklace, muscular, broad shoulders, 0.3::smile::\n\n네거\n3::beard, mustache, stubble::, nail polish, pendant necklace, Earrings, Wrinkles on the face, belt, Sunglasses, swept bangs, asymmetrical bangs, gemstone necklace, cross pendant, dog tag, oversized pendant, multiple necklaces, layered necklaces, gold necklace",
+        "musicId": "",
+        "tmi": "",
+        "links": [],
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788187421807/1788187506834_0gih2u________.jpg",
+        "gallery01": [],
+        "gallery02": []
       }
     ],
     "music": [
@@ -1487,7 +1502,8 @@
     "characters_1787992883765",
     "characters_1788003539611",
     "characters_1788003698624",
-    "characters_1788004008050"
+    "characters_1788004008050",
+    "characters_1788187421807"
   ],
   "mainBgmIds": [
     "track_01",
