@@ -2310,7 +2310,8 @@
     const ARCHIVE_DEEP_CODE='deeper';
     let archiveCodeBuffer='';
     let archiveDarkMode=localStorage.getItem('ruroon_dark_archive_mode')==='1';
-    let archiveDeepMode=localStorage.getItem('ruroon_deep_archive_mode')==='1';
+    let archiveDeepMode=false;
+    /* 2ND ARCHIVE unlock is intentionally temporary and local to this page session. It is never restored from localStorage, so a refresh closes the deeper layer. UNIVERSUM controls dark mode only, while DEEPER controls this layer only. */
     function applyArchiveDarkMode(){ document.body.classList.toggle('dark-archive-mode',archiveDarkMode); document.body.classList.toggle('deep-archive-mode',archiveDeepMode); }
     function runArchiveDeepMode(){
       if(archiveDeepMode)return;
@@ -2321,7 +2322,7 @@
       overlay.classList.add('show');
       main.textContent='SIGNAL DEEPENED';
       sub.innerHTML='DEEP ARCHIVE ACCESS<br>SECONDARY LAYER UNLOCKED...';
-      setTimeout(()=>{overlay.classList.remove('show');applyArchiveDarkMode();localStorage.setItem('ruroon_deep_archive_mode','1');},900);
+      setTimeout(()=>{overlay.classList.remove('show');applyArchiveDarkMode();},900);
     }
     let idleArchiveTimer=null;
     let idleSignalShown=false;
@@ -2417,8 +2418,7 @@
       if (input.toLowerCase() === ARCHIVE_DEEP_CODE) {
         closeAdminLogin();
         document.getElementById('admin-pass-input').value = '';
-        if(archiveDarkMode) runArchiveDeepMode();
-        else { runArchiveDarkMode(); setTimeout(runArchiveDeepMode,1700); }
+        runArchiveDeepMode();
         return;
       }
       if (input === SECRET_PASS) {
