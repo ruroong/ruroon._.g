@@ -1429,7 +1429,7 @@
               <div class="world-char-cards-grid">
                 ${item.charIds.map(cId => {
                   const c = database.characters.find(char => char.id === cId);
-                  if(!c) return '';
+                  if(!c || !canViewItem(c)) return '';
                   return `
                     <div class="world-char-card" onclick="location.hash='#characters/${c.id}'">
                       <img src="${c.img || './images/A01.png'}">
@@ -2254,6 +2254,7 @@
       }else if(section==='notice'){
         item.title=document.getElementById('edit-title').value.trim(); item.date=document.getElementById('edit-date').value; item.pinned=document.getElementById('edit-pinned').checked; item.content=document.getElementById('edit-content').value; const imgFile=document.getElementById('edit-img-file').files[0]; const keptNotice=getKeptExistingMedia('#notice-existing-media'); if(imgFile)item.img=await uploadFileToGitHub(imgFile, `images/notice/${item.id}`); else if(!keptNotice.length)item.img='';
       }else{ item.title=document.getElementById('edit-title').value; item.sub=document.getElementById('edit-sub').value; item.content=document.getElementById('edit-content').value; }
+      item.visible=document.getElementById('edit-visible') ? document.getElementById('edit-visible').checked : (item.visible !== false);
       categoryGroups.world=[...new Set([...categoryGroups.world,...database.world.map(x=>x.group).filter(Boolean)])];
       categoryGroups.characters=[...new Set([...categoryGroups.characters,...database.characters.map(x=>x.group).filter(Boolean)])];
       categoryGroups.music=[...new Set([...categoryGroups.music,...database.music.map(x=>x.group).filter(Boolean)])];
@@ -2305,11 +2306,17 @@
       setTimeout(()=>{main.textContent='WELCOME BACK.';sub.innerHTML='SIGNAL RESTORED';},850);
       setTimeout(()=>{overlay.classList.remove('show');document.body.classList.add('dark-archive-mode');localStorage.setItem('ruroon_dark_archive_mode','1');},1550);
     }
-    document.addEventListener('keydown',e=>{
-      if(e.ctrlKey||e.altKey||e.metaKey||e.key.length!==1)return;
-      archiveCodeBuffer=(archiveCodeBuffer+e.key.toUpperCase()).slice(-ARCHIVE_DARK_CODE.length);
-      if(archiveCodeBuffer===ARCHIVE_DARK_CODE)runArchiveDarkMode();
-    });
+    function runArchiveLightMode(){
+      if(!archiveDarkMode)return;
+      archiveDarkMode=false;
+      const overlay=document.getElementById('archive-signal-glitch');
+      const main=document.getElementById('archive-glitch-main');
+      const sub=document.getElementById('archive-glitch-sub');
+      overlay.classList.add('show');
+      main.textContent='SIGNAL RESTORED';
+      sub.innerHTML='UNIVERSUM DISCONNECTED<br>ARCHIVE RETURNING...';
+      setTimeout(()=>{overlay.classList.remove('show');document.body.classList.remove('dark-archive-mode');localStorage.removeItem('ruroon_dark_archive_mode');},700);
+    }
     applyArchiveDarkMode();
 
     /* ---------- AUTH SYSTEM ---------- */
@@ -2349,10 +2356,18 @@
     }
 
     async function verifyAdminPassword() {
-      const input = document.getElementById('admin-pass-input').value;
+      const input = document.getElementById('admin-pass-input').value.trim();
+      if (input.toLowerCase() === ARCHIVE_DARK_CODE) {
+        closeAdminLogin();
+        document.getElementById('admin-pass-input').value = '';
+        if(archiveDarkMode) runArchiveLightMode();
+        else runArchiveDarkMode();
+        return;
+      }
       if (input === SECRET_PASS) {
         isAdminLoggedIn = true;
         closeAdminLogin();
+        document.getElementById('admin-pass-input').value = '';
         // Only migrate this browser's old local data when the shared JSON does not exist yet.
         if(!sharedArchiveLoaded && sharedArchiveMissing){ loadArchiveData();
     workOptions=[...new Set([...(Array.isArray(workOptions)?workOptions:[]), ...database.characters.flatMap(c=>Array.isArray(c.works)?c.works:[]).filter(Boolean)])]; }
