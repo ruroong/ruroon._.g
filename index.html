@@ -146,8 +146,8 @@
     /* SIGNAL (HOME) */
     .hero { display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: calc(100vh - 120px); text-align: center; position: relative; z-index: 2; }
     .hero-visual-wrapper { position: relative; width: min(650px, 90vw); margin-top: 100px; display: flex; justify-content: center; align-items: center; }
-    .main-title-img { width: 100%; height: auto; display: block; position: relative; z-index: 2; animation: float 4s infinite ease-in-out; filter: drop-shadow(0 0 9px rgba(236,168,185,.52)) drop-shadow(0 0 22px rgba(236,168,185,.24)); }
-    .orbit-bg-img { position: absolute; width: 125%; height: auto; top: 50%; left: 50%; z-index: 3; opacity: 0.85; pointer-events: none; animation: orbit-tilt 6s infinite ease-in-out; filter: drop-shadow(0 0 8px rgba(236,168,185,.44)) drop-shadow(0 0 18px rgba(236,168,185,.20)); }
+    .main-title-img { width: 100%; height: auto; display: block; position: relative; z-index: 2; animation: float 4s infinite ease-in-out; filter: drop-shadow(0 0 10px rgba(236,168,185,.62)) drop-shadow(0 0 26px rgba(236,168,185,.30)); }
+    .orbit-bg-img { position: absolute; width: 125%; height: auto; top: 50%; left: 50%; z-index: 3; opacity: 0.85; pointer-events: none; animation: orbit-tilt 6s infinite ease-in-out; filter: drop-shadow(0 0 9px rgba(236,168,185,.54)) drop-shadow(0 0 22px rgba(236,168,185,.26)); }
     .main-navlinks { display: flex; gap: 36px; font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; margin-top: 100px; }
     .main-navlinks a { position: relative; padding: 4px 2px; opacity: 0.8; transition: 0.2s; font-weight: 500; }
     .main-navlinks a:hover, .main-navlinks a.active { opacity: 1; font-weight: 700; }
@@ -472,12 +472,21 @@
     body.dark-archive-mode .modal-backdrop { background:rgba(4,7,18,.78); }
     body.dark-archive-mode .login-modal, body.dark-archive-mode .admin-edit-modal, body.dark-archive-mode .link-view-modal { background:#10162D; color:#F5F4F7; border-color:#F5F4F7; box-shadow:6px 6px 0 #ECA8B9; }
     body.dark-archive-mode .modal-title { color:#F5F4F7; }
+    body.deep-archive-mode .hero::after { content:""; position:absolute; inset:8% 22% auto; height:180px; pointer-events:none; background:radial-gradient(circle,rgba(236,168,185,.10),transparent 68%); filter:blur(22px); z-index:1; }
+    body.deep-archive-mode .idle-signal-message { opacity:.86; letter-spacing:.20em; }
 
     #archive-signal-glitch { position:fixed; inset:0; z-index:10000; display:none; align-items:center; justify-content:center; background:#080C1B; color:#F5F4F7; font-family:var(--mono); text-align:center; pointer-events:none; overflow:hidden; }
     #archive-signal-glitch.show { display:flex; animation:archive-glitch-in .18s steps(2,end) both; }
     #archive-signal-glitch .glitch-lines { position:absolute; inset:0; opacity:.16; background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,rgba(236,168,185,.16) 4px); }
     #archive-signal-glitch .glitch-text { position:relative; z-index:2; font-size:clamp(14px,2vw,20px); letter-spacing:.18em; line-height:2; text-transform:uppercase; }
     #archive-signal-glitch .glitch-main { font-size:clamp(22px,4vw,42px); font-weight:800; color:#ECA8B9; margin-bottom:12px; }
+    #archive-signal-glitch.subtle { background:rgba(8,12,27,.72); }
+    #archive-signal-glitch.subtle .glitch-lines { opacity:.11; }
+    #archive-signal-glitch.subtle .glitch-main { font-size:clamp(16px,3vw,28px); margin-bottom:6px; }
+    .idle-signal-message { display:none; margin-top:-8px; font:10px var(--mono); letter-spacing:.16em; text-transform:uppercase; opacity:.62; transition:opacity .6s ease; }
+    .idle-signal-message.show { display:block; animation:idle-signal-fade 1.2s ease both; }
+    @keyframes idle-signal-fade { 0%{opacity:0; transform:translateY(3px)} 100%{opacity:.62; transform:none} }
+    body.dark-archive-mode .idle-signal-message { color:#ECA8B9; opacity:.72; }
     @keyframes archive-glitch-in { 0%{opacity:0;transform:translateX(2px)} 45%{opacity:1;transform:translateX(-2px)} 70%{transform:translateX(1px)} 100%{opacity:1;transform:none} }
     @keyframes archive-login-glitch { 0%,100%{transform:none;filter:none} 20%{transform:translateX(-2px);filter:contrast(1.05)} 40%{transform:translateX(2px)} 60%{transform:translateX(-1px)} 80%{transform:none} }
     body.archive-login-glitch::after { content:""; position:fixed; inset:0; z-index:9997; pointer-events:none; background:repeating-linear-gradient(to bottom,transparent 0,transparent 4px,rgba(236,168,185,.08) 5px); animation:archive-login-glitch .45s steps(3,end); }
@@ -732,6 +741,7 @@
             <button class="ctrl-btn play-main" id="play-btn" onclick="toggleBgm()"><svg class="player-svg-icon" style="width:18px; height:18px;" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
             <button class="ctrl-btn" onclick="nextBgm()"><svg class="player-svg-icon" viewBox="0 0 24 24"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg></button>
           </div>
+          <div class="idle-signal-message" id="idle-signal-message">SIGNAL ONLINE</div>
         </div>
 
         <div class="external-signal-bottom">
@@ -2297,9 +2307,42 @@
 
     /* ---------- DARK ARCHIVE EASTER EGG ---------- */
     const ARCHIVE_DARK_CODE='universum';
+    const ARCHIVE_DEEP_CODE='deeper';
     let archiveCodeBuffer='';
     let archiveDarkMode=localStorage.getItem('ruroon_dark_archive_mode')==='1';
-    function applyArchiveDarkMode(){ document.body.classList.toggle('dark-archive-mode',archiveDarkMode); }
+    let archiveDeepMode=localStorage.getItem('ruroon_deep_archive_mode')==='1';
+    function applyArchiveDarkMode(){ document.body.classList.toggle('dark-archive-mode',archiveDarkMode); document.body.classList.toggle('deep-archive-mode',archiveDeepMode); }
+    function runArchiveDeepMode(){
+      if(archiveDeepMode)return;
+      archiveDeepMode=true;
+      const overlay=document.getElementById('archive-signal-glitch');
+      const main=document.getElementById('archive-glitch-main');
+      const sub=document.getElementById('archive-glitch-sub');
+      overlay.classList.add('show');
+      main.textContent='SIGNAL DEEPENED';
+      sub.innerHTML='DEEP ARCHIVE ACCESS<br>SECONDARY LAYER UNLOCKED...';
+      setTimeout(()=>{overlay.classList.remove('show');applyArchiveDarkMode();localStorage.setItem('ruroon_deep_archive_mode','1');},900);
+    }
+    let idleArchiveTimer=null;
+    let idleSignalShown=false;
+    function resetIdleArchiveTimer(){
+      clearTimeout(idleArchiveTimer);
+      const msg=document.getElementById('idle-signal-message');
+      if(msg && idleSignalShown){ msg.classList.remove('show'); msg.textContent='SIGNAL ONLINE'; idleSignalShown=false; }
+      if(!document.getElementById('page-signal')?.classList.contains('active-page')) return;
+      idleArchiveTimer=setTimeout(()=>{
+        if(!document.getElementById('page-signal')?.classList.contains('active-page')) return;
+        const el=document.getElementById('idle-signal-message');
+        if(!el)return;
+        el.textContent='...someone is still here.';
+        el.classList.add('show');
+        idleSignalShown=true;
+      },60000);
+    }
+    function startIdleArchiveWatcher(){
+      ['pointerdown','pointermove','keydown','wheel','touchstart','scroll'].forEach(ev=>document.addEventListener(ev,resetIdleArchiveTimer,{passive:true}));
+      resetIdleArchiveTimer();
+    }
     function runArchiveDarkMode(){
       if(archiveDarkMode)return;
       archiveDarkMode=true;
@@ -2324,6 +2367,7 @@
       setTimeout(()=>{overlay.classList.remove('show');document.body.classList.remove('dark-archive-mode');localStorage.removeItem('ruroon_dark_archive_mode');},700);
     }
     applyArchiveDarkMode();
+    document.addEventListener('DOMContentLoaded', startIdleArchiveWatcher);
 
     /* ---------- AUTH SYSTEM ---------- */
     const SECRET_PASS = "Loversleporineladymart";
@@ -2370,6 +2414,13 @@
         else runArchiveDarkMode();
         return;
       }
+      if (input.toLowerCase() === ARCHIVE_DEEP_CODE) {
+        closeAdminLogin();
+        document.getElementById('admin-pass-input').value = '';
+        if(archiveDarkMode) runArchiveDeepMode();
+        else { runArchiveDarkMode(); setTimeout(runArchiveDeepMode,1700); }
+        return;
+      }
       if (input === SECRET_PASS) {
         isAdminLoggedIn = true;
         closeAdminLogin();
@@ -2383,14 +2434,26 @@
       }
     }
 
+    function runAdminAccessGlitch(callback){
+      const overlay=document.getElementById('archive-signal-glitch');
+      const main=document.getElementById('archive-glitch-main');
+      const sub=document.getElementById('archive-glitch-sub');
+      if(!overlay || !main || !sub){ callback(); return; }
+      overlay.classList.add('subtle','show');
+      main.textContent=archiveDarkMode?'ADMIN SIGNAL':'ACCESSING ARCHIVE';
+      sub.innerHTML=archiveDarkMode?'AUTH CHANNEL OPEN<br>ADMIN MODE LINKED...':'AUTH CHANNEL OPEN<br>ADMIN MODE...';
+      setTimeout(()=>{ overlay.classList.remove('show','subtle'); callback(); },320);
+    }
     function activateAdminMode() {
-      document.body.classList.add('admin-mode');
-      const headerStatus = document.getElementById('header-status');
-      if (headerStatus) {
-        headerStatus.classList.add('admin-active');
-        headerStatus.innerHTML = `<i></i> SIGNAL ONLINE (ADMIN)`;
-      }
-      renderAllSidebars();
+      runAdminAccessGlitch(()=>{
+        document.body.classList.add('admin-mode');
+        const headerStatus = document.getElementById('header-status');
+        if (headerStatus) {
+          headerStatus.classList.add('admin-active');
+          headerStatus.innerHTML = `<i></i> SIGNAL ONLINE (ADMIN)`;
+        }
+        renderAllSidebars();
+      });
     }
 
     function renderAllSidebars() {
