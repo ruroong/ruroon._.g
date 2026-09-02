@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-02T07:43:49.123Z",
+  "updatedAt": "2026-09-02T08:05:48.386Z",
   "database": {
     "world": [
       {
@@ -324,7 +324,8 @@
               {
                 "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787815493165/gallery/1788005555052_klm1dl________.jpg"
               }
-            ]
+            ],
+            "restricted": true
           }
         ],
         "gallery01": [
@@ -470,7 +471,8 @@
             "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787815493165/gallery/1787942245105_oem02w______06.jpg"
           }
         ],
-        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787815493165/1787942133704_bgemyp_______.jpg"
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787815493165/1787942133704_bgemyp_______.jpg",
+        "visible": true
       },
       {
         "id": "characters_1787816536950",
