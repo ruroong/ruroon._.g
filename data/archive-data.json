@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-02T08:31:23.643Z",
+  "updatedAt": "2026-09-02T08:32:01.132Z",
   "database": {
     "world": [
       {
@@ -1454,7 +1454,8 @@
         "finalContent": "",
         "playlistUrl": "",
         "audio": "https://ruroong.github.io/ruroon._.g/music/1788337872908_n7fzfc_loksii-vlogging-vlog-beat-240477.mp3",
-        "visible": false
+        "visible": false,
+        "group": "ALBUM 00"
       }
     ],
     "feed": [
