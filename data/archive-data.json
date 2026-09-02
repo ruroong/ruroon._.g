@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-02T08:19:55.915Z",
+  "updatedAt": "2026-09-02T08:31:23.643Z",
   "database": {
     "world": [
       {
@@ -1445,6 +1445,16 @@
         "playlistUrl": "",
         "audio": "https://ruroong.github.io/ruroon._.g/music/1787748180274_2ujvw5___________________4.mp3",
         "group": "ALBUM 00"
+      },
+      {
+        "id": "music_1788337861545_s86i",
+        "title": "00. Main BGM #0",
+        "sub": "사람은 이상하고 사랑은 모르겠어",
+        "content": "제가 좋아하는 음악이에요 ✪ ω ✪",
+        "finalContent": "",
+        "playlistUrl": "",
+        "audio": "https://ruroong.github.io/ruroon._.g/music/1788337872908_n7fzfc_loksii-vlogging-vlog-beat-240477.mp3",
+        "visible": false
       }
     ],
     "feed": [
@@ -1510,7 +1520,8 @@
   ],
   "mainBgmIds": [
     "track_01",
-    "music_1787736060056"
+    "music_1787736060056",
+    "music_1788337861545_s86i"
   ],
   "eventsData": {},
   "noticeLinks": {
