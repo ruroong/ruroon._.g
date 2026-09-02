@@ -1,8 +1,34 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-02T14:29:10.441Z",
+  "updatedAt": "2026-09-02T14:29:56.730Z",
   "database": {
     "world": [
+      {
+        "id": "world_1788359143250_hq6g",
+        "title": "NEST : 둥지",
+        "group": "WORLD DATABASE",
+        "sub": "WORLD DATABASE",
+        "desc": "[ NEST : 둥지 ]\n​\n​\n■COLOS : 콜로스\n​Colossal Organic Lifeform of Outlier Scale의 약자\n1982년 운석충돌 이후 지구에 정착한\n규격 외 거대 유기 생명체.\n\n■CELL : 셀\nCOLOS Energy Linked Lattice의 약자\n콜로스의 주변에서 발견되는 고농도 에너지 덩어리\n완전한 1개의 셀은 마을의 동력을 1달간 유지가 가능하다.\n\n\n1982년 외계 운석군 대충돌 이후, 인류의 95%는 사라졌습니다. 살아남은 자들은 고작 5%. 기술은 발전이 멈췄고, 인력은 부족합니다.\n\n살아가기 위해서 인류가 선택한 방법은, 운석과 함께 생겨난 ‘셀’을 동력으로 사용하는 것.\n\n거대한 콜로스를 피해 셀을 얻는 것이  살아갈 유일한 방법입니다.",
+        "musicId": "",
+        "links": [],
+        "img": "https://ruroong.github.io/ruroon._.g/images/world/world_1788359143250_hq6g/1788359322540_rr08di__.jpg",
+        "charIds": [],
+        "visible": true
+      },
+      {
+        "id": "world_1788004310003",
+        "title": "한국대학교",
+        "group": "WORLD DATABASE",
+        "sub": "2024년 현대 대한민국",
+        "desc": "2024년 대한민국, [ 한국대학교 ]",
+        "musicId": "",
+        "links": [],
+        "img": "https://ruroong.github.io/ruroon._.g/images/world/world_1788004310003/1788005472140_ys8tiw______2.jpg",
+        "charIds": [
+          "characters_1787815493165",
+          "characters_1787816536950"
+        ]
+      },
       {
         "id": "empecla",
         "group": "WORLD DATABASE",
@@ -23,32 +49,6 @@
             "url": "https://velato.creatorlink.net/"
           }
         ]
-      },
-      {
-        "id": "world_1788004310003",
-        "title": "한국대학교",
-        "group": "WORLD DATABASE",
-        "sub": "2024년 현대 대한민국",
-        "desc": "2024년 대한민국, [ 한국대학교 ]",
-        "musicId": "",
-        "links": [],
-        "img": "https://ruroong.github.io/ruroon._.g/images/world/world_1788004310003/1788005472140_ys8tiw______2.jpg",
-        "charIds": [
-          "characters_1787815493165",
-          "characters_1787816536950"
-        ]
-      },
-      {
-        "id": "world_1788359143250_hq6g",
-        "title": "NEST : 둥지",
-        "group": "WORLD DATABASE",
-        "sub": "WORLD DATABASE",
-        "desc": "[ NEST : 둥지 ]\n​\n​\n■COLOS : 콜로스\n​Colossal Organic Lifeform of Outlier Scale의 약자\n1982년 운석충돌 이후 지구에 정착한\n규격 외 거대 유기 생명체.\n\n■CELL : 셀\nCOLOS Energy Linked Lattice의 약자\n콜로스의 주변에서 발견되는 고농도 에너지 덩어리\n완전한 1개의 셀은 마을의 동력을 1달간 유지가 가능하다.\n\n\n1982년 외계 운석군 대충돌 이후, 인류의 95%는 사라졌습니다. 살아남은 자들은 고작 5%. 기술은 발전이 멈췄고, 인력은 부족합니다.\n\n살아가기 위해서 인류가 선택한 방법은, 운석과 함께 생겨난 ‘셀’을 동력으로 사용하는 것.\n\n거대한 콜로스를 피해 셀을 얻는 것이  살아갈 유일한 방법입니다.",
-        "musicId": "",
-        "links": [],
-        "img": "https://ruroong.github.io/ruroon._.g/images/world/world_1788359143250_hq6g/1788359322540_rr08di__.jpg",
-        "charIds": [],
-        "visible": true
       }
     ],
     "characters": [
