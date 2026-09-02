@@ -263,6 +263,7 @@
     
     .tag-pill { display: block; width: 100%; background: rgba(255,255,255,0.7); border: 1px solid var(--navy); padding: 12px; border-radius: 0; font-size: 12px; line-height: 1.55; font-family: var(--mono); margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
     .char-tag-block { white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--mono); font-size: 12px; line-height: 1.55; font-weight: 500; }
+    .archive-content-text { white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; line-height: 1.6; font-size: 14px; margin: 0 0 16px; }
     .title-link-icon { margin-left:auto; flex-shrink:0; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; border:none; background:transparent; color:var(--navy); cursor:pointer; padding:0; }
     .title-link-icon svg { width:17px; height:17px; stroke:var(--navy); fill:none; stroke-width:2.2; }
     .title-link-icon:hover { transform:scale(1.12); }
@@ -581,10 +582,17 @@
     .existing-media-name { min-width:0; flex:1 1 auto; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:10px var(--mono); }
     .existing-media-remove { flex:0 0 auto; padding:5px 8px; border:1px solid var(--navy); background:#fff; color:var(--navy); font:700 10px var(--mono); cursor:pointer; }
     .existing-media-remove:hover { background:var(--navy); color:var(--pink); }
-    .admin-manager-group-row { display:flex; align-items:center; gap:8px; }
-    .admin-manager-char-row { display:flex; align-items:center; gap:8px; padding:7px 8px; border:1px dashed rgba(28,32,56,.35); background:#fff; }
-    .admin-manager-char-row .drag-handle { cursor:grab; font-size:14px; opacity:.6; }
-    .admin-manager-char-row select { flex:1; }
+    .admin-manager-group-row { display:flex; align-items:center; gap:8px; width:100%; min-width:0; }
+    .admin-manager-group-row .generic-group-name,
+    .admin-manager-group-row .character-group-name { flex:1 1 auto; min-width:0; width:auto; box-sizing:border-box; }
+    .admin-manager-group-row .manager-small-btn { flex:0 0 38px; width:38px; min-width:38px; box-sizing:border-box; text-align:center; padding-left:0; padding-right:0; }
+    .admin-manager-char-row { display:flex; align-items:center; gap:8px; width:100%; min-width:0; padding:7px 8px; border:1px dashed rgba(28,32,56,.35); background:#fff; box-sizing:border-box; }
+    .admin-manager-char-row .drag-handle { flex:0 0 18px; width:18px; cursor:grab; font-size:14px; opacity:.6; text-align:center; }
+    .admin-manager-char-row .manager-name { flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .admin-manager-char-row select,
+    .admin-manager-char-row .character-manager-group,
+    .admin-manager-char-row .generic-item-group { flex:0 0 180px; width:180px; min-width:180px; max-width:180px; box-sizing:border-box; }
+    .admin-manager-char-row .modal-input { min-width:0; }
     .admin-manager-char-row.dragging { opacity:.45; }
     .manager-section-title { font-family:var(--mono); font-size:11px; font-weight:800; letter-spacing:.08em; border-bottom:1.5px solid var(--navy); padding-bottom:5px; margin-top:4px; }
     .manager-small-btn { padding:5px 8px; border:1px solid var(--navy); background:#fff; font:700 10px var(--mono); cursor:pointer; }
@@ -1408,6 +1416,10 @@
       return database.music.map(m => `<option value=\"${m.id}\" ${m.id===selectedId?'selected':''}>${m.title}</option>`).join('');
     }
 
+    function renderArchiveText(content){
+      return String(content || '').replace(/\r\n|\r|\n/g, '<br>');
+    }
+
     /* ---------- SELECT ITEM HANDLERS ---------- */
     function getMusicOptionsHtml(selectedId='') {
       const groups = {};
@@ -1465,7 +1477,7 @@
           document.getElementById('world-detail-body').innerHTML = `
             ${item.img ? `<img src="${item.img}" style="width:100%; aspect-ratio:16 / 9; height:auto; object-fit:cover; border:1.5px solid var(--navy); margin:0 0 12px;">` : ''}
             ${item.musicId ? `<div class="char-meta-row" style="margin:0 0 16px; align-items:center;"><span class="char-meta-label">MUSIC</span><span class="char-meta-val">${getLinkedMusicHtml(item)}</span></div>` : ''}
-            <p style="line-height:1.6; font-size:14px; margin-bottom:16px;">${item.desc || ''}</p>
+            <p class="archive-content-text">${renderArchiveText(item.desc)}</p>
             ${cardsHtml}
           `;
           document.getElementById('world-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('world', id);
@@ -1559,7 +1571,7 @@
           activeItemIds.music = id;
           document.getElementById('music-detail-title').innerText = item.title;
           document.getElementById('music-detail-sub').innerText = item.sub;
-          document.getElementById('music-detail-body').innerHTML = `${item.content||''}${item.audio ? `<div class="music-inline-player"><audio controls controlsList="nodownload" disableRemotePlayback preload="metadata" src="${item.audio}"></audio></div>` : ''}${getMusicPlaylistHtml(item)}${item.finalContent ? `<div class="music-final-content">${item.finalContent}</div>` : ''}`;
+          document.getElementById('music-detail-body').innerHTML = `${renderArchiveText(item.content)}${item.audio ? `<div class="music-inline-player"><audio controls controlsList="nodownload" disableRemotePlayback preload="metadata" src="${item.audio}"></audio></div>` : ''}${getMusicPlaylistHtml(item)}${item.finalContent ? `<div class="music-final-content">${item.finalContent}</div>` : ''}`;
           document.getElementById('music-detail-admin-marks').innerHTML = getAdminSvgMarksHtml('music', id);
         }
       }
