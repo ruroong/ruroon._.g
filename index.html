@@ -247,6 +247,7 @@
     .item-info { display: flex; flex-direction: column; overflow: hidden; width: 100%; }
     .item-name { font-size: 13px; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; display: flex; align-items: center; justify-content: space-between; }
     .item-subtext { font-size: 10px; opacity: 0.7; font-family: var(--mono); }
+    .visibility-badge { font:700 8px var(--mono); letter-spacing:.08em; color:#b85f78; border:1px solid #b85f78; padding:1px 4px; margin-left:6px; flex:0 0 auto; }
 
     /* CHARACTER PROFILE STRUCTURE */
     .char-profile-container { display: flex; flex-direction: column; gap: 20px; }
@@ -400,6 +401,82 @@
     .save-loading-sub { font:10px var(--mono); opacity:.7; line-height:1.45; }
     @keyframes save-spin { to { transform:rotate(360deg); } }
 
+    /* DARK ARCHIVE MODE / SIGNAL GLITCH */
+    body.dark-archive-mode {
+      --pink:#10162D;
+      --navy:#F5F4F7;
+      --white:#FFFFFF;
+      --line:#F5F4F7;
+      --shadow:0 8px 0 rgba(0,0,0,.22);
+      background:#10162D; color:#F5F4F7;
+    }
+    body.dark-archive-mode::before {
+      opacity:.055; background-image:radial-gradient(#ECA8B9 .6px, transparent .6px);
+    }
+    body.dark-archive-mode header, body.dark-archive-mode .sub-navbar {
+      background:rgba(16,22,45,.94); border-color:rgba(245,244,247,.72);
+    }
+    body.dark-archive-mode .detail-view-box,
+    body.dark-archive-mode .messenger-list-sidebar {
+      background:rgba(255,255,255,.045);
+    }
+    body.dark-archive-mode .detail-view-box { box-shadow:var(--shadow); }
+    body.dark-archive-mode .list-item:hover { background:rgba(236,168,185,.10); }
+    body.dark-archive-mode .list-item.active { background:#F5F4F7 !important; color:#10162D !important; }
+    body.dark-archive-mode .sidebar-title-bar { background:#F5F4F7; color:#10162D; }
+    body.dark-archive-mode .accordion-header { background:rgba(245,244,247,.08); }
+    body.dark-archive-mode .accordion-header:hover { background:rgba(236,168,185,.13); }
+    body.dark-archive-mode .inline-edit-trigger,
+    body.dark-archive-mode .modal-btn-cancel,
+    body.dark-archive-mode .cal-nav-btn,
+    body.dark-archive-mode .manager-small-btn {
+      background:#10162D; color:#F5F4F7; border-color:#F5F4F7;
+    }
+    body.dark-archive-mode .modal-btn-save { background:#F5F4F7; color:#10162D; }
+    body.dark-archive-mode .modal-input,
+    body.dark-archive-mode .modal-textarea,
+    body.dark-archive-mode .modal-file {
+      background:#171E3A; color:#F5F4F7; border-color:#F5F4F7;
+    }
+    body.dark-archive-mode .work-option,
+    body.dark-archive-mode .char-select-grid,
+    body.dark-archive-mode .char-select-card,
+    body.dark-archive-mode .existing-media-item,
+    body.dark-archive-mode .admin-manager-row,
+    body.dark-archive-mode .admin-manager-char-row {
+      background:#171E3A; color:#F5F4F7; border-color:rgba(245,244,247,.45);
+    }
+    body.dark-archive-mode .world-char-card { background:#171E3A; border-color:rgba(236,168,185,.65); }
+    body.dark-archive-mode .world-char-card .card-name { color:#F5F4F7; }
+    body.dark-archive-mode .tag-pill { background:rgba(255,255,255,.06); }
+    body.dark-archive-mode .gal02-accordion-item { background:#171E3A; }
+    body.dark-archive-mode .gal02-acc-header { background:rgba(245,244,247,.07); }
+    body.dark-archive-mode .gal02-acc-desc { background:rgba(255,255,255,.04); }
+    body.dark-archive-mode .full-cal-grid { background:#F5F4F7; }
+    body.dark-archive-mode .full-cal-head { background:#ECA8B9 !important; color:#10162D; }
+    body.dark-archive-mode .full-cal-day, body.dark-archive-mode .full-cal-day.empty { background:#171E3A !important; color:#F5F4F7; }
+    body.dark-archive-mode .full-cal-day:not(.empty):hover { background:#20294B !important; }
+    body.dark-archive-mode .full-cal-day.selected { background:#ECA8B9 !important; color:#10162D; }
+    body.dark-archive-mode .event-inline-item { background:rgba(236,168,185,.13); color:#F5F4F7; }
+    body.dark-archive-mode .event-dot-icon { background:#ECA8B9; }
+    body.dark-archive-mode .archive-link-row, body.dark-archive-mode .archive-link-button { background:#171E3A; color:#F5F4F7; }
+    body.dark-archive-mode .archive-link-button:hover { background:#ECA8B9; color:#10162D; }
+    body.dark-archive-mode .slim-footer { background:#F5F4F7; color:#10162D; }
+    body.dark-archive-mode .top-btn { color:#10162D; }
+    body.dark-archive-mode .modal-backdrop { background:rgba(4,7,18,.78); }
+    body.dark-archive-mode .login-modal, body.dark-archive-mode .admin-edit-modal, body.dark-archive-mode .link-view-modal { background:#10162D; color:#F5F4F7; border-color:#F5F4F7; box-shadow:6px 6px 0 #ECA8B9; }
+    body.dark-archive-mode .modal-title { color:#F5F4F7; }
+
+    #archive-signal-glitch { position:fixed; inset:0; z-index:10000; display:none; align-items:center; justify-content:center; background:#080C1B; color:#F5F4F7; font-family:var(--mono); text-align:center; pointer-events:none; overflow:hidden; }
+    #archive-signal-glitch.show { display:flex; animation:archive-glitch-in .18s steps(2,end) both; }
+    #archive-signal-glitch .glitch-lines { position:absolute; inset:0; opacity:.16; background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,rgba(236,168,185,.16) 4px); }
+    #archive-signal-glitch .glitch-text { position:relative; z-index:2; font-size:clamp(14px,2vw,20px); letter-spacing:.18em; line-height:2; text-transform:uppercase; }
+    #archive-signal-glitch .glitch-main { font-size:clamp(22px,4vw,42px); font-weight:800; color:#ECA8B9; margin-bottom:12px; }
+    @keyframes archive-glitch-in { 0%{opacity:0;transform:translateX(2px)} 45%{opacity:1;transform:translateX(-2px)} 70%{transform:translateX(1px)} 100%{opacity:1;transform:none} }
+    @keyframes archive-login-glitch { 0%,100%{transform:none;filter:none} 20%{transform:translateX(-2px);filter:contrast(1.05)} 40%{transform:translateX(2px)} 60%{transform:translateX(-1px)} 80%{transform:none} }
+    body.archive-login-glitch::after { content:""; position:fixed; inset:0; z-index:9997; pointer-events:none; background:repeating-linear-gradient(to bottom,transparent 0,transparent 4px,rgba(236,168,185,.08) 5px); animation:archive-login-glitch .45s steps(3,end); }
+    body.archive-login-glitch > * { animation:archive-login-glitch .45s steps(3,end); }
+
     .login-modal, .admin-edit-modal, .link-view-modal {
       background: #ECA8B9; border: 2px solid var(--navy); box-shadow: 6px 6px 0px var(--navy); width: min(520px, 92vw); padding: 24px; display: flex; flex-direction: column; gap: 16px; max-height: 90vh; overflow-y: auto;
     }
@@ -530,6 +607,8 @@
   <div id="main-bgm-container" aria-hidden="true"><audio id="main-bgm" preload="auto" loop></audio></div>
 
   <!-- [MODAL] LOGIN MODAL -->
+  <div id="archive-signal-glitch" aria-hidden="true"><div class="glitch-lines"></div><div class="glitch-text"><div class="glitch-main" id="archive-glitch-main">SYSTEM ERROR</div><div id="archive-glitch-sub">SIGNAL INTERRUPTED<br>ARCHIVE CONNECTION LOST...</div></div></div>
+
   <div class="modal-backdrop" id="modal-login">
     <div class="login-modal">
       <div style="font-family:var(--mono); font-size:11px; opacity:0.7;">ARCHIVE / PRIVATE ACCESS</div>
@@ -1082,12 +1161,17 @@
     if(!characterOrder.length) characterOrder=database.characters.map(c=>c.id);
     database.characters.forEach(c=>{if(!characterOrder.includes(c.id))characterOrder.push(c.id);});
 
+    /* ---------- VISIBILITY / PUBLIC ACCESS ---------- */
+    function isItemPublic(item){ return !item || item.visible !== false; }
+    function canViewItem(item){ return !!item && (isAdminLoggedIn || isItemPublic(item)); }
+    function getVisibilityBadge(item){ return isAdminLoggedIn && item && item.visible === false ? '<span class="visibility-badge">PRIVATE</span>' : ''; }
+
     /* ---------- RENDER SIDEBAR LISTS ---------- */
     function renderWorldSidebar() {
       const container = document.getElementById('world-sidebar-list');
       let html = '';
       [...new Set([...categoryGroups.world, ...database.world.map(item => item.group).filter(Boolean)])].forEach(groupName => {
-        const items = database.world.filter(item => item.group === groupName);
+        const items = database.world.filter(item => item.group === groupName && canViewItem(item));
         html += `
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
@@ -1099,7 +1183,7 @@
                   ${item.img ? `<img src="${item.img}" class="item-thumb">` : `<div class="item-thumb"></div>`}
                   <div class="item-info">
                     <span class="item-name">
-                      <span>${item.title}</span>
+                      <span>${item.title}${getVisibilityBadge(item)}</span>
                       ${getAdminSvgMarksHtml('world', item.id)}
                     </span>
                   </div>
@@ -1117,7 +1201,7 @@
       let html = '';
       [...new Set([...categoryGroups.characters, ...database.characters.map(item => item.group).filter(Boolean)])].forEach(groupName => {
         const orderedCharacters = (characterOrder.length ? characterOrder : database.characters.map(c=>c.id));
-        const items = orderedCharacters.map(id => database.characters.find(c=>c.id===id)).filter(Boolean).filter(item => item.group === groupName);
+        const items = orderedCharacters.map(id => database.characters.find(c=>c.id===id)).filter(Boolean).filter(item => item.group === groupName && canViewItem(item));
         html += `
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
@@ -1129,7 +1213,7 @@
                   ${item.img ? `<img src="${item.img}" class="item-thumb">` : `<div class="item-thumb"></div>`}
                   <div class="item-info">
                     <span class="item-name">
-                      <span>${item.name}</span>
+                      <span>${item.name}${getVisibilityBadge(item)}</span>
                       ${getAdminSvgMarksHtml('characters', item.id)}
                     </span>
                   </div>
@@ -1146,7 +1230,7 @@
       const container = document.getElementById('music-sidebar-list');
       let html = '';
       categoryGroups.music.forEach(groupName => {
-        const items = database.music.filter(item => item.group === groupName);
+        const items = database.music.filter(item => item.group === groupName && canViewItem(item));
         html += `
           <div class="accordion-group">
             <div class="accordion-header" onclick="toggleAccordion(this)">
@@ -1157,7 +1241,7 @@
                 <div class="list-item" id="item-music-${item.id}" onclick="selectMusicItem('${item.id}', this)">
                   <div class="item-info">
                     <span class="item-name">
-                      <span>${item.title}</span>
+                      <span>${item.title}${getVisibilityBadge(item)}</span>
                       ${getAdminSvgMarksHtml('music', item.id)}
                     </span>
                   </div>
@@ -1172,7 +1256,7 @@
 
     function renderFeedSidebar() {
       const container = document.getElementById('feed-sidebar-list');
-      const sortedFeed = [...database.feed].sort((a, b) => new Date(b.date) - new Date(a.date));
+      const sortedFeed = [...database.feed].filter(canViewItem).sort((a, b) => new Date(b.date) - new Date(a.date));
       let html = `
         <div class="accordion-group">
           <div class="accordion-header" onclick="toggleAccordion(this)">
@@ -1184,7 +1268,7 @@
                 <img src="${item.img || './images/A01.png'}" class="item-thumb">
                 <div class="item-info">
                   <span class="item-name">
-                    <span>${item.title}</span>
+                    <span>${item.title}${getVisibilityBadge(item)}</span>
                     ${getAdminSvgMarksHtml('feed', item.id)}
                   </span>
                   <span class="item-subtext">${item.date}</span>
@@ -1199,7 +1283,7 @@
 
     function renderNoticeSidebar() {
       const container = document.getElementById('notice-sidebar-list');
-      const sortedNotice = [...database.notice].sort((a, b) => {
+      const sortedNotice = [...database.notice].filter(canViewItem).sort((a, b) => {
         if (a.pinned !== b.pinned) return b.pinned ? 1 : -1;
         return new Date(b.date) - new Date(a.date);
       });
@@ -1236,7 +1320,7 @@
               <div class="list-item" id="item-notice-${item.id}" onclick="selectNoticeItem('${item.id}', this)">
                 <div class="item-info">
                   <span class="item-name">
-                    <span>${item.pinned ? `<span class="pin-badge">FIX</span>` : ''}${item.title}</span>
+                    <span>${item.pinned ? `<span class="pin-badge">FIX</span>` : ''}${item.title}${getVisibilityBadge(item)}</span>
                     ${getAdminSvgMarksHtml('notice', item.id)}
                   </span>
                   <span class="item-subtext">${item.date}</span>
@@ -1332,6 +1416,7 @@
     function selectWorldItem(id, el) {
       if (handleListSelection(el, '#page-world', 'world')) {
         const item = database.world.find(w => w.id === id);
+         if (item && !canViewItem(item)) { activeItemIds['world'] = null; return; }
         if (item) {
           activeItemIds.world = id;
           document.getElementById('world-detail-title').innerText = item.title;
@@ -1381,6 +1466,7 @@
     function selectCharItem(id, el) {
       if (!handleListSelection(el, '#page-characters', 'characters')) return;
       const item = database.characters.find(c => c.id === id);
+         if (item && !canViewItem(item)) { activeItemIds['characters'] = null; return; }
       if (!item) return;
       activeItemIds.characters = id;
       document.getElementById('char-detail-title').innerText = item.name;
@@ -1451,6 +1537,7 @@
     function selectMusicItem(id, el) {
       if (handleListSelection(el, '#page-music', 'music')) {
         const item = database.music.find(m => m.id === id);
+         if (item && !canViewItem(item)) { activeItemIds['music'] = null; return; }
         if (item) {
           activeItemIds.music = id;
           document.getElementById('music-detail-title').innerText = item.title;
@@ -1464,6 +1551,7 @@
     function selectFeedItem(id, el) {
       if (handleListSelection(el, '#page-feed', 'feed')) {
         const item = database.feed.find(f => f.id === id);
+         if (item && !canViewItem(item)) { activeItemIds['feed'] = null; return; }
         if (item) {
           activeItemIds.feed = id;
           document.getElementById('feed-detail-title').innerText = item.title;
@@ -1493,6 +1581,7 @@
         document.getElementById('notice-detail-body').innerHTML = `<div class="links-page">${intro}${buttons}</div>`;
       } else {
         const item = database.notice.find(n => n.id === id);
+         if (item && !canViewItem(item)) { activeItemIds['notice'] = null; return; }
         if (item) {
           activeItemIds.notice = id;
           document.getElementById('notice-detail-title').innerText = item.title;
@@ -1642,6 +1731,24 @@
     }
 
     /* ---------- FULL EDIT & ADD SYSTEM (ADMIN) ---------- */
+    function openCopyExistingModal(section){
+      if(!isAdminLoggedIn){ alert('관리자 로그인 후 사용할 수 있습니다.'); return; }
+      const container=document.getElementById('admin-edit-container');
+      const items=[...(database[section]||[])];
+      if(!items.length){ alert('복사할 기존 항목이 없습니다.'); return; }
+      const labels={world:'세계관',characters:'캐릭터',music:'음악',feed:'피드',notice:'공지'};
+      container.innerHTML=`<div class="modal-title">COPY EXISTING</div><div class="upload-help">기존 내용을 복사해 새 항목으로 만듭니다. 원본은 변경되지 않습니다.</div><div class="admin-list-manager">${items.map(item=>`<button type="button" class="admin-manager-row copy-existing-row" style="width:100%;text-align:left;cursor:pointer;" onclick="copyExistingItem('${section}','${item.id}')"><span style="font-weight:800;">${labels[section]||section.toUpperCase()}</span><span style="margin-left:auto;">${item.title||item.name||item.date||item.id}${item.visible===false?' · PRIVATE':''}</span></button>`).join('')}</div><div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button></div>`;
+      document.getElementById('modal-admin-edit').classList.add('show');
+    }
+    function copyExistingItem(section,id){
+      const source=(database[section]||[]).find(x=>x.id===id);
+      if(!source)return;
+      const clone=JSON.parse(JSON.stringify(source));
+      clone.id=`${section}_${Date.now()}_${Math.random().toString(36).slice(2,6)}`;
+      clone.visible=true;
+      renderAdminEditForm(section,clone,true);
+    }
+
     function openEditModal(section, id) {
       const item = database[section].find(i => i.id === id);
       if (!item) return;
@@ -1649,7 +1756,7 @@
     }
 
     function openAddModal(section) {
-      const newItem = { id: `${section}_${Date.now()}` };
+      const newItem = { id: `${section}_${Date.now()}`, visible: true };
       if (section === 'world') newItem.group = categoryGroups.world[0] || 'WORLD DATABASE';
       if (section === 'characters') newItem.group = categoryGroups.characters[0] || 'CHARACTERS';
       if (section === 'music') newItem.group = categoryGroups.music[0];
@@ -1758,7 +1865,8 @@
       }else{
         fieldsHtml=`<label class="modal-label">제목</label><input type="text" id="edit-title" class="modal-input" value="${item.title||item.name||''}"><label class="modal-label">서브 / 날짜</label><input type="text" id="edit-sub" class="modal-input" value="${item.sub||item.date||''}"><label class="modal-label">내용</label><textarea id="edit-content" class="modal-textarea">${item.content||''}</textarea>`;
       }
-      container.innerHTML=`<div class="modal-title">${isNew?'ADD NEW ITEM':'EDIT ITEM'}</div>${fieldsHtml}<div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveAdminEdit('${section}','${item.id}',${isNew})">SAVE</button></div>`;
+      fieldsHtml += `<label class="modal-label checkbox-line"><input type="checkbox" id="edit-visible" ${item.visible !== false ? 'checked' : ''}> <span>공개</span></label><div class="upload-help">체크 해제하면 일반 사용자에게는 목록과 상세 내용이 숨겨지고 관리자 페이지에서만 볼 수 있습니다. 데이터는 GitHub에 그대로 저장됩니다.</div>`;
+      container.innerHTML=`<div class="modal-title">${isNew?'ADD NEW ITEM':'EDIT ITEM'}</div>${isNew?`<button type="button" class="manager-small-btn copy-existing-main-btn" onclick="openCopyExistingModal('${section}')">COPY EXISTING</button>`:''}${fieldsHtml}<div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveAdminEdit('${section}','${item.id}',${isNew})">SAVE</button></div>`;
       document.getElementById('modal-admin-edit').classList.add('show');
     }
 
@@ -2180,6 +2288,30 @@
       }
     }
 
+    /* ---------- DARK ARCHIVE EASTER EGG ---------- */
+    const ARCHIVE_DARK_CODE='universum';
+    let archiveCodeBuffer='';
+    let archiveDarkMode=localStorage.getItem('ruroon_dark_archive_mode')==='1';
+    function applyArchiveDarkMode(){ document.body.classList.toggle('dark-archive-mode',archiveDarkMode); }
+    function runArchiveDarkMode(){
+      if(archiveDarkMode)return;
+      archiveDarkMode=true;
+      const overlay=document.getElementById('archive-signal-glitch');
+      const main=document.getElementById('archive-glitch-main');
+      const sub=document.getElementById('archive-glitch-sub');
+      overlay.classList.add('show');
+      main.textContent='SYSTEM ERROR';
+      sub.innerHTML='SIGNAL INTERRUPTED<br>ARCHIVE CONNECTION LOST...';
+      setTimeout(()=>{main.textContent='WELCOME BACK.';sub.innerHTML='SIGNAL RESTORED';},850);
+      setTimeout(()=>{overlay.classList.remove('show');document.body.classList.add('dark-archive-mode');localStorage.setItem('ruroon_dark_archive_mode','1');},1550);
+    }
+    document.addEventListener('keydown',e=>{
+      if(e.ctrlKey||e.altKey||e.metaKey||e.key.length!==1)return;
+      archiveCodeBuffer=(archiveCodeBuffer+e.key.toUpperCase()).slice(-ARCHIVE_DARK_CODE.length);
+      if(archiveCodeBuffer===ARCHIVE_DARK_CODE)runArchiveDarkMode();
+    });
+    applyArchiveDarkMode();
+
     /* ---------- AUTH SYSTEM ---------- */
     const SECRET_PASS = "Loversleporineladymart";
 
@@ -2254,7 +2386,7 @@
       const defaultDate = selectedDateKey || getTodayKey();
       const container = document.getElementById('admin-edit-container');
       container.innerHTML = `
-        <div class="modal-title">ADD CALENDAR EVENT</div>
+        <div class="modal-title">ADD CALENDAR EVENT</div><button type="button" class="manager-small-btn" style="align-self:flex-start;" onclick="openCopyCalendarEventModal()">COPY EXISTING</button>
         <label class="modal-label">날짜</label>
         <input type="date" id="calendar-add-date" class="modal-input" value="${defaultDate}">
         <label class="modal-label">일정</label>
@@ -2266,6 +2398,20 @@
         </div>`;
       document.getElementById('modal-admin-edit').classList.add('show');
       setTimeout(() => document.getElementById('calendar-add-title')?.focus(), 80);
+    }
+
+    function openCopyCalendarEventModal(){
+      const rows=Object.entries(eventsData||{}).flatMap(([date,events])=>(events||[]).map(title=>({date,title})));
+      const container=document.getElementById('admin-edit-container');
+      if(!rows.length){alert('복사할 기존 일정이 없습니다.');return;}
+      container.innerHTML=`<div class="modal-title">COPY CALENDAR EVENT</div><div class="admin-list-manager">${rows.map((r,i)=>`<button type="button" class="admin-manager-row" style="width:100%;text-align:left;cursor:pointer;" onclick="copyCalendarEvent('${r.date}',${i})"><span>${r.date}</span><span style="margin-left:auto;font-weight:800;">${r.title}</span></button>`).join('')}</div><div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button></div>`;
+      document.getElementById('modal-admin-edit').classList.add('show');
+      window.__calendarCopyRows=rows;
+    }
+    function copyCalendarEvent(date,index){
+      const row=(window.__calendarCopyRows||[])[index]; if(!row)return;
+      const container=document.getElementById('admin-edit-container');
+      container.innerHTML=`<div class="modal-title">ADD CALENDAR EVENT</div><label class="modal-label">날짜</label><input type="date" id="calendar-add-date" class="modal-input" value="${row.date}"><label class="modal-label">일정</label><input type="text" id="calendar-add-title" class="modal-input" value="${String(row.title).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}"><div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="closeAdminEditModal()">CANCEL</button><button class="modal-btn modal-btn-save" onclick="saveCalendarEvent()">SAVE</button></div>`;
     }
 
     async function saveCalendarEvent() {
