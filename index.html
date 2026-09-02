@@ -1502,15 +1502,15 @@
       let gal02Html = '';
       if (item.gallery02 && item.gallery02.length) {
         gal02Html = `<div class="gal02-section"><div class="gallery-section-title"><span>ARCHIVE GALLERY</span></div><div>
-          ${item.gallery02.map((group, gIdx) => `<div class="gal02-accordion-item">
-            <div class="gal02-acc-header" role="button" tabindex="0" aria-expanded="true" onclick="toggleGallery02Accordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleGallery02Accordion(this)}"><span>✦ ${group.title || 'ARCHIVE'}</span><span class="gal02-acc-arrow">▼</span></div>
+          ${item.gallery02.map((group, gIdx) => { if(group && group.restricted && !archiveDeepMode && !isAdminLoggedIn) return ''; return `<div class="gal02-accordion-item">
+            <div class="gal02-acc-header" role="button" tabindex="0" aria-expanded="true" onclick="toggleGallery02Accordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleGallery02Accordion(this)}"><span>✦ ${group.title || 'ARCHIVE'}${group.restricted && archiveDeepMode ? ' <span style="font-size:9px;opacity:.65;">[02]</span>' : ''}</span><span class="gal02-acc-arrow">▼</span></div>
             <div class="gal02-acc-body">
               ${group.desc ? `<div class="gal02-acc-desc">${group.desc}</div>` : ''}
               <div class="gallery-drag-viewport" data-gallery-drag>
                 <div class="gallery-drag-track">${(group.images || []).map((imgObj,iIdx) => { const a=typeof imgObj==='string'?{img:imgObj,links:[]}:imgObj; return `<div class="gal-thumb-item" onclick="openLightboxFromData('gal02', ${gIdx}, ${iIdx})"><img src="${a.img}" class="gal-thumb-img" draggable="false"></div>`; }).join('')}</div>
               </div>
             </div>
-          </div>`).join('')}
+          </div>`; }).join('')}
         </div></div>`;
       }
 
@@ -1692,7 +1692,7 @@
         currentLightboxIdx = Number(p1) || 0;
       } else if (type === 'gal02') {
         const group = (char.gallery02 || [])[Number(p1)];
-        if (!group) return;
+        if (!group || (group.restricted && !archiveDeepMode && !isAdminLoggedIn)) return;
         currentLightboxList = (group.images || []).map(g => typeof g === 'string' ? g : g.img).filter(Boolean);
         currentLightboxIdx = Number(p2) || 0;
       } else {
@@ -1839,7 +1839,7 @@
           <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addCharacterLinkEditor()">+ LINK</button>
           <label class="modal-label">NOTES &amp; LORE</label><textarea id="edit-tmi" class="modal-textarea" style="min-height:180px;">${item.tmi||''}</textarea>
           <div class="modal-label" style="margin-top:6px;">ARCHIVE GALLERY</div>
-          <div id="gallery02-editor">${gal02.map((g,i)=>`<div class="gallery02-admin-group" data-index="${i}"><input class="modal-input g02-title" placeholder="갤러리 제목" value="${g.title||''}"><textarea class="modal-textarea g02-desc" placeholder="설명">${g.desc||''}</textarea>${(g.images||[]).length ? `<div class="existing-media-list g02-existing-media">${(g.images||[]).map(x=>renderExistingMedia('아카이브',typeof x==='string'?x:x.img)).join('')}</div>` : ''}<input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">기존 이미지는 유지하고 새 이미지만 추가할 수 있습니다. 삭제는 사이트에서만 반영됩니다.</div></div>`).join('')}</div>
+          <div id="gallery02-editor">${gal02.map((g,i)=>`<div class="gallery02-admin-group" data-index="${i}"><input class="modal-input g02-title" placeholder="갤러리 제목" value="${g.title||''}"><label class="modal-label checkbox-line"><input type="checkbox" class="g02-restricted" ${g.restricted?'checked':''}> <span>2ND ARCHIVE ONLY</span></label><textarea class="modal-textarea g02-desc" placeholder="설명">${g.desc||''}</textarea>${(g.images||[]).length ? `<div class="existing-media-list g02-existing-media">${(g.images||[]).map(x=>renderExistingMedia('아카이브',typeof x==='string'?x:x.img)).join('')}</div>` : ''}<input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">기존 이미지는 유지하고 새 이미지만 추가할 수 있습니다. 체크하면 이 갤러리 전체가 2단계 아카이브에서만 공개됩니다.</div></div>`).join('')}</div>
           <button type="button" class="modal-btn modal-btn-cancel" style="align-self:flex-start;" onclick="addGallery02AdminGroup()">+ GALLERY GROUP</button>
         `;
       }else if(section==='world'){
@@ -2073,7 +2073,7 @@
       await persistArchiveData();
     }
 
-    function addGallery02AdminGroup(){ const box=document.getElementById('gallery02-editor'); if(!box)return; const i=box.children.length; const div=document.createElement('div'); div.className='gallery02-admin-group'; div.dataset.index=i; div.innerHTML='<input class="modal-input g02-title" placeholder="갤러리 제목"><textarea class="modal-textarea g02-desc" placeholder="설명"></textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">기존 이미지는 유지하고 새 이미지만 추가할 수 있습니다.</div>'; box.appendChild(div); }
+    function addGallery02AdminGroup(){ const box=document.getElementById('gallery02-editor'); if(!box)return; const i=box.children.length; const div=document.createElement('div'); div.className='gallery02-admin-group'; div.dataset.index=i; div.innerHTML='<input class="modal-input g02-title" placeholder="갤러리 제목"><label class="modal-label checkbox-line"><input type="checkbox" class="g02-restricted"> <span>2ND ARCHIVE ONLY</span></label><textarea class="modal-textarea g02-desc" placeholder="설명"></textarea><input type="file" class="modal-file g02-files" accept="image/*" multiple><div class="upload-help">기존 이미지는 유지하고 새 이미지만 추가할 수 있습니다. 체크하면 이 갤러리 전체가 2단계 아카이브에서만 공개됩니다.</div>'; box.appendChild(div); }
     function stripImageHtml(html){ return String(html||'').replace(/<img[^>]*>/gi,'').replace(/<[^>]+>/g,'').trim(); }
     /* ---------- DIRECT GITHUB UPLOAD (NO WORKER) ---------- */
     /*
@@ -2235,11 +2235,11 @@
           const kept=[...box.querySelectorAll('[data-existing-media]')].filter(row=>row.dataset.removed!=='1').map(row=>({img:row.dataset.url||''})).filter(x=>x.img);
           const files=[...box.querySelector('.g02-files').files]; let images=kept;
           if(files.length) { const urls=await uploadManyFilesToGitHub(files, `images/characters/${item.id}/gallery`); images=[...kept,...urls.map(url=>({img:url}))]; }
-          if(title||desc||images.length) groups.push({title:title||'ARCHIVE',desc,images});
+          const restricted=!!box.querySelector('.g02-restricted')?.checked; if(title||desc||images.length) groups.push({title:title||'ARCHIVE',desc,images,restricted});
         }
         item.gallery02=groups;
         item.gallery01=(item.gallery01||[]).map(g=>typeof g==='string'?{img:g}:{img:g.img});
-        item.gallery02=(item.gallery02||[]).map(g=>({...g,images:(g.images||[]).map(x=>typeof x==='string'?{img:x}:{img:x.img})}));
+        item.gallery02=(item.gallery02||[]).map(g=>({...g,restricted:!!g.restricted,images:(g.images||[]).map(x=>typeof x==='string'?{img:x}:{img:x.img})}));
       }else if(section==='world'){
         item.title=document.getElementById('edit-title').value.trim(); item.group=document.getElementById('edit-group').value.trim()||'WORLD DATABASE'; item.sub=document.getElementById('edit-sub').value.trim(); item.desc=document.getElementById('edit-desc').value; item.musicId=document.getElementById('edit-music-id').value || '';
         const worldLinkRows=[...document.querySelectorAll('#world-links-editor .world-link-row')];
