@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-02T16:20:33.986Z",
+  "updatedAt": "2026-09-03T00:01:44.552Z",
   "database": {
     "world": [
       {
@@ -1483,7 +1483,8 @@
         "finalContent": "",
         "playlistUrl": "",
         "audio": "https://ruroong.github.io/ruroon._.g/music/1787748180274_2ujvw5___________________4.mp3",
-        "group": "ALBUM 00"
+        "group": "ALBUM 00",
+        "visible": false
       },
       {
         "id": "music_1788337861545_s86i",
@@ -1562,7 +1563,6 @@
   ],
   "mainBgmIds": [
     "track_01",
-    "music_1787736060056",
     "music_1788337861545_s86i"
   ],
   "eventsData": {},
