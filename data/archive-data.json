@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-14T10:26:44.568Z",
+  "updatedAt": "2026-09-14T10:26:57.888Z",
   "database": {
     "world": [
       {
@@ -1473,9 +1473,10 @@
         "group": "ALBUM 01",
         "title": "01. Signal Theme #1",
         "sub": "TRACK 01 / MAIN THEME",
-        "content": "사실 아직 아무것도 없습니다 꾸벅. 무언가 생긴다면 업데이트 할게요! ",
+        "content": "사실 아직 아무것도 없습니다 꾸벅.\n무언가 생긴다면 업데이트 할게요! ",
         "finalContent": "",
-        "playlistUrl": "dddd"
+        "playlistUrl": "dddd",
+        "visible": true
       },
       {
         "id": "music_1787736060056",
@@ -1564,8 +1565,8 @@
     "characters_1788360980005_gvcq"
   ],
   "mainBgmIds": [
-    "track_01",
-    "music_1788337861545_s86i"
+    "music_1788337861545_s86i",
+    "track_01"
   ],
   "eventsData": {},
   "noticeLinks": {
