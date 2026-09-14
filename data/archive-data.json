@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-14T10:25:45.764Z",
+  "updatedAt": "2026-09-14T10:26:44.568Z",
   "database": {
     "world": [
       {
@@ -1481,7 +1481,7 @@
         "id": "music_1787736060056",
         "title": "00. Main BGM #0",
         "sub": "사람은 이상하고 사랑은 모르겠어",
-        "content": "제가 좋아하는 음악이에요 ✪ ω ✪",
+        "content": "제가 좋아하는 음악이에요 ✪ ω ✪\n눈누",
         "finalContent": "",
         "playlistUrl": "",
         "audio": "https://ruroong.github.io/ruroon._.g/music/1787748180274_2ujvw5___________________4.mp3",
