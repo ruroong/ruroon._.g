@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T13:18:41.266Z",
+  "updatedAt": "2026-10-06T13:19:01.643Z",
   "database": {
     "world": [
       {
@@ -1998,7 +1998,9 @@
         "id": "characters_1791292539042_4bdi",
         "name": "권이현",
         "group": "정경재단",
-        "works": [],
+        "works": [
+          "남은 것은 미움뿐이라"
+        ],
         "alias": "권이현",
         "birthday": "1995-04-30",
         "tags": "boy, 3::aged up, adult male::, 1.5::adult male, bishounen::, pale skin, white, milk skin,\n\njet black hair, 0.8::short hair::, 0.6::wolf cut::, 3::slick back, swept-back hair::, 1.5::golden yellow eyes::, sharp eyes, tsurime, narrow eyes, sanpaku, 1.2::sharp facial features::, Straight thin eyebrows, Sharp \nsuit,Tie,\nStraight face, expressionless, smirk,",
@@ -2102,7 +2104,8 @@
     "죄와 구원의 혼배성사",
     "내 머리 돌려줘！",
     "그 꽃집을 조심하세요！",
-    "낙하：8000M"
+    "낙하：8000M",
+    "남은 것은 미움뿐이라"
   ],
   "characterOrder": [
     "characters_1787637348231",
