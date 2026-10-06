@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T13:22:55.406Z",
+  "updatedAt": "2026-10-06T13:38:46.522Z",
   "database": {
     "world": [
       {
@@ -2224,12 +2224,12 @@
     ],
     "characters": [
       "PERSONA",
+      "정경재단",
       "한국대학교",
-      "VELATO : 벨라토",
       "성해력(聖海曆) 715",
-      "ETC",
+      "VELATO : 벨라토",
       "낙하 : 8000M",
-      "정경재단"
+      "ETC"
     ],
     "music": [
       "ALBUM 01",
