@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T12:28:05.979Z",
+  "updatedAt": "2026-10-06T12:31:11.797Z",
   "database": {
     "world": [
       {
@@ -1446,7 +1446,7 @@
         "works": [
           "낙하：8000M"
         ],
-        "alias": "",
+        "alias": "ALIAS",
         "birthday": "1976-07-22",
         "tags": "boy, 2::aged up, mature male::, reddish-brown hair, auburn hair, 3::wavy hair, very short hair, pomade,::,  medium hair, yellow eyes, amber eyes, jitome, sanpaku, pale skin, scar, covered in scars, multiple scars, small scars, scar on face, scar on body, cut scars, body scar\n\ndiving suit, wetsuit, scuba gear, heavy diving suit, bulky suit, realistic, high-tech, tactical gear",
         "musicId": "",
@@ -1461,8 +1461,117 @@
             "url": "https://crack.wrtn.ai/detail/6a8644595633f796a41fcc00"
           }
         ],
-        "img": "",
-        "gallery01": [],
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/1791289754408_t0svai______02.jpg",
+        "gallery01": [
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289802988_jreoex______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289805197_8s9aax______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289807370_j6aolc______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289809439_77ficy______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289811119_hhl25w______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289812805_k5yqub______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289814370_jc12fx______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289816555_i2nllo______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289818700_rseuo1______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289820682_vclxvg______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289822648_68my7e_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289824502_xrqd5s______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289826280_j2m2rd______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289827947_2y61at______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289829630_309hpt______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289831820_he4127______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289833698_3jdaoj______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289835459_s767xm______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289837004_6ipgnv______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289839291_a39ez3______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289841343_oc675v______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289843249_71a810______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289845535_giiztp______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289847671_dqbxwb______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289849617_8hbihi______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289851682_70o3cg______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289853696_x4g9ye______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289855819_jd0mh2______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289857848_qdpnqy______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289859578_kbghvb______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289861537_77t153______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289863061_18nhwr______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289864759_xjoj90______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289866260_tc7ug7______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289867968_hv752z______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1788360980005_gvcq/gallery/1791289869519_xxq901______05.jpg"
+          }
+        ],
         "gallery02": [],
         "visible": true
       }
