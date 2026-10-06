@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T12:43:42.319Z",
+  "updatedAt": "2026-10-06T12:44:49.468Z",
   "database": {
     "world": [
       {
@@ -1628,6 +1628,33 @@
         "gallery01": [],
         "gallery02": [],
         "visible": true
+      },
+      {
+        "id": "characters_1791290643573_0x3h",
+        "name": "휴 맥컬리스터",
+        "group": "낙하 : 8000M",
+        "works": [
+          "낙하：8000M"
+        ],
+        "alias": "ALIAS",
+        "birthday": "1973-03-02",
+        "tags": "4::monster, monster boy, alien::, 2.5::mature male::, messy hair, dark grey hair, glowing eyes, blue eyes, extremely pale skin, scar, covered in scars, gills, gills on neck, exoskeleton, tentacles, tentacles from back, monster features, dark atmosphere, underwater, deep sea, masterpiece, best quality",
+        "musicId": "",
+        "tmi": "",
+        "links": [
+          {
+            "title": "크랙 세이프",
+            "url": "https://crack.wrtn.ai/detail/6a906581961a127213a68617"
+          },
+          {
+            "title": "크랙 언세이프",
+            "url": "https://crack.wrtn.ai/detail/6a8644595633f796a41fcc00"
+          }
+        ],
+        "img": "",
+        "gallery01": [],
+        "gallery02": [],
+        "visible": true
       }
     ],
     "music": [
@@ -1729,7 +1756,8 @@
     "characters_1788187421807",
     "characters_1788360980005_gvcq",
     "characters_1791290147121_x4y1",
-    "characters_1791290544215_1pak"
+    "characters_1791290544215_1pak",
+    "characters_1791290643573_0x3h"
   ],
   "mainBgmIds": [
     "music_1788337861545_s86i",
