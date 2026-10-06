@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T12:59:37.536Z",
+  "updatedAt": "2026-10-06T13:18:41.266Z",
   "database": {
     "world": [
       {
@@ -1993,6 +1993,31 @@
           }
         ],
         "visible": true
+      },
+      {
+        "id": "characters_1791292539042_4bdi",
+        "name": "권이현",
+        "group": "정경재단",
+        "works": [],
+        "alias": "권이현",
+        "birthday": "1995-04-30",
+        "tags": "boy, 3::aged up, adult male::, 1.5::adult male, bishounen::, pale skin, white, milk skin,\n\njet black hair, 0.8::short hair::, 0.6::wolf cut::, 3::slick back, swept-back hair::, 1.5::golden yellow eyes::, sharp eyes, tsurime, narrow eyes, sanpaku, 1.2::sharp facial features::, Straight thin eyebrows, Sharp \nsuit,Tie,\nStraight face, expressionless, smirk,",
+        "musicId": "",
+        "tmi": "",
+        "links": [
+          {
+            "title": "크랙 세이프티",
+            "url": "https://crack.wrtn.ai/detail/6a9bf46f522561c08d5cd421"
+          },
+          {
+            "title": "크랙 언세이프",
+            "url": "https://crack.wrtn.ai/detail/6a94d3cadaca77f8bcfaceed"
+          }
+        ],
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791292539042_4bdi/1791292718811_4aminb________.jpg",
+        "gallery01": [],
+        "gallery02": [],
+        "visible": true
       }
     ],
     "music": [
@@ -2059,7 +2084,8 @@
       "VELATO : 벨라토",
       "성해력(聖海曆) 715",
       "ETC",
-      "낙하 : 8000M"
+      "낙하 : 8000M",
+      "정경재단"
     ],
     "music": [
       "ALBUM 01",
@@ -2095,7 +2121,8 @@
     "characters_1788360980005_gvcq",
     "characters_1791290147121_x4y1",
     "characters_1791290544215_1pak",
-    "characters_1791290643573_0x3h"
+    "characters_1791290643573_0x3h",
+    "characters_1791292539042_4bdi"
   ],
   "mainBgmIds": [
     "music_1788337861545_s86i",
