@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T13:38:46.522Z",
+  "updatedAt": "2026-10-06T14:09:34.302Z",
   "database": {
     "world": [
       {
@@ -2162,6 +2162,145 @@
         ],
         "gallery02": [],
         "visible": true
+      },
+      {
+        "id": "characters_1791295430936_otkw",
+        "name": "강태오",
+        "group": "한국대학교",
+        "works": [
+          "모솔탈출 프로젝트"
+        ],
+        "alias": "강태오",
+        "birthday": "2003-06-19",
+        "tags": "boy, 0.9::aged up, mature male::, pale skin, milk skin, 1.5::tareme::, -3::jitome ::, navy eyes, 3::short black hair, short bangs, crew cut::, Muscular,  2::broad shoulders::, training wear, black t-shirt, fitted sportswear, short sleeves, Thin eyebrows, seductive smile, kind, courteous, drooped eyebrow,\n",
+        "musicId": "",
+        "tmi": "",
+        "links": [],
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/1791295696616_83fhp0_______06.jpg",
+        "gallery01": [
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295698733_lgaljk_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295701011_vys4fb_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295704052_9pkzbs_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295705818_xa4rl1_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295707989_72fi0c_______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295709863_kezims_______06.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295711426_zm6f2q_______07.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295713700_ur6w9l_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295715363_9grztn_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295716925_odq8fl_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295718830_wuvhjr_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295721119_wayie8_______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295722868_ihly7x________01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295724317_fzkjq9________02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295726208_9jny03_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295727764_tcz44s_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295729477_egzsmw_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295731766_ps2ot3_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295733099_ric8pq_______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295735288_xyrotu_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295737617_rwdhkx_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295739178_g7yqwg_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295740601_10qf6j_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295742147_1cdcsr_______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295743806_khyiwo_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295746209_00isof_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295747640_d56vmd_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295749579_18d2k0_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295751884_vhzfu6_______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295754020_jlkjr7_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295755485_d3ocbh_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295757360_u4c3se_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295759815_te3s3t_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295761292_om8143_______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295763465_0tylks_______06.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295764963_1jgyzj_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295766595_3rwrze_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295768099_iaim0u_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295770453_zytf22_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295430936_otkw/gallery/1791295771732_8l50ri_______05.jpg"
+          }
+        ],
+        "gallery02": [],
+        "visible": true
       }
     ],
     "music": [
@@ -2248,7 +2387,8 @@
     "그 꽃집을 조심하세요！",
     "낙하：8000M",
     "남은 것은 미움뿐이라",
-    "타인을 사랑하지 말 것"
+    "타인을 사랑하지 말 것",
+    "모솔탈출 프로젝트"
   ],
   "characterOrder": [
     "characters_1787637348231",
@@ -2269,7 +2409,8 @@
     "characters_1791290544215_1pak",
     "characters_1791290643573_0x3h",
     "characters_1791292539042_4bdi",
-    "characters_1791292749795_puni"
+    "characters_1791292749795_puni",
+    "characters_1791295430936_otkw"
   ],
   "mainBgmIds": [
     "music_1788337861545_s86i",
