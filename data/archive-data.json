@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T14:09:49.601Z",
+  "updatedAt": "2026-10-06T14:15:29.266Z",
   "database": {
     "world": [
       {
@@ -2301,6 +2301,157 @@
         ],
         "gallery02": [],
         "visible": true
+      },
+      {
+        "id": "characters_1791295927857",
+        "name": "바렛 트래비스",
+        "group": "ETC",
+        "works": [
+          "팬티쉬 아저씨"
+        ],
+        "alias": "바렛 트래비",
+        "birthday": "1987-09-28",
+        "tags": "man, 5::mature male, aged up,::, 2.5::Middle-aged::, 1.4::old::, white, 2::crow feet, nasolabial folds, Hollow cheek::, under-eye bags, -3::Beard::, ::Rough skin::, weathered skin, cheekbone, prominent cheekbones, 2::broad square jaw::, clenched jaw::, \nash blonde hair, short hair, 1.2::slicked back hair::, unkempt hair, messy hair\nmuted green eyes, hazel eyes,\n1.5::tsurime::, sanpaku,\nfine lines around eyes, scar on left cheek,\n2::broad shoulders::, muscular, bara, \ncharcoal unbuttoned shirt, white tank top inside, silver ring earring,\ncigarette in mouth, smoking,",
+        "musicId": "",
+        "tmi": "",
+        "links": [],
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/1791296052625_6k0jnq______02.jpg",
+        "gallery01": [
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296054799_i0w9bx______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296056943_z1e3tm______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296058580_dzp4fc______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296060782_kv32u1______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296062338_ghv90k______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296064324_4wlakc______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296066473_focepw______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296068123_8bfd4d______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296070157_tbo7gi______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296071968_r6zbkp______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296074195_oz6uo4______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296076504_3nwlly______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296078749_veu14o______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296080466_rq7tfv______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296082006_ojvdc2______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296083665_fy3809______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296085329_zevzkh______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296087221_dnst0c______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296088969_i5a1lw______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296090520_gtpk6n______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296092837_i98dre______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296094644_1u5jfu______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296096419_aylh6j______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296098071_nmo8j2______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296099630_a21zx3______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296101675_qm4ov0______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296104048_zfaiex______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296105870_jazh9u______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296107469_yzv3ux______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296109070_grnp3e______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296110785_3gggmi______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296113134_0c58t4______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296115713_ff13xh______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296117421_4r22ze______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296119809_bxpvkn______05.jpg"
+          }
+        ],
+        "gallery02": [
+          {
+            "title": "젊은시절의 아죳시",
+            "desc": "",
+            "images": [
+              {
+                "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296121442_zapk4n__________01.jpg"
+              },
+              {
+                "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296123871_cuy670__________02.jpg"
+              },
+              {
+                "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296125868_xg8byw__________03.jpg"
+              }
+            ],
+            "restricted": false
+          },
+          {
+            "title": "빤스훔치는 아죳시",
+            "desc": "",
+            "images": [
+              {
+                "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1791295927857/gallery/1791296127538_9qhjjy________.jpg"
+              }
+            ],
+            "restricted": false
+          }
+        ],
+        "visible": true
       }
     ],
     "music": [
@@ -2388,7 +2539,8 @@
     "낙하：8000M",
     "남은 것은 미움뿐이라",
     "타인을 사랑하지 말 것",
-    "모솔탈출 프로젝트"
+    "모솔탈출 프로젝트",
+    "팬티쉬 아저씨"
   ],
   "characterOrder": [
     "characters_1787637348231",
@@ -2410,7 +2562,8 @@
     "characters_1791290643573_0x3h",
     "characters_1791292539042_4bdi",
     "characters_1791292749795_puni",
-    "characters_1791295430936_otkw"
+    "characters_1791295430936_otkw",
+    "characters_1791295927857"
   ],
   "mainBgmIds": [
     "music_1788337861545_s86i",
