@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T12:41:44.444Z",
+  "updatedAt": "2026-10-06T12:43:20.977Z",
   "database": {
     "world": [
       {
@@ -1601,6 +1601,33 @@
         "gallery01": [],
         "gallery02": [],
         "visible": true
+      },
+      {
+        "id": "characters_1791290544215_1pak",
+        "name": "빅터 마서",
+        "group": "낙하 : 8000M",
+        "works": [
+          "낙하：8000M"
+        ],
+        "alias": "ALIAS",
+        "birthday": "1970-09-30",
+        "tags": "boy, 4::aged up, 2::mature male::,  black hair, slicked back, glasses, silver-framed eyewear, grey eyes, green eyes, pale skin, tareme,  narrowed eyes, tired, dark circles, sharp eye expression, stern face, cold look, cynical, lab coat, white coat, button-up shirt, upper body, indoors, research lab background, masterpiece, best quality",
+        "musicId": "",
+        "tmi": "",
+        "links": [
+          {
+            "title": "크랙 세이프",
+            "url": "https://crack.wrtn.ai/detail/6a906581961a127213a68617"
+          },
+          {
+            "title": "크랙 언세이프",
+            "url": "https://crack.wrtn.ai/detail/6a8644595633f796a41fcc00"
+          }
+        ],
+        "img": "",
+        "gallery01": [],
+        "gallery02": [],
+        "visible": true
       }
     ],
     "music": [
@@ -1701,7 +1728,8 @@
     "characters_1788004008050",
     "characters_1788187421807",
     "characters_1788360980005_gvcq",
-    "characters_1791290147121_x4y1"
+    "characters_1791290147121_x4y1",
+    "characters_1791290544215_1pak"
   ],
   "mainBgmIds": [
     "music_1788337861545_s86i",
