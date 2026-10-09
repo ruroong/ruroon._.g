@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T14:15:29.266Z",
+  "updatedAt": "2026-10-09T06:36:42.767Z",
   "database": {
     "world": [
       {
@@ -60,7 +60,7 @@
         "group": "성해력(聖海曆) 715",
         "alias": "바트 : Bart",
         "birthday": "0685-10-24",
-        "tags": "boy, 5::aged up::, 2::mature male::, 3::tanned skin, brown skin::, 0.8::messy hair::, jagged long hair, Chest length black hair, Quiff hair, curtained hair, tsurime, sharp cyan eyes, muscular, broad shoulders, scarred body, oversized white poet shirt, black patterned bandana, wearing bandana on forehead,  -5::Beard::, a scar on the nose, leather pirate coat draped over shoulders, nosebleed,",
+        "tags": "boy, 5::aged up::, 2::mature male::, 3::tanned skin, brown skin::, 0.8::messy hair::, jagged long hair, Chest length black hair, Quiff hair, curtained hair, tsurime, sharp cyan eyes, muscular, broad shoulders, scarred body, oversized white poet shirt, black patterned bandana, wearing bandana on forehead,  -5::Beard::, a scar on the nose, leather pirate coat draped over shoulders",
         "tmi": "",
         "links": [
           {
@@ -151,7 +151,8 @@
         "works": [
           "해적은 물고기를 싫어해？"
         ],
-        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/1787975864626_sijf9c______01.jpg"
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1787637348231/1787975864626_sijf9c______01.jpg",
+        "visible": true
       },
       {
         "id": "characters_1787747958748",
