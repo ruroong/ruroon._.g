@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-09T15:02:04.067Z",
+  "updatedAt": "2026-11-22T06:08:41.968Z",
   "database": {
     "world": [
       {
@@ -2453,6 +2453,160 @@
           }
         ],
         "visible": true
+      },
+      {
+        "id": "characters_1795327307232_zahs",
+        "name": "카일론 : Kylon",
+        "group": "성해력(聖海曆) 715",
+        "works": [
+          "안 좋아한다고요, 제독님 !"
+        ],
+        "alias": "카일론 폰 로젠베르크 : Kylon von Rosenberg",
+        "birthday": "0683-10-21",
+        "tags": "boy, 4::aged up, adult male::, ::broad shoulders, muscular::, \n\n2::wolf cut::, white hair, 2::no bangs::, curtained hair, 0.2::choppy hair::, feathered hair, -2::side swepback::\n\npale skin, 1.2::fang::, \n\n2::tsurime::, 0.4::half-closed eyes::, 0.8::droopy eyes::, 0.8::relaxed eyes::, deep blue eyes, big eyes, \n\n2::gold drop earrings, dangle earrings, jewelry::\n\nlanguid, moody\n\nwhite naval officer uniform, white military jacket, double-breasted jacket, white overcoat draped over shoulders, cape-like draping, white necktie, blue dress shirt, gold tie clip, gold collar pins, gold shoulder boards, gold epaulettes, gold aiguillette, gold cord, anchor brooch, military medals, gold military insignia, gold buttons, naval insignia, ceremonial military uniform\n\npeaked cap, white peaked cap, naval officer cap, black cap band, gold laurel wreath, gold anchor insignia\n\n\n네거티브\n3::crossed bangs, bangs, ::",
+        "musicId": "",
+        "tmi": "",
+        "links": [
+          {
+            "title": "크랙 세이프",
+            "url": "https://share.crack.wrtn.ai/y3j9lvh"
+          },
+          {
+            "title": "크랙 언세이프",
+            "url": "https://share.crack.wrtn.ai/dnzqlum"
+          }
+        ],
+        "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/1795327622064_xw69vh________.jpg",
+        "gallery01": [
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327636141_8oxo5j_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327638390_rd2fuz_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327640824_vuviyv_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327642706_f29dkb_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327644336_sch9ka_______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327646746_q52rb1_______06.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327649772_fpou67_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327651659_1r41k6_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327653811_1wiajs_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327656268_ix15tq_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327657877_jx21ym_______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327659662_6dkxhp_______06.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327662227_vko8h8_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327664691_8emdh9_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327666329_02v31f_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327668270_47p60b_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327670758_uy8r77_______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327672869_y6hcd7_______06.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327674561_stbi1a_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327676240_nsmblh_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327678758_55kt62_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327680376_9prlwf_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327681862_n9fpe8_______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327684390_omnv49_______06.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327686692_kmy32m_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327688559_q682e6_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327690595_kz9jc3_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327693073_995hdi_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327695327_gge85v_______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327696917_6ltosl_______06.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327698817_0johqw_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327701048_05jaae_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327702793_2s6kfz_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327704393_333a3w_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327706408_wp5yc5_______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327708143_77ir2j_______06.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327710651_ghgfao_______01.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327713113_k1kwdc_______02.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327714837_82jvdh_______03.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327716399_j09fhn_______04.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327718093_x0a3gj_______05.jpg"
+          },
+          {
+            "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327719717_bjmrji_______06.jpg"
+          }
+        ],
+        "gallery02": [],
+        "visible": true
       }
     ],
     "music": [
@@ -2541,7 +2695,8 @@
     "남은 것은 미움뿐이라",
     "타인을 사랑하지 말 것",
     "모솔탈출 프로젝트",
-    "팬티쉬 아저씨"
+    "팬티쉬 아저씨",
+    "안 좋아한다고요, 제독님 !"
   ],
   "characterOrder": [
     "characters_1787637348231",
@@ -2564,7 +2719,8 @@
     "characters_1791292539042_4bdi",
     "characters_1791292749795_puni",
     "characters_1791295430936_otkw",
-    "characters_1791295927857"
+    "characters_1791295927857",
+    "characters_1795327307232_zahs"
   ],
   "mainBgmIds": [
     "music_1788337861545_s86i",
