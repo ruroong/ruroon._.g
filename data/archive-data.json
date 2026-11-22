@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-22T06:08:41.968Z",
+  "updatedAt": "2026-11-22T06:09:46.987Z",
   "database": {
     "world": [
       {
@@ -2605,7 +2605,18 @@
             "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327719717_bjmrji_______06.jpg"
           }
         ],
-        "gallery02": [],
+        "gallery02": [
+          {
+            "title": "당당 치비",
+            "desc": "",
+            "images": [
+              {
+                "img": "https://ruroong.github.io/ruroon._.g/images/characters/characters_1795327307232_zahs/gallery/1795327784065_xkkbpl_______.jpg"
+              }
+            ],
+            "restricted": false
+          }
+        ],
         "visible": true
       }
     ],
